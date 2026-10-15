@@ -1,0 +1,19 @@
+# 构建产物
+build/
+.gradle/
+
+# 本地工具链与依赖（体积过大，不入库；见 README「从源码构建」）
+gradle-dist/
+libs/*.jar
+/*.jar
+
+# 开发过程中的调试脚本、追加包备份
+_debug/
+_addon_backup/
+fix_addon_gangway.py
+
+# IDE / 系统
+.idea/
+.vscode/
+*.iml
+Thumbs.db

@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "package": "com.mtrdisableoriginaltrains.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [],
+  "client": [
+    "CustomResourceLoaderMixin",
+    "ModelPropertiesMixin",
+    "VehicleResourceMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

@@ -1,0 +1,37 @@
+plugins {
+    id 'fabric-loom' version '1.6-SNAPSHOT'
+    id 'maven-publish'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+base {
+    archivesName = project.archives_base_name
+    version = project.mod_version
+    group = project.maven_group
+}
+
+repositories {
+    maven { url = 'https://maven.aliyun.com/repository/public' }
+    mavenCentral()
+}
+
+dependencies {
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
+    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+
+    // MTR 4.0.5 本体：以普通 compileOnly 放入编译类路径。
+    // 不声明为 modImplementation —— MTR 4.0.5 由 Loom 1.10.5 构建，
+    // 若作为 mod 依赖会被 Loom 的产物元数据校验拒绝（Loom 1.6 < 1.10.5）。
+    // 本模组只按类名引用 org.mtr.* （MTR 自身类名不参与 remap），因此无需 Loom 处理 MTR。
+    compileOnly files('libs/MTR-fabric-4.0.5.jar')
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.release = 17
+}

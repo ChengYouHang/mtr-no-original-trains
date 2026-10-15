@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "id": "mtr_no_original_trains",
+  "version": "1.6.1",
+  "name": "原版列车移除",
+  "description": "以纯黑名单方式移除 MTR 4.0.5 内置的原版列车（不生成、不加载模型与贴图），自动放行所有资源包声明的车辆，装新追加包无需任何配置；并修复追加包列车的车端连接件（风挡）。仅客户端。",
+  "authors": [
+    "ChengYouHang"
+  ],
+  "contact": {},
+  "license": "MIT",
+  "environment": "client",
+  "icon": "icon.png",
+  "entrypoints": {
+    "client": [
+      "com.mtrdisableoriginaltrains.MtrDisableOriginalTrains"
+    ]
+  },
+  "mixins": [
+    "mtr_no_original_trains.mixins.json"
+  ],
+  "depends": {
+    "minecraft": "~1.20.1",
+    "mtr": ">=4.0.5"
+  }
+}
