@@ -46,10 +46,13 @@ import java.util.Set;
  *       这是 MTR {@code LegacyVehicleResource.convert} 专门为「追加包 custom_trains」
  *       生成的 ID 前缀（格式 {@code mtr_custom_train_<小写键名>_<trailer|cab_1|cab_2|cab_3>}），
  *       内置车永远不会长这样；</li>
- *   <li><b>纯黑名单</b> —— 只有 ID 出现在随包内置的 {@code builtin_train_ids.txt}
- *       （378 个 MTR 内置列车，精确导出自 MTR 4.0.5 自身的
- *       {@code assets/mtr/mtr_custom_resources.json} 中 {@code transportMode == TRAIN} 的项）
- *       才会被移除；<b>不在清单里的一律原样放行</b>。
+ *   <li><b>纯黑名单</b> —— 只有 ID 出现在「本次生效黑名单」里才会被移除；
+ *       <b>不在清单里的一律原样放行</b>。
+ *       <p>「本次生效黑名单」<b>优先使用运行时从 MTR 本体清单动态提取的 ID</b>
+ *       （见 {@link AddonPackScanner#dynamicBuiltinIds()}）：这样无论用户装的是
+ *       MTR 4.0.5、4.1.0 还是未来的 4.x，内置列车清单永远与当前版本一致，
+ *       不需要本模组跟着发版。只有在动态提取失败时，才退回随包内置的
+ *       {@code builtin_train_ids.txt}（378 个 MTR 4.0.5 内置列车）兜底。
  *       <p>{@code transportMode} 这个附加条件不是多余的：MTR 内部存在「同 id、不同 transportMode」
  *       的条目（如 {@code minecart} 同时有 TRAIN 的 Minecart 与 AIRPLANE 的 Flying Minecart），
  *       只按 id 判会误删后者。</li>
@@ -93,6 +96,16 @@ public final class BuiltinTrainFilter {
     private static final String CONFIG_FILE_NAME = "mtr_no_original_trains.json";
 
     private static volatile Set<String> builtinIds;
+    /**
+     * 本次运行<b>实际生效</b>的内置黑名单。
+     *
+     * <p>优先取 {@link AddonPackScanner#dynamicBuiltinIds()}（运行时从 MTR 本体清单现取的、
+     * 与当前 MTR 版本一致的内置列车 ID）；动态提取失败时才退回随包内置的
+     * {@link #builtinIds}。这是「一处代码支持全部 MTR 4.x」的落点。
+     */
+    private static volatile Set<String> effectiveBuiltinIds = Collections.emptySet();
+    /** 本次生效清单的来源，仅用于日志。 */
+    private static volatile String builtinSource = "打包内置清单";
     private static volatile Set<String> alwaysKeepIds = Collections.emptySet();
     private static volatile Set<String> configKeepIds = Collections.emptySet();
     private static volatile Set<String> extraRemoveIds = Collections.emptySet();
@@ -154,8 +167,8 @@ public final class BuiltinTrainFilter {
             return false;
         }
 
-        // ---- 5. 纯黑名单：不在内置清单里的，一律放行 ----
-        if (!builtinIds.contains(id)) {
+        // ---- 5. 纯黑名单：不在「本次生效清单」里的，一律放行 ----
+        if (!effectiveBuiltinIds.contains(id)) {
             return false;
         }
 
@@ -202,6 +215,16 @@ public final class BuiltinTrainFilter {
             return;
         }
         AddonPackScanner.scan(builtinIds);
+        // 动态清单优先：MTR 本体清单里当前版本实际声明的列车 = 本次要移除的集合。
+        // 这样 MTR 4.0.5 / 4.1.x / 未来版本都能正确工作，无需本模组跟着发版。
+        final Set<String> dynamic = AddonPackScanner.dynamicBuiltinIds();
+        if (dynamic != null && !dynamic.isEmpty()) {
+            effectiveBuiltinIds = dynamic;
+            builtinSource = "MTR 本体清单（动态提取）";
+        } else {
+            effectiveBuiltinIds = builtinIds;
+            builtinSource = "打包内置清单（兜底）";
+        }
     }
 
     private static boolean isAlwaysKept(String id) {
@@ -230,9 +253,10 @@ public final class BuiltinTrainFilter {
             return;
         }
         MtrDisableOriginalTrains.LOGGER.info(
-                "[MTR_NoOriginalTrains] 车辆注册完成：已移除 MTR 内置原版列车 {} 个（内置黑名单 {} 个）"
+                "[MTR_NoOriginalTrains] 车辆注册完成：已移除 MTR 内置原版列车 {} 个"
+                        + "（本次生效清单 {} 条，来源：{}）"
                         + "—— 不进车场列表、不写入模型/贴图资源；追加包列车不受影响",
-                removedThisReload, builtinIds.size());
+                removedThisReload, effectiveBuiltinIds.size(), builtinSource);
         if (AddonPackScanner.isActive()) {
             MtrDisableOriginalTrains.LOGGER.info(
                     "[MTR_NoOriginalTrains] 黑名单模式：本体清单来自资源包「{}」；"
@@ -255,6 +279,10 @@ public final class BuiltinTrainFilter {
             final Set<String> remove = readIdList(REMOVE_LIST_RESOURCE);
             alwaysKeepIds = readIdList(KEEP_LIST_RESOURCE);
             builtinIds = remove;
+            // 首帧优先用打包清单兜底；真正的动态清单在每次 beginReload() 里刷新
+            if (effectiveBuiltinIds.isEmpty()) {
+                effectiveBuiltinIds = remove;
+            }
             reloadSummaryPending = true;
             loadConfig();
             MtrDisableOriginalTrains.LOGGER.info(

@@ -3,7 +3,7 @@ plugins {
     id 'org.spongepowered.mixin' version '0.7.+'
 }
 
-version = '1.0.0'
+version = '1.1.0'
 group = 'com.mtrdisableoriginaltrains'
 base { archivesName = 'mtr_no_original_trains-forge' }
 

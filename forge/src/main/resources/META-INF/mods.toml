@@ -9,7 +9,7 @@ displayName="No Original Trains"
 logoFile="icon.png"
 authors="ChengYouHang"
 description='''
-Removes MTR's 378 built-in trains (pure blacklist) without ever touching vehicles declared by addon packs, and fixes addon train gangways. Client-side only.
+Removes MTR's built-in trains (pure blacklist) without ever touching vehicles declared by addon packs, and fixes addon train gangways. Supports all MTR 4.x. Client-side only.
 '''
 displayTest="IGNORE_ALL_VERSION"
 
@@ -30,6 +30,20 @@ displayTest="IGNORE_ALL_VERSION"
 [[dependencies.mtr_no_original_trains]]
     modId="mtr"
     mandatory=true
-    versionRange="[4.0.5,4.0.6)"
+    versionRange="[4.0.5,5.0)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.mtr_no_original_trains]]
+    modId="ferritecore"
+    mandatory=true
+    versionRange="[0,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.mtr_no_original_trains]]
+    modId="modernfix"
+    mandatory=true
+    versionRange="[0,)"
     ordering="NONE"
     side="BOTH"

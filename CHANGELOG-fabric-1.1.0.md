@@ -8,18 +8,24 @@ This release makes the mod **independent of a specific MTR version**. It is no l
 - **MTR 4.x updates are picked up automatically.** When MTR adds, renames, or removes a built-in train in a future 4.x release, the mod follows along — no update to this mod required, no config edit, no reinstall.
 - **Addon packs remain 100% safe.** Identification uses two independent checks (ID-set match plus pack-name match). A pack that only *looks* like MTR is never mistaken for it, and any vehicle claimed by another pack is still never blocked.
 - **Fallback kept.** If MTR's own manifest cannot be identified for any reason, the mod falls back to the original 4.0.5 blacklist rather than risking your addons. You will see which path was taken in the log.
-- **Clearer log line.** The startup report now says how many IDs are in effect this run and where that list came from, e.g. `本次生效清单 378 条，来源：dynamic(mtr)`.
+- **Clearer log line.** The startup report now says how many IDs are in effect this run and where that list came from.
 
-### Upgrading from 1.0.0
+### ⚠️ BREAKING CHANGE — new required dependencies
 
-Just replace the jar. Your config file is not touched and no setting needs changing. If you are on MTR 4.0.5 nothing about the behaviour changes — the same 378 trains are removed.
+Starting with 1.1.0, this mod **requires two additional mods** and **will refuse to load without them**:
+
+- **FerriteCore** — compresses the block atlas in memory
+- **ModernFix** — dynamic atlas optimisation and faster startup
+
+**Why.** MTR addon packs routinely ship very large textures. Combined with decorative mods, the block atlas (`textures/atlas/blocks.png`) can grow past the point where Minecraft can build its mipmaps, which causes the game to hang on startup or on world load. FerriteCore and ModernFix are the two mods that directly address this; without them this mod's own purpose (running high-quality addon trains on modest hardware) is not achievable.
+
+**What you will see if they are missing.** The game will stop at the loading screen with a "missing mandatory dependencies" error naming `ferritecore` and `modernfix`. It will not reach the main menu. Install both and it loads normally.
+
+**Upgrading from 1.0.0.** Install FerriteCore and ModernFix first, then replace the jar. Your config file is not touched and no setting needs changing.
 
 ### Requirements
 
 - Minecraft 1.20.1
 - Fabric Loader 0.14.21 or newer
 - Minecraft Transit Railway **4.0.5 or newer** (any 4.x)
-
-### Note
-
-The Forge build is still on 1.0.0 and still pinned to MTR 4.0.5. It will receive the same version-independent behaviour in a later release.
+- **FerriteCore** and **ModernFix** (both are hard requirements from this version on)
