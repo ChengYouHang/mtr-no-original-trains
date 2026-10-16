@@ -23,14 +23,24 @@ MTR 4.0.5 ships with 423 vehicle definitions of its own. 378 of them are built-i
 
 At startup the mod scans every installed resource pack and reads their MTR vehicle manifests. The manifest that contains all of MTR's own built-in IDs is MTR itself; every other manifest belongs to someone else's pack. Any vehicle ID claimed by one of those other packs is **never blocked**, even if it happens to share a name with a built-in train. If the scan cannot identify MTR's own manifest, the mod falls back to plain blacklist behaviour rather than risking your addons.
 
+## Which build do you need?
+
+| | Fabric build | Forge build |
+|---|---|---|
+| Loader | Fabric Loader 0.14.21+ | Forge 47.x |
+| Minecraft | 1.20.1 | 1.20.1 |
+| MTR version | **4.0.5 or newer** (any 4.x) | **4.0.5 exactly** |
+| Environment | Client-side only | Client-side only |
+| File | `mtr_no_original_trains-1.1.0.jar` | `mtr_no_original_trains-forge-1.0.0.jar` |
+
+Install **one** of them — never both in the same `mods/` folder. They share a mod ID, so putting both in will conflict.
+
 ## Before you download — please read
 
 - **Client-side only.** Install it in `mods/` and that is it. Servers do not need it.
 - **Multiplayer caveat.** Because it filters your client's vehicle registry, built-in trains become invisible **to you**. On a server where other players use MTR's stock trains, you will not see those trains. The mod is aimed at single-player worlds and servers that use addon trains exclusively.
-- **Pick the build that matches your loader.** Download **Fabric** or **Forge** — never both at once.
-- **Requirements:** Minecraft 1.20.1 plus either **Fabric Loader 0.14.21+** or **Forge 47.x**, and MTR. The Fabric build accepts **MTR 4.0.5 or newer**; the Forge build is pinned to **MTR 4.0.5** exactly.
-- **Not supported:** NeoForge on 1.20.1 — MTR has no 1.20.1 NeoForge build to attach to. Other Minecraft versions are not supported yet.
 - **It adds no blocks or items, and never modifies your world or your addon files.** Removing the mod at any time restores the default behaviour.
+- **Not supported:** NeoForge on 1.20.1 — MTR has no 1.20.1 NeoForge build to attach to. Other Minecraft versions are not supported yet.
 - **Config (optional):** `config/mtr_no_original_trains.json` is generated on first launch.
   - `enabled` — master switch
   - `fixGangway` — set to `false` to leave addon gangways alone
