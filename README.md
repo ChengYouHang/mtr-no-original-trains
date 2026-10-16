@@ -27,4 +27,16 @@ gradle build
 
 ## 许可证
 
-[MIT](LICENSE)
+[MIT](LICENSE) © 2026 ChengYouHang
+
+## 致谢与第三方声明
+
+本模组图标由 [MTR (Minecraft Transit Railway)](https://www.minecrafttransitrailway.com/) 的官方素材
+（`assets/mtr/textures/item/train.png`）派生而来。MTR 以 MIT 许可证发布，版权归 LogisticsCraft 所有：
+
+```
+MIT License
+Copyright (c) 2021 LogisticsCraft
+```
+
+感谢 MTR 团队开发并开源这款模组 —— 没有它，本附属模组也无从存在。
