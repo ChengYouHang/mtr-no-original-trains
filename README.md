@@ -1,6 +1,6 @@
-# 原版列车移除 (MTR No Original Trains)
+# No Original Trains
 
-移除 [MTR (Minecraft Transit Railway)](https://www.minecrafttransitrailway.com/) 4.0.5 内置的原版风格列车，并修复追加包列车的车端连接件。**仅客户端**，Fabric / Minecraft 1.20.1。
+**原版列车移除** —— 移除 [MTR (Minecraft Transit Railway)](https://www.minecrafttransitrailway.com/) 4.0.5 内置的原版风格列车，并修复追加包列车的车端连接件。**仅客户端**，Fabric / Minecraft 1.20.1。
 
 ![icon](src/main/resources/icon.png)
 
