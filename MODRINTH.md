@@ -1,8 +1,6 @@
 # No Original Trains
 
-**Removes Minecraft Transit Railway's 378 built-in trains — without touching a single one of your addon packs.**
-
-Available for **Fabric** and **Forge** on Minecraft 1.20.1.
+**Removes MTR's 378 built-in trains — without touching a single one of your addon packs.** Available for **Fabric** and **Forge** on Minecraft 1.20.1.
 
 ## What it does
 
@@ -13,6 +11,20 @@ MTR 4.0.5 ships with 423 vehicle definitions of its own. 378 of them are built-i
 - **Addon packs are safe** — any vehicle declared by another resource pack or addon is automatically allowed through.
 - **Trains only** — MTR's boats, airships and cable cars are kept.
 
+## Two builds, one behaviour
+
+This mod ships as **two separate jars** — a **Fabric** build and a **Forge** build. Both do exactly the same thing; you only need to pick the one that matches your mod loader.
+
+| | Fabric build | Forge build |
+|---|---|---|
+| Loader | Fabric Loader 0.14.21+ | Forge 47.x |
+| Minecraft | 1.20.1 | 1.20.1 |
+| MTR version | **4.0.5 or newer** (any 4.x) | **4.0.5 exactly** |
+| Environment | Client-side only | Client-side only |
+| File | `mtr_no_original_trains-1.0.0.jar` | `mtr_no_original_trains-forge-1.0.0.jar` |
+
+Install **one** of them — never both in the same `mods/` folder. They share a mod ID, so putting both in will conflict.
+
 ## Why you should download it
 
 - **You run addon trains, not vanilla ones.** If your world is built around a custom pack, MTR's stock trains are just clutter in the spawn list. This clears them out in one step.
@@ -22,18 +34,6 @@ MTR 4.0.5 ships with 423 vehicle definitions of its own. 378 of them are built-i
 ## How the addon-safety works
 
 At startup the mod scans every installed resource pack and reads their MTR vehicle manifests. The manifest that contains all of MTR's own built-in IDs is MTR itself; every other manifest belongs to someone else's pack. Any vehicle ID claimed by one of those other packs is **never blocked**, even if it happens to share a name with a built-in train. If the scan cannot identify MTR's own manifest, the mod falls back to plain blacklist behaviour rather than risking your addons.
-
-## Which build do you need?
-
-| | Fabric build | Forge build |
-|---|---|---|
-| Loader | Fabric Loader 0.14.21+ | Forge 47.x |
-| Minecraft | 1.20.1 | 1.20.1 |
-| MTR version | **4.0.5 or newer** (any 4.x) | **4.0.5 exactly** |
-| Environment | Client-side only | Client-side only |
-| File | `mtr_no_original_trains-1.1.0.jar` | `mtr_no_original_trains-forge-1.0.0.jar` |
-
-Install **one** of them — never both in the same `mods/` folder. They share a mod ID, so putting both in will conflict.
 
 ## Before you download — please read
 
