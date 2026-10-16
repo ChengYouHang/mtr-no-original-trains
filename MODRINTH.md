@@ -2,6 +2,8 @@
 
 **Removes Minecraft Transit Railway's 378 built-in trains — without touching a single one of your addon packs.**
 
+Available for **Fabric** and **Forge** on Minecraft 1.20.1.
+
 ## What it does
 
 MTR 4.0.5 ships with 423 vehicle definitions of its own. 378 of them are built-in trains. This mod removes **exactly those 378, and nothing else**:
@@ -25,7 +27,9 @@ At startup the mod scans every installed resource pack and reads their MTR vehic
 
 - **Client-side only.** Install it in `mods/` and that is it. Servers do not need it.
 - **Multiplayer caveat.** Because it filters your client's vehicle registry, built-in trains become invisible **to you**. On a server where other players use MTR's stock trains, you will not see those trains. The mod is aimed at single-player worlds and servers that use addon trains exclusively.
-- **Requirements:** Minecraft 1.20.1, Fabric Loader, MTR **4.0.5 or newer**. Forge/NeoForge and other Minecraft versions are not supported.
+- **Pick the build that matches your loader.** Download **Fabric** or **Forge** — never both at once.
+- **Requirements:** Minecraft 1.20.1 plus either **Fabric Loader 0.14.21+** or **Forge 47.x**, and MTR. The Fabric build accepts **MTR 4.0.5 or newer**; the Forge build is pinned to **MTR 4.0.5** exactly.
+- **Not supported:** NeoForge on 1.20.1 — MTR has no 1.20.1 NeoForge build to attach to. Other Minecraft versions are not supported yet.
 - **It adds no blocks or items, and never modifies your world or your addon files.** Removing the mod at any time restores the default behaviour.
 - **Config (optional):** `config/mtr_no_original_trains.json` is generated on first launch.
   - `enabled` — master switch

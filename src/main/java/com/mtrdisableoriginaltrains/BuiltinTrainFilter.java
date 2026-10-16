@@ -93,6 +93,15 @@ public final class BuiltinTrainFilter {
     private static final String CONFIG_FILE_NAME = "mtr_no_original_trains.json";
 
     private static volatile Set<String> builtinIds;
+    /**
+     * 本次运行<b>实际生效</b>的内置列车清单。
+     *
+     * <p>优先用 {@code AddonPackScanner} 从当前安装的 MTR 本体清单里运行时提取的结果
+     * （版本无关，自动跟随 MTR 升级）；提取不到时才退回 jar 内打包的静态清单。
+     */
+    private static volatile Set<String> effectiveBuiltinIds = Collections.emptySet();
+    /** 生效清单的来源说明，仅用于日志。 */
+    private static volatile String builtinSource = "打包内置清单";
     private static volatile Set<String> alwaysKeepIds = Collections.emptySet();
     private static volatile Set<String> configKeepIds = Collections.emptySet();
     private static volatile Set<String> extraRemoveIds = Collections.emptySet();
@@ -154,8 +163,8 @@ public final class BuiltinTrainFilter {
             return false;
         }
 
-        // ---- 5. 纯黑名单：不在内置清单里的，一律放行 ----
-        if (!builtinIds.contains(id)) {
+        // ---- 5. 纯黑名单：不在生效的内置清单里的，一律放行 ----
+        if (!effectiveBuiltinIds.contains(id)) {
             return false;
         }
 
@@ -202,6 +211,16 @@ public final class BuiltinTrainFilter {
             return;
         }
         AddonPackScanner.scan(builtinIds);
+        // 优先采用「从当前安装的 MTR 本体清单里现取」的清单 —— 这样任何 MTR 4.x 版本
+        // （含将来新增/改名的内置列车）都自动适配，不依赖 jar 里那份静态快照。
+        final Set<String> dynamic = AddonPackScanner.dynamicBuiltinIds();
+        if (!dynamic.isEmpty()) {
+            effectiveBuiltinIds = dynamic;
+            builtinSource = "MTR 本体清单（运行时提取，版本无关）";
+        } else {
+            effectiveBuiltinIds = builtinIds;
+            builtinSource = "打包内置清单（静态兜底）";
+        }
     }
 
     private static boolean isAlwaysKept(String id) {
@@ -230,9 +249,9 @@ public final class BuiltinTrainFilter {
             return;
         }
         MtrDisableOriginalTrains.LOGGER.info(
-                "[MTR_NoOriginalTrains] 车辆注册完成：已移除 MTR 内置原版列车 {} 个（内置黑名单 {} 个）"
+                "[MTR_NoOriginalTrains] 车辆注册完成：已移除 MTR 内置原版列车 {} 个（本次生效清单 {} 条，来源：{}）"
                         + "—— 不进车场列表、不写入模型/贴图资源；追加包列车不受影响",
-                removedThisReload, builtinIds.size());
+                removedThisReload, effectiveBuiltinIds.size(), builtinSource);
         if (AddonPackScanner.isActive()) {
             MtrDisableOriginalTrains.LOGGER.info(
                     "[MTR_NoOriginalTrains] 黑名单模式：本体清单来自资源包「{}」；"
@@ -255,6 +274,7 @@ public final class BuiltinTrainFilter {
             final Set<String> remove = readIdList(REMOVE_LIST_RESOURCE);
             alwaysKeepIds = readIdList(KEEP_LIST_RESOURCE);
             builtinIds = remove;
+            effectiveBuiltinIds = remove;
             reloadSummaryPending = true;
             loadConfig();
             MtrDisableOriginalTrains.LOGGER.info(

@@ -1,6 +1,6 @@
 # No Original Trains
 
-**原版列车移除** —— 移除 [MTR (Minecraft Transit Railway)](https://www.minecrafttransitrailway.com/) 4.0.5 内置的原版风格列车，并修复追加包列车的车端连接件。**仅客户端**，Fabric / Minecraft 1.20.1。
+**原版列车移除** —— 移除 [MTR (Minecraft Transit Railway)](https://www.minecrafttransitrailway.com/) 4.0.5 内置的原版风格列车，并修复追加包列车的车端连接件。**仅客户端**，Minecraft 1.20.1，支持 **Fabric / Forge** 两种加载器。
 
 ![icon](src/main/resources/icon.png)
 
@@ -12,17 +12,23 @@
 
 ## 安装
 
-1. 安装 Fabric Loader ≥ 0.14.21、MTR 4.0.5；
-2. 把 `mtr_no_original_trains-x.x.x.jar` 放进 `mods/`。
+**Fabric**：安装 Fabric Loader ≥ 0.14.21、MTR 4.0.5 或更新版本；
+**Forge**：安装 Forge 47.x、MTR 4.0.5（固定版本）。
+
+把对应的 `mtr_no_original_trains-x.x.x.jar` 放进 `mods/`。两个加载器的 jar **不要同时装**。
 
 ## 从源码构建
 
 需要 JDK 17。
 
 ```bash
-# 先把 MTR-fabric-4.0.5.jar 放到 libs/ 目录
+# Fabric：先把 MTR-fabric-4.0.5+1.20.1.jar 放到 libs/
 gradle build
 # 产物在 build/libs/
+
+# Forge：先把 MTR-forge-4.0.5+1.20.1.jar 放到 libs/forge/
+cd forge && gradle build
+# 产物在 forge/build/libs/
 ```
 
 ## 许可证

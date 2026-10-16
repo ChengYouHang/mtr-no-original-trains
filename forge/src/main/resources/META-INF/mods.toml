@@ -1,0 +1,35 @@
+modLoader="javafml"
+loaderVersion="[47,)"
+license="MIT"
+
+[[mods]]
+modId="mtr_no_original_trains"
+version="${mod_version}"
+displayName="No Original Trains"
+logoFile="icon.png"
+authors="ChengYouHang"
+description='''
+Removes MTR's 378 built-in trains (pure blacklist) without ever touching vehicles declared by addon packs, and fixes addon train gangways. Client-side only.
+'''
+displayTest="IGNORE_ALL_VERSION"
+
+[[dependencies.mtr_no_original_trains]]
+    modId="forge"
+    mandatory=true
+    versionRange="[47,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.mtr_no_original_trains]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.20.1,1.20.2)"
+    ordering="NONE"
+    side="CLIENT"
+
+[[dependencies.mtr_no_original_trains]]
+    modId="mtr"
+    mandatory=true
+    versionRange="[4.0.5,4.0.6)"
+    ordering="NONE"
+    side="BOTH"

@@ -1,0 +1,113 @@
+# 【本文件现在只是记录，不需要再维护】
+#
+# v1.6.0 起本模组改为「纯黑名单」：只移除 builtin_train_ids.txt 里列出的 MTR 内置原版列车，
+# 其余车辆一律不拦截。保底规则有三条，都不需要这份清单：
+#   ① ID 以 mtr_custom_train_ 开头        —— 追加包 legacy custom_trains 自动生成的前缀；
+#   ② 被任意「非 MTR 本体」资源包声明过   —— 运行时自动扫描识别（AddonPackScanner）；
+#   ③ 不在内置黑名单里                   —— 天然不拦。
+# 也就是说：以后新增任何追加包/资源包，都不用再来改这里。
+#
+# 下面保留的是历史记录（Shanghai Metro Addon v3.3.10 的 62 个键、
+# SCCG Railway Add-on Package v2.2.1 的 36 个键，两个 SCCG 包键名相同已去重）。
+# 注意：这些是「键名」，实际车辆 ID 是 mtr_custom_train_<小写键名>_<trailer|cab_1|cab_2|cab_3>，
+# 由上面的 ① 前缀规则覆盖，所以本清单清空也不会有任何影响。
+# 想强制保留某个任意 ID，直接把它加在下面即可（代码仍会读取本文件）。
+#
+0342_lcd
+03a02_lcd
+04a01new
+04a02_lcd
+05c01
+05c01_new
+05c02
+06c01
+06c02
+06c03
+06c04
+08c01
+08c02
+08c03
+08c04
+11a01
+11a03
+12a01
+12a02
+12a03
+14a01_fam
+16a02_d
+16a02_e
+16a02_n
+16a02_n2
+17a01_lcd
+17a02_lcd
+18a01
+18a01_atp
+18a02
+ac01
+ac02
+ac04_line9
+crh6f
+shac09
+shac10
+shac19_d
+shac19_e
+shac19_n
+shac19_n_recon
+shmetro_01a05
+shmetro_01a06_lcd
+shmetro_01a07_2_lcd
+shmetro_01a07_lcd
+shmetro_02a02
+shmetro_02a03
+shmetro_02a04
+shmetro_02a05_lcd
+shmetro_03a01
+shmetro_03a01mg1500
+shmetro_03a01tn
+shmetro_07a02
+shmetro_07a03
+shmetro_09a03
+shmetro_09a04
+shmetro_10a01
+shmetro_10a01_ban
+shmetro_10a02_lcd
+shmetro_10a02_lcd_ban
+shmetro_112
+shmetro_13a01
+shmetro_13a02
+train_crh2a
+train_crh2c
+train_crh2j
+train_cr300af
+train_cr300bf
+train_cr400af
+train_cr400af_a
+train_cr400af_b
+train_cr400af_z
+train_cr400af_az
+train_cr400af_bz
+train_cr400bf
+train_cr400bf_a
+train_cr400bf_b
+train_cr400bf_z
+train_cr400bf_j
+train_cr400bf_az
+train_cr400bf_bz
+metro_line_01
+metro_line_01_big
+metro_line_02
+metro_line_02_big
+metro_line_03
+metro_line_03_big
+metro_line_04
+metro_line_04_big
+metro_line_05
+metro_line_05_big
+metro_line_06
+metro_line_06_big
+metro_line_07
+metro_line_07_big
+metro_line_08
+metro_line_08_big
+metro_line_11
+metro_line_11_big

@@ -1,0 +1,70 @@
+plugins {
+    id 'net.minecraftforge.gradle' version '[6.0,6.2)'
+    id 'org.spongepowered.mixin' version '0.7.+'
+}
+
+version = '1.0.0'
+group = 'com.mtrdisableoriginaltrains'
+base { archivesName = 'mtr_no_original_trains-forge' }
+
+java {
+    toolchain.languageVersion = JavaLanguageVersion.of(17)
+    withSourcesJar()
+}
+
+// 源码含中文注释，必须显式指定 UTF-8，否则 javac 会用系统默认编码（GBK）报「不可映射字符」
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+minecraft {
+    mappings channel: 'official', version: '1.20.1'
+    copyIdeResources = true
+}
+
+repositories {
+    maven {
+        name = 'MinecraftForge'
+        url = 'https://maven.minecraftforge.net/'
+    }
+    mavenCentral()
+}
+
+dependencies {
+    // Forge 1.20.1（与本机 Forge 47.4.26 实例一致）
+    minecraft 'net.minecraftforge:forge:1.20.1-47.4.26'
+
+    // 仅编译期依赖：MTR 的 Forge 版官方 jar（不打包进产物）
+    compileOnly files("../libs/forge/MTR-forge-4.0.5+1.20.1.jar")
+
+    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+}
+
+mixin {
+    add sourceSets.main, 'mtr_no_original_trains.refmap.json'
+    config 'mtr_no_original_trains.mixins.json'
+}
+
+tasks.named('processResources', ProcessResources).configure {
+    var replaceProperties = [
+            mod_version: project.version,
+    ]
+    inputs.properties replaceProperties
+    filesMatching(['META-INF/mods.toml']) {
+        expand replaceProperties
+    }
+}
+
+tasks.named('jar', Jar).configure {
+    manifest {
+        attributes([
+                'Specification-Title'     : 'mtr_no_original_trains',
+                'Specification-Vendor'    : 'ChengYouHang',
+                'Specification-Version'   : '1',
+                'Implementation-Title'    : project.name,
+                'Implementation-Version'  : project.version,
+                'Implementation-Vendor'   : 'ChengYouHang',
+        ])
+    }
+    finalizedBy 'reobfJar'
+}
