@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "mtr_no_original_trains",
-  "version": "1.6.1",
+  "version": "1.6.2",
   "name": "原版列车移除",
   "description": "以纯黑名单方式移除 MTR 4.0.5 内置的原版列车（不生成、不加载模型与贴图），自动放行所有资源包声明的车辆，装新追加包无需任何配置；并修复追加包列车的车端连接件（风挡）。仅客户端。",
   "authors": [
