@@ -30,7 +30,7 @@ displayTest="IGNORE_ALL_VERSION"
 [[dependencies.mtr_no_original_trains]]
     modId="mtr"
     mandatory=true
-    versionRange="[4.0.5,5.0)"
+    versionRange="[4.0.0,5.0)"
     ordering="NONE"
     side="BOTH"
 

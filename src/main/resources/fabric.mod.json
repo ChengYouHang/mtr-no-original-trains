@@ -21,7 +21,7 @@
   ],
   "depends": {
     "minecraft": "~1.20.1",
-    "mtr": ">=4.0.5",
+    "mtr": ">=4.0.0",
     "ferritecore": "*",
     "modernfix": "*"
   }
