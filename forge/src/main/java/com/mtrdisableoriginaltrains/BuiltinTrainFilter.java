@@ -192,6 +192,14 @@ public final class BuiltinTrainFilter {
             return false;
         }
 
+        // ---- 0. 内置列车一律先捕获进车系目录（无论随后是否被保留）----
+        // 若只捕获「本次被拦截」的车，用户保留大量车系后目录会缩水成那几辆，
+        // 选择界面列表残缺、keepFamilies 的车系→车辆映射也会跟着失效。
+        // capture 内部按 ID 覆盖写入，isRemovable 被多次调用也是幂等的。
+        if (effectiveBuiltinIds.contains(id)) {
+            capture(vehicle);
+        }
+
         // ---- 1. 用户显式要保留 ----
         if (configKeepIds.contains(id)) {
             return false;

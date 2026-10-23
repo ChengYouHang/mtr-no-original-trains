@@ -54,8 +54,10 @@ public final class TrainFamilyCatalog {
     }
 
     private static volatile List<Family> families;
-    /** 车辆 ID → 所属车系 ID。 */
+    /** 车辆 ID → 所属车系 ID（运行时重建后的目录；重建前与静态表相同）。 */
     private static volatile Map<String, String> idToFamily;
+    /** 静态 TSV 的完整映射，永久保留；运行时目录缩水时 familyOf 用它兜底。 */
+    private static volatile Map<String, String> staticIdToFamily;
     /** 当前目录是否由运行时注册的车辆构建（true）还是静态兜底（false）。 */
     private static volatile boolean runtimeBuilt;
 
@@ -128,10 +130,21 @@ public final class TrainFamilyCatalog {
         return families;
     }
 
-    /** 某个车辆 ID 属于哪个车系；未知则返回 {@code null}。 */
+    /** 某个车辆 ID 属于哪个车系；未知则返回 {@code null}。
+     *
+     * <p>先查运行时目录，查不到再退回静态 TSV 表——保证 keepFamilies 的
+     * 「车系 → 车辆」匹配不因运行时目录重建而失效。 */
     public static String familyOf(String vehicleId) {
         ensureLoaded();
-        return vehicleId == null ? null : idToFamily.get(vehicleId);
+        if (vehicleId == null) {
+            return null;
+        }
+        final String runtime = idToFamily.get(vehicleId);
+        if (runtime != null) {
+            return runtime;
+        }
+        final Map<String, String> statics = staticIdToFamily;
+        return statics == null ? null : statics.get(vehicleId);
     }
 
     public static int totalVehicles() {
@@ -196,6 +209,7 @@ public final class TrainFamilyCatalog {
             }
 
             idToFamily = index;
+            staticIdToFamily = index;
             families = Collections.unmodifiableList(list);
             runtimeBuilt = false;
             MtrDisableOriginalTrains.LOGGER.info(
