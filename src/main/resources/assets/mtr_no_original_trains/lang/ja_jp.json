@@ -1,0 +1,23 @@
+{
+  "gui.mtr_no_original_trains.button": "MTR 車両の選択",
+  "gui.mtr_no_original_trains.cancel": "キャンセル",
+  "gui.mtr_no_original_trains.collapse": "折りたたむ",
+  "gui.mtr_no_original_trains.done": "完了",
+  "gui.mtr_no_original_trains.expand": "展開",
+  "gui.mtr_no_original_trains.kept_summary": "%1$s / %2$s ファミリーを保持",
+  "gui.mtr_no_original_trains.reset": "リセット",
+  "gui.mtr_no_original_trains.restart_cancel": "キャンセル",
+  "gui.mtr_no_original_trains.restart_hint": "ゲームを再起動してください。",
+  "gui.mtr_no_original_trains.restart_never": "今後表示しない",
+  "gui.mtr_no_original_trains.restart_no": "いいえ、後で",
+  "gui.mtr_no_original_trains.restart_subtitle": "車両の選択を保存しました。再起動後に反映されます。",
+  "gui.mtr_no_original_trains.restart_title": "ゲームを再起動しますか？",
+  "gui.mtr_no_original_trains.restart_yes": "はい、再起動",
+  "gui.mtr_no_original_trains.saved": "保存しました",
+  "gui.mtr_no_original_trains.select_all": "すべて選択",
+  "gui.mtr_no_original_trains.select_none": "すべて解除",
+  "gui.mtr_no_original_trains.subtitle": "残す内蔵車両ファミリーを選択してください。変更は再起動後に反映されます。",
+  "gui.mtr_no_original_trains.title": "MTR 車両を残す",
+  "gui.mtr_no_original_trains.tooltip": "残す MTR 内蔵車両を選択します",
+  "gui.mtr_no_original_trains.vehicles": "%s 両"
+}

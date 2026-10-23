@@ -15,7 +15,9 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -95,6 +97,15 @@ public final class BuiltinTrainFilter {
 
     private static final String CONFIG_FILE_NAME = "mtr_no_original_trains.json";
 
+    /**
+     * MTR 车辆标签里表示「车系」的键名。
+     *
+     * <p>注意：MTR 的 {@code collectTags} 会把原始标签 {@code "family:sp1900"} 按冒号拆开，
+     * 存成 {@code 键="family" → 值={"sp1900"}}。所以这里按键名 {@code "family"} 精确匹配，
+     * 不能拿 {@code "family:"} 去匹配键。
+     */
+    private static final String FAMILY_TAG_KEY = "family";
+
     private static volatile Set<String> builtinIds;
     /**
      * 本次运行<b>实际生效</b>的内置黑名单。
@@ -109,6 +120,11 @@ public final class BuiltinTrainFilter {
     private static volatile Set<String> alwaysKeepIds = Collections.emptySet();
     private static volatile Set<String> configKeepIds = Collections.emptySet();
     private static volatile Set<String> extraRemoveIds = Collections.emptySet();
+    /**
+     * 用户在「列车保留选择」界面勾选的<b>车系</b>。
+     * 命中即保留该车系下的全部车辆（优先级等同 {@link #configKeepIds}）。
+     */
+    private static volatile Set<String> configKeepFamilies = Collections.emptySet();
     private static volatile boolean enabled = true;
     /** 车端连接件（风挡）运行时修复开关，见 {@link GangwayFix}。 */
     private static volatile boolean gangwayFixEnabled = true;
@@ -116,6 +132,35 @@ public final class BuiltinTrainFilter {
     /** 单次 reload 内已移除的数量，用于结束时打印汇总。 */
     public static volatile int removedThisReload;
     private static volatile boolean reloadSummaryPending;
+
+    /**
+     * 本次 reload 中被拦截的内置列车：{@code 车辆ID → 显示名}。
+     *
+     * <p>供「列车保留选择」界面在运行时建目录用 —— 这样界面里列出的就是
+     * <b>当前安装的 MTR 实际注册的</b>列车，换 MTR 版本也永远对得上。
+     */
+    private static final Map<String, String> CAPTURED_BUILTIN = new LinkedHashMap<>();
+
+    /** 上一次 reload 捕获的内置列车快照（reload 结束后仍可读，供 GUI 使用）。 */
+    private static volatile Map<String, String> capturedSnapshot = Collections.emptyMap();
+
+    /** 是否已捕获过（用于让 GUI 判断能否用运行时目录）。 */
+    public static boolean hasCapturedBuiltin() {
+        return !capturedSnapshot.isEmpty();
+    }
+
+    /** 上一次 reload 捕获到的内置列车（只读）。 */
+    public static Map<String, String> capturedBuiltin() {
+        return capturedSnapshot;
+    }
+
+    /** 捕获时的车系映射：车辆ID → family。 */
+    private static final Map<String, String> CAPTURED_FAMILY = new LinkedHashMap<>();
+    private static volatile Map<String, String> capturedFamilySnapshot = Collections.emptyMap();
+
+    public static Map<String, String> capturedFamily() {
+        return capturedFamilySnapshot;
+    }
 
     private BuiltinTrainFilter() {
     }
@@ -149,6 +194,11 @@ public final class BuiltinTrainFilter {
 
         // ---- 1. 用户显式要保留 ----
         if (configKeepIds.contains(id)) {
+            return false;
+        }
+        // ---- 1b. 用户勾选了该车辆所属的车系 → 保留 ----
+        final String family = TrainFamilyCatalog.familyOf(id);
+        if (family != null && configKeepFamilies.contains(family)) {
             return false;
         }
 
@@ -194,7 +244,133 @@ public final class BuiltinTrainFilter {
             return false;
         }
         removedThisReload++;
+        capture(vehicle);
         return true;
+    }
+
+    /**
+     * 记录一辆被拦截的内置列车（ID + 显示名 + 所属车系），供选择界面使用。
+     *
+     * <p>显示名取 {@code vehicle.getName()}（返回 {@code MutableText}，用 {@code getString()} 取纯文本）。
+     * 车系用 ID 前缀推断 —— MTR 的 {@code VehicleResource} 没有公开 {@code getTags()}。
+     */
+    private static void capture(VehicleResource vehicle) {
+        try {
+            final String id = vehicle.getId();
+            if (id == null || id.isEmpty()) {
+                return;
+            }
+            String name = id;
+            try {
+                // MTR 的 getName() 返回 org.mtr.mapping.holder.MutableText，用 getString() 取纯文本
+                final Object text = vehicle.getName();
+                if (text != null) {
+                    final String s = (String) text.getClass().getMethod("getString").invoke(text);
+                    if (s != null && !s.isEmpty()) {
+                        name = s;
+                    }
+                }
+            } catch (Throwable ignored) {
+                // 名称拿不到就退回 ID
+            }
+            CAPTURED_BUILTIN.put(id, name);
+            CAPTURED_FAMILY.put(id, readFamilyTag(vehicle, id));
+        } catch (Throwable t) {
+            // 捕获失败绝不影响主流程
+        }
+    }
+
+    /**
+     * 读车辆的 {@code family:xxx} 标签。
+     *
+     * <p>MTR 的 {@code VehicleResource.collectTags(Object2ObjectAVLTreeMap)} 会把该车的全部标签
+     * 塞进 map：{@code 标签名 → ObjectArrayList<...>}。其中形如 {@code family:class_802} 的标签
+     * 就是<b>官方车系</b>，这是唯一可靠的归类依据（按 ID 首段切会把 class_802 / class_345
+     * 全并成一个 "class"，实测 378 辆会被错并成 23 组）。
+     *
+     * <p>整段走反射：{@code collectTags} 的入参是 MTR 自带的 fastutil 类型，
+     * 直接 import 会在 MTR 版本变动时编译不过；反射调用更稳。
+     * 拿不到标签时退回「ID 首段」，代价只是该车自成一组，不影响功能。
+     */
+    private static String readFamilyTag(VehicleResource vehicle, String id) {
+        try {
+            final Object map = Class
+                    .forName("org.mtr.libraries.it.unimi.dsi.fastutil.objects.Object2ObjectAVLTreeMap",
+                            true, vehicle.getClass().getClassLoader())
+                    .getConstructor()
+                    .newInstance();
+            final java.lang.reflect.Method collect = findCollectTags(vehicle.getClass());
+            if (collect != null) {
+                collect.setAccessible(true);
+                collect.invoke(vehicle, map);
+                // MTR 的 collectTags 结构（反编译确认）：
+                //   Object2ObjectAVLTreeMap<String, Object2ObjectAVLTreeMap<String, ObjectArrayList<String>>>
+                // 原始标签 "family:sp1900" → 顶层键 "family"，值是内层 Map，
+                // 内层键就是车系 "sp1900"。所以取 get("family") 后再取内层第一个键。
+                final Object familyValue = ((java.util.Map<?, ?>) map).get(FAMILY_TAG_KEY);
+                final String family = extractFamilyValue(familyValue);
+                if (!family.isEmpty()) {
+                    return family;
+                }
+            }
+        } catch (Throwable ignored) {
+            // 反射失败 → 落到下面的 ID 推断
+        }
+        // 兜底：ID 首段（可能把多套车并成一组，但至少不是错误数据）
+        final int us = id.indexOf('_');
+        return us > 0 ? id.substring(0, us) : id;
+    }
+
+    /**
+     * 从 {@code collectTags} 里 {@code "family"} 对应的值中取出<b>真正的车系名</b>。
+     *
+     * <p>MTR 4.0.5 的实际结构是
+     * {@code Map<String, Map<String, List<String>>>}：顶层键 {@code "family"}，
+     * 值是<b>内层 Map</b>（键 = 车系名，值 = 该车系下的车辆 ID 列表）。
+     * 早期版本/其他实现也可能是集合或标量，这里统一兼容三种形态，
+     * 以免版本变动后又把 Map 的 {@code toString()} 当成车系名显示（会变成
+     * {@code {sp1900=>[sp1900_mini_trailer]}} 这种诡异字符串）。
+     */
+    private static String extractFamilyValue(Object familyValue) {
+        if (familyValue == null) {
+            return "";
+        }
+        // 形态 1（MTR 4.0.5 实际结构）：内层 Map，键即车系名
+        if (familyValue instanceof java.util.Map<?, ?> inner) {
+            for (final Object k : inner.keySet()) {
+                final String s = String.valueOf(k);
+                if (!s.isEmpty()) {
+                    return s;
+                }
+            }
+            return "";
+        }
+        // 形态 2：集合 / 数组，取第一个非空元素
+        if (familyValue instanceof Iterable<?> it) {
+            for (final Object v : it) {
+                final String s = String.valueOf(v);
+                if (!s.isEmpty()) {
+                    return s;
+                }
+            }
+            return "";
+        }
+        // 形态 3：标量
+        final String s = String.valueOf(familyValue);
+        return "null".equals(s) ? "" : s;
+    }
+
+    /** 在类及其父类里找 {@code collectTags} 方法（参数类型随 MTR 版本可能变化）。 */
+    private static java.lang.reflect.Method findCollectTags(Class<?> type) {
+        for (Class<?> c = type; c != null && c != Object.class; c = c.getSuperclass()) {
+            for (final java.lang.reflect.Method m : c.getDeclaredMethods()) {
+                if ("collectTags".equals(m.getName()) && m.getParameterCount() == 1
+                        && java.util.Map.class.isAssignableFrom(m.getParameterTypes()[0])) {
+                    return m;
+                }
+            }
+        }
+        return null;
     }
 
     /**
@@ -211,9 +387,12 @@ public final class BuiltinTrainFilter {
         ensureLoaded();
         removedThisReload = 0;
         reloadSummaryPending = true;
+        CAPTURED_BUILTIN.clear();
+        CAPTURED_FAMILY.clear();
         if (!enabled) {
             return;
         }
+        // 注意：即使 enabled=false 也保留上一次的捕获快照，界面仍有内容可显示
         AddonPackScanner.scan(builtinIds);
         // 动态清单优先：MTR 本体清单里当前版本实际声明的列车 = 本次要移除的集合。
         // 这样 MTR 4.0.5 / 4.1.x / 未来版本都能正确工作，无需本模组跟着发版。
@@ -248,6 +427,15 @@ public final class BuiltinTrainFilter {
             return;
         }
         reloadSummaryPending = false;
+
+        // 无论是否启用，都把本次捕获到的内置列车快照固化下来，供选择界面使用
+        if (!CAPTURED_BUILTIN.isEmpty()) {
+            capturedSnapshot = Collections.unmodifiableMap(new LinkedHashMap<>(CAPTURED_BUILTIN));
+            capturedFamilySnapshot = Collections.unmodifiableMap(new LinkedHashMap<>(CAPTURED_FAMILY));
+            // 用运行时实际注册的车重建车系目录
+            TrainFamilyCatalog.rebuildFromRuntime(capturedSnapshot, capturedFamilySnapshot::get);
+        }
+
         if (!enabled) {
             MtrDisableOriginalTrains.LOGGER.info("[MTR_NoOriginalTrains] 过滤已关闭（enabled=false），本次未移除任何车辆");
             return;
@@ -336,12 +524,14 @@ public final class BuiltinTrainFilter {
                 gangwayFixEnabled = object.get("fixGangway").getAsBoolean();
             }
             configKeepIds = readStringSet(object, "keepIds");
+            configKeepFamilies = readStringSet(object, "keepFamilies");
             extraRemoveIds = readStringSet(object, "extraRemoveIds");
         } catch (Throwable t) {
             MtrDisableOriginalTrains.LOGGER.warn("[MTR_NoOriginalTrains] 读取配置失败，已回退到默认值（仅移除内置原版列车）", t);
             enabled = true;
             gangwayFixEnabled = true;
             configKeepIds = Collections.emptySet();
+            configKeepFamilies = Collections.emptySet();
             extraRemoveIds = Collections.emptySet();
         }
     }
@@ -371,6 +561,7 @@ public final class BuiltinTrainFilter {
                             + "  \"enabled\": true,\n"
                             + "  \"fixGangway\": true,\n"
                             + "  \"keepIds\": [],\n"
+                            + "  \"keepFamilies\": [],\n"
                             + "  \"extraRemoveIds\": []\n"
                             + "}\n",
                     StandardCharsets.UTF_8);

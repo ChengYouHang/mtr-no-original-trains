@@ -1,0 +1,23 @@
+{
+  "gui.mtr_no_original_trains.button": "MTR 열차 선택",
+  "gui.mtr_no_original_trains.cancel": "취소",
+  "gui.mtr_no_original_trains.collapse": "접기",
+  "gui.mtr_no_original_trains.done": "완료",
+  "gui.mtr_no_original_trains.expand": "펼치기",
+  "gui.mtr_no_original_trains.kept_summary": "%1$s / %2$s 계열 유지 중",
+  "gui.mtr_no_original_trains.reset": "초기화",
+  "gui.mtr_no_original_trains.restart_cancel": "취소",
+  "gui.mtr_no_original_trains.restart_hint": "게임을 재시작하세요.",
+  "gui.mtr_no_original_trains.restart_never": "다시 표시 안 함",
+  "gui.mtr_no_original_trains.restart_no": "아니요, 나중에",
+  "gui.mtr_no_original_trains.restart_subtitle": "열차 선택이 저장되었습니다. 재시작 후 적용됩니다.",
+  "gui.mtr_no_original_trains.restart_title": "게임을 재시작할까요?",
+  "gui.mtr_no_original_trains.restart_yes": "예, 재시작",
+  "gui.mtr_no_original_trains.saved": "저장됨",
+  "gui.mtr_no_original_trains.select_all": "모두 선택",
+  "gui.mtr_no_original_trains.select_none": "모두 해제",
+  "gui.mtr_no_original_trains.subtitle": "유지할 내장 열차 계열을 선택하세요. 변경 사항은 재시작 후 적용됩니다.",
+  "gui.mtr_no_original_trains.title": "MTR 열차 유지",
+  "gui.mtr_no_original_trains.tooltip": "유지할 MTR 내장 열차를 선택합니다",
+  "gui.mtr_no_original_trains.vehicles": "%s량"
+}

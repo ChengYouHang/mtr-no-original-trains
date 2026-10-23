@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
   "id": "mtr_no_original_trains",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "name": "No Original Trains",
-  "description": "移除 MTR 4.0.5 内置的原版列车（纯黑名单，自动放行所有追加包声明的车辆），并修复追加包列车的车端连接件。仅客户端。",
+  "description": "移除 MTR 4.x 内置的原版列车（纯黑名单，自动放行所有追加包声明的车辆），在主菜单里自由勾选要保留的车系或单车，并修复追加包列车的车端连接件。仅客户端。",
   "authors": [
     "ChengYouHang"
   ],

@@ -1,0 +1,23 @@
+{
+  "gui.mtr_no_original_trains.button": "MTR-tågval",
+  "gui.mtr_no_original_trains.cancel": "Avbryt",
+  "gui.mtr_no_original_trains.collapse": "Fäll ihop",
+  "gui.mtr_no_original_trains.done": "Klar",
+  "gui.mtr_no_original_trains.expand": "Expandera",
+  "gui.mtr_no_original_trains.kept_summary": "Behåller %1$s / %2$s familjer",
+  "gui.mtr_no_original_trains.reset": "Återställ",
+  "gui.mtr_no_original_trains.restart_cancel": "Avbryt",
+  "gui.mtr_no_original_trains.restart_hint": "Starta om spelet.",
+  "gui.mtr_no_original_trains.restart_never": "Visa inte igen",
+  "gui.mtr_no_original_trains.restart_no": "Nej, senare",
+  "gui.mtr_no_original_trains.restart_subtitle": "Valet är sparat. Det gäller efter omstart.",
+  "gui.mtr_no_original_trains.restart_title": "Starta om spelet nu?",
+  "gui.mtr_no_original_trains.restart_yes": "Ja, starta om",
+  "gui.mtr_no_original_trains.saved": "Sparat",
+  "gui.mtr_no_original_trains.select_all": "Markera alla",
+  "gui.mtr_no_original_trains.select_none": "Avmarkera alla",
+  "gui.mtr_no_original_trains.subtitle": "Välj vilka inbyggda tågfamiljer som blir kvar. Ändringar gäller efter omstart.",
+  "gui.mtr_no_original_trains.title": "Behåll MTR-tåg",
+  "gui.mtr_no_original_trains.tooltip": "Välj vilka inbyggda MTR-tåg du behåller",
+  "gui.mtr_no_original_trains.vehicles": "%s fordon"
+}

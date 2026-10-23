@@ -1,0 +1,23 @@
+{
+  "gui.mtr_no_original_trains.button": "Roghnú traenacha MTR",
+  "gui.mtr_no_original_trains.cancel": "Cealaigh",
+  "gui.mtr_no_original_trains.collapse": "Crap",
+  "gui.mtr_no_original_trains.done": "Déanta",
+  "gui.mtr_no_original_trains.expand": "Leathnaigh",
+  "gui.mtr_no_original_trains.kept_summary": "Ag coinneáil %1$s / %2$s teaghlach",
+  "gui.mtr_no_original_trains.reset": "Athshocraigh",
+  "gui.mtr_no_original_trains.restart_cancel": "Cealaigh",
+  "gui.mtr_no_original_trains.restart_hint": "Atosaigh an cluiche.",
+  "gui.mtr_no_original_trains.restart_never": "Ná taispeáin arís",
+  "gui.mtr_no_original_trains.restart_no": "Níl, níos déanaí",
+  "gui.mtr_no_original_trains.restart_subtitle": "Rogha sábháilte. Bíonn sé i bhfeidhm tar éis atosú.",
+  "gui.mtr_no_original_trains.restart_title": "Atosaigh an cluiche anois?",
+  "gui.mtr_no_original_trains.restart_yes": "Sea, atosaigh",
+  "gui.mtr_no_original_trains.saved": "Sábháilte",
+  "gui.mtr_no_original_trains.select_all": "Roghnaigh uile",
+  "gui.mtr_no_original_trains.select_none": "Díroghnaigh uile",
+  "gui.mtr_no_original_trains.subtitle": "Roghnaigh cé na teaghlaigh traenach ionsuite a fhanann. Bíonn na hathruithe i bhfeidhm tar éis atosú.",
+  "gui.mtr_no_original_trains.title": "Coinnigh traenacha MTR",
+  "gui.mtr_no_original_trains.tooltip": "Roghnaigh cé na traenacha ionsuite MTR le coinneáil",
+  "gui.mtr_no_original_trains.vehicles": "%s feithicil"
+}

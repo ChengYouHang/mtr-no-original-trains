@@ -1,0 +1,23 @@
+{
+  "gui.mtr_no_original_trains.button": "Επιλογή τρένων MTR",
+  "gui.mtr_no_original_trains.cancel": "Άκυρο",
+  "gui.mtr_no_original_trains.collapse": "Σύμπτυξη",
+  "gui.mtr_no_original_trains.done": "Τέλος",
+  "gui.mtr_no_original_trains.expand": "Ανάπτυξη",
+  "gui.mtr_no_original_trains.kept_summary": "Διατηρούνται %1$s / %2$s οικογένειες",
+  "gui.mtr_no_original_trains.reset": "Επαναφορά",
+  "gui.mtr_no_original_trains.restart_cancel": "Άκυρο",
+  "gui.mtr_no_original_trains.restart_hint": "Επανεκκινήστε το παιχνίδι.",
+  "gui.mtr_no_original_trains.restart_never": "Να μην εμφανιστεί ξανά",
+  "gui.mtr_no_original_trains.restart_no": "Όχι, αργότερα",
+  "gui.mtr_no_original_trains.restart_subtitle": "Η επιλογή αποθηκεύτηκε. Ισχύει μετά την επανεκκίνηση.",
+  "gui.mtr_no_original_trains.restart_title": "Επανεκκίνηση του παιχνιδιού τώρα;",
+  "gui.mtr_no_original_trains.restart_yes": "Ναι, επανεκκίνηση",
+  "gui.mtr_no_original_trains.saved": "Αποθηκεύτηκε",
+  "gui.mtr_no_original_trains.select_all": "Επιλογή όλων",
+  "gui.mtr_no_original_trains.select_none": "Καμία επιλογή",
+  "gui.mtr_no_original_trains.subtitle": "Επιλέξτε ποιες ενσωματωμένες οικογένειες τρένων μένουν. Οι αλλαγές ισχύουν μετά την επανεκκίνηση.",
+  "gui.mtr_no_original_trains.title": "Διατήρηση τρένων MTR",
+  "gui.mtr_no_original_trains.tooltip": "Επιλέξτε ποια ενσωματωμένα τρένα MTR θα διατηρήσετε",
+  "gui.mtr_no_original_trains.vehicles": "%s οχήματα"
+}

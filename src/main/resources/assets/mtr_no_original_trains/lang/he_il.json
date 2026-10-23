@@ -1,0 +1,23 @@
+{
+  "gui.mtr_no_original_trains.button": "בחירת רכבות MTR",
+  "gui.mtr_no_original_trains.cancel": "ביטול",
+  "gui.mtr_no_original_trains.collapse": "כווץ",
+  "gui.mtr_no_original_trains.done": "סיום",
+  "gui.mtr_no_original_trains.expand": "הרחב",
+  "gui.mtr_no_original_trains.kept_summary": "נשמרות %1$s / %2$s משפחות",
+  "gui.mtr_no_original_trains.reset": "אפס",
+  "gui.mtr_no_original_trains.restart_cancel": "ביטול",
+  "gui.mtr_no_original_trains.restart_hint": "הפעל מחדש את המשחק.",
+  "gui.mtr_no_original_trains.restart_never": "אל תציג שוב",
+  "gui.mtr_no_original_trains.restart_no": "לא, אחר כך",
+  "gui.mtr_no_original_trains.restart_subtitle": "הבחירה נשמרה. היא תחול לאחר הפעלה מחדש.",
+  "gui.mtr_no_original_trains.restart_title": "להפעיל מחדש את המשחק עכשיו?",
+  "gui.mtr_no_original_trains.restart_yes": "כן, הפעל מחדש",
+  "gui.mtr_no_original_trains.saved": "נשמר",
+  "gui.mtr_no_original_trains.select_all": "בחר הכול",
+  "gui.mtr_no_original_trains.select_none": "בטל בחירה",
+  "gui.mtr_no_original_trains.subtitle": "בחר אילו משפחות רכבות מובנות יישארו. השינויים יחולו לאחר הפעלה מחדש.",
+  "gui.mtr_no_original_trains.title": "שמור רכבות MTR",
+  "gui.mtr_no_original_trains.tooltip": "בחר אילו רכבות MTR מובנות לשמור",
+  "gui.mtr_no_original_trains.vehicles": "%s כלי רכב"
+}

@@ -1,0 +1,23 @@
+{
+  "gui.mtr_no_original_trains.button": "Pemilihan kereta MTR",
+  "gui.mtr_no_original_trains.cancel": "Batal",
+  "gui.mtr_no_original_trains.collapse": "Ciutkan",
+  "gui.mtr_no_original_trains.done": "Selesai",
+  "gui.mtr_no_original_trains.expand": "Bentangkan",
+  "gui.mtr_no_original_trains.kept_summary": "Mempertahankan %1$s / %2$s keluarga",
+  "gui.mtr_no_original_trains.reset": "Setel ulang",
+  "gui.mtr_no_original_trains.restart_cancel": "Batal",
+  "gui.mtr_no_original_trains.restart_hint": "Mulai ulang permainan.",
+  "gui.mtr_no_original_trains.restart_never": "Jangan tampilkan lagi",
+  "gui.mtr_no_original_trains.restart_no": "Tidak, nanti",
+  "gui.mtr_no_original_trains.restart_subtitle": "Pilihan disimpan. Berlaku setelah mulai ulang.",
+  "gui.mtr_no_original_trains.restart_title": "Mulai ulang game sekarang?",
+  "gui.mtr_no_original_trains.restart_yes": "Ya, mulai ulang",
+  "gui.mtr_no_original_trains.saved": "Tersimpan",
+  "gui.mtr_no_original_trains.select_all": "Pilih semua",
+  "gui.mtr_no_original_trains.select_none": "Batal pilih",
+  "gui.mtr_no_original_trains.subtitle": "Pilih keluarga kereta bawaan yang dipertahankan. Perubahan berlaku setelah mulai ulang.",
+  "gui.mtr_no_original_trains.title": "Pertahankan kereta MTR",
+  "gui.mtr_no_original_trains.tooltip": "Pilih kereta bawaan MTR yang ingin dipertahankan",
+  "gui.mtr_no_original_trains.vehicles": "%s kendaraan"
+}

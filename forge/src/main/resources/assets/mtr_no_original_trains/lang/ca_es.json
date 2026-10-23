@@ -1,0 +1,23 @@
+{
+  "gui.mtr_no_original_trains.button": "Selecció de trens MTR",
+  "gui.mtr_no_original_trains.cancel": "Cancel·la",
+  "gui.mtr_no_original_trains.collapse": "Replega",
+  "gui.mtr_no_original_trains.done": "Fet",
+  "gui.mtr_no_original_trains.expand": "Desplega",
+  "gui.mtr_no_original_trains.kept_summary": "Conservant %1$s / %2$s famílies",
+  "gui.mtr_no_original_trains.reset": "Restableix",
+  "gui.mtr_no_original_trains.restart_cancel": "Cancel·la",
+  "gui.mtr_no_original_trains.restart_hint": "Reinicia el joc.",
+  "gui.mtr_no_original_trains.restart_never": "No tornar a mostrar",
+  "gui.mtr_no_original_trains.restart_no": "No, més tard",
+  "gui.mtr_no_original_trains.restart_subtitle": "Selecció desada. S'aplica en reiniciar.",
+  "gui.mtr_no_original_trains.restart_title": "Reiniciar el joc ara?",
+  "gui.mtr_no_original_trains.restart_yes": "Sí, reinicia",
+  "gui.mtr_no_original_trains.saved": "Desat",
+  "gui.mtr_no_original_trains.select_all": "Selecciona-ho tot",
+  "gui.mtr_no_original_trains.select_none": "Desselecciona-ho tot",
+  "gui.mtr_no_original_trains.subtitle": "Tria quines famílies de trens integrats es queden. Els canvis s'apliquen en reiniciar.",
+  "gui.mtr_no_original_trains.title": "Conserva els trens MTR",
+  "gui.mtr_no_original_trains.tooltip": "Tria quins trens integrats de MTR conservar",
+  "gui.mtr_no_original_trains.vehicles": "%s vehicles"
+}

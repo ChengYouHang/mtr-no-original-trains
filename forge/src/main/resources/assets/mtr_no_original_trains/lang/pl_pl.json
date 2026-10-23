@@ -1,0 +1,23 @@
+{
+  "gui.mtr_no_original_trains.button": "Wybór pociągów MTR",
+  "gui.mtr_no_original_trains.cancel": "Anuluj",
+  "gui.mtr_no_original_trains.collapse": "Zwiń",
+  "gui.mtr_no_original_trains.done": "Gotowe",
+  "gui.mtr_no_original_trains.expand": "Rozwiń",
+  "gui.mtr_no_original_trains.kept_summary": "Zachowano %1$s / %2$s rodzin",
+  "gui.mtr_no_original_trains.reset": "Resetuj",
+  "gui.mtr_no_original_trains.restart_cancel": "Anuluj",
+  "gui.mtr_no_original_trains.restart_hint": "Uruchom grę ponownie.",
+  "gui.mtr_no_original_trains.restart_never": "Nie pokazuj więcej",
+  "gui.mtr_no_original_trains.restart_no": "Nie, później",
+  "gui.mtr_no_original_trains.restart_subtitle": "Wybór zapisany. Zadziała po restarcie.",
+  "gui.mtr_no_original_trains.restart_title": "Uruchomić grę ponownie?",
+  "gui.mtr_no_original_trains.restart_yes": "Tak, uruchom ponownie",
+  "gui.mtr_no_original_trains.saved": "Zapisano",
+  "gui.mtr_no_original_trains.select_all": "Zaznacz wszystko",
+  "gui.mtr_no_original_trains.select_none": "Odznacz wszystko",
+  "gui.mtr_no_original_trains.subtitle": "Wybierz, które rodziny wbudowanych pociągów zostawić. Zmiany działają po restarcie.",
+  "gui.mtr_no_original_trains.title": "Zachowaj pociągi MTR",
+  "gui.mtr_no_original_trains.tooltip": "Wybierz, które wbudowane pociągi MTR zachować",
+  "gui.mtr_no_original_trains.vehicles": "%s pojazdów"
+}

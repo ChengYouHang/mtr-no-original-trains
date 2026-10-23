@@ -1,0 +1,23 @@
+{
+  "gui.mtr_no_original_trains.button": "MTR vonatválasztás",
+  "gui.mtr_no_original_trains.cancel": "Mégse",
+  "gui.mtr_no_original_trains.collapse": "Bezár",
+  "gui.mtr_no_original_trains.done": "Kész",
+  "gui.mtr_no_original_trains.expand": "Kinyit",
+  "gui.mtr_no_original_trains.kept_summary": "%1$s / %2$s család megtartva",
+  "gui.mtr_no_original_trains.reset": "Visszaállítás",
+  "gui.mtr_no_original_trains.restart_cancel": "Mégse",
+  "gui.mtr_no_original_trains.restart_hint": "Indítsd újra a játékot.",
+  "gui.mtr_no_original_trains.restart_never": "Ne jelenjen meg többé",
+  "gui.mtr_no_original_trains.restart_no": "Nem, később",
+  "gui.mtr_no_original_trains.restart_subtitle": "A kiválasztás mentve. Újraindítás után él.",
+  "gui.mtr_no_original_trains.restart_title": "Újraindítsd most a játékot?",
+  "gui.mtr_no_original_trains.restart_yes": "Igen, újraindítás",
+  "gui.mtr_no_original_trains.saved": "Mentve",
+  "gui.mtr_no_original_trains.select_all": "Mindet kijelöl",
+  "gui.mtr_no_original_trains.select_none": "Kijelölés törlése",
+  "gui.mtr_no_original_trains.subtitle": "Válaszd ki, mely beépített vonatcsaládok maradjanak. A változások újraindítás után lépnek életbe.",
+  "gui.mtr_no_original_trains.title": "MTR vonatok megtartása",
+  "gui.mtr_no_original_trains.tooltip": "Válaszd ki, mely beépített MTR vonatokat tartod meg",
+  "gui.mtr_no_original_trains.vehicles": "%s jármű"
+}

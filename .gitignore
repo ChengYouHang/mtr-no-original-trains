@@ -17,3 +17,20 @@ fix_addon_gangway.py
 .vscode/
 *.iml
 Thumbs.db
+
+# 回收站 / 视频素材 / 测试运行日志
+_trash/
+_video/
+run*.log
+*.log
+
+# 本机启动脚本（含个人路径），仅保留 gen_lang.py 与仿真测试
+_tools/_launch_cmd.json
+_tools/run_capture.py
+_tools/run_capture_forge.py
+_tools/prep_launch.py
+_tools/prep_launch_forge.py
+_tools/launch_detached.py
+
+# 备份文件
+*.bak

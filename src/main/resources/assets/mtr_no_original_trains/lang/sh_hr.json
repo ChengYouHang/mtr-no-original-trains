@@ -1,0 +1,23 @@
+{
+  "gui.mtr_no_original_trains.button": "Odabir vlakova MTR",
+  "gui.mtr_no_original_trains.cancel": "Odustani",
+  "gui.mtr_no_original_trains.collapse": "Sažmi",
+  "gui.mtr_no_original_trains.done": "Gotovo",
+  "gui.mtr_no_original_trains.expand": "Proširi",
+  "gui.mtr_no_original_trains.kept_summary": "Zadržano %1$s / %2$s obitelji",
+  "gui.mtr_no_original_trains.reset": "Poništi",
+  "gui.mtr_no_original_trains.restart_cancel": "Odustani",
+  "gui.mtr_no_original_trains.restart_hint": "Ponovno pokrenite igru.",
+  "gui.mtr_no_original_trains.restart_never": "Ne prikazuj više",
+  "gui.mtr_no_original_trains.restart_no": "Ne, kasnije",
+  "gui.mtr_no_original_trains.restart_subtitle": "Odabir spremljen. Vrijedi nakon ponovnog pokretanja.",
+  "gui.mtr_no_original_trains.restart_title": "Ponovno pokrenuti igru sada?",
+  "gui.mtr_no_original_trains.restart_yes": "Da, pokreni",
+  "gui.mtr_no_original_trains.saved": "Spremljeno",
+  "gui.mtr_no_original_trains.select_all": "Odaberi sve",
+  "gui.mtr_no_original_trains.select_none": "Poništi odabir",
+  "gui.mtr_no_original_trains.subtitle": "Odaberite koje obitelji ugrađenih vlakova ostaju. Promjene vrijede nakon ponovnog pokretanja.",
+  "gui.mtr_no_original_trains.title": "Zadrži vlakove MTR",
+  "gui.mtr_no_original_trains.tooltip": "Odaberite koje ugrađene vlakove MTR zadržati",
+  "gui.mtr_no_original_trains.vehicles": "%s vozila"
+}

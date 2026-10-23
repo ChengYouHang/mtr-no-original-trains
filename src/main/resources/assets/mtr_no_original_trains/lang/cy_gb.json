@@ -1,0 +1,23 @@
+{
+  "gui.mtr_no_original_trains.button": "Dewis trenau MTR",
+  "gui.mtr_no_original_trains.cancel": "Canslo",
+  "gui.mtr_no_original_trains.collapse": "Crebachu",
+  "gui.mtr_no_original_trains.done": "Gorffen",
+  "gui.mtr_no_original_trains.expand": "Ehangu",
+  "gui.mtr_no_original_trains.kept_summary": "Yn cadw %1$s / %2$s teulu",
+  "gui.mtr_no_original_trains.reset": "Ailosod",
+  "gui.mtr_no_original_trains.restart_cancel": "Canslo",
+  "gui.mtr_no_original_trains.restart_hint": "Ailgychwynnwch y gêm.",
+  "gui.mtr_no_original_trains.restart_never": "Peidio â dangos eto",
+  "gui.mtr_no_original_trains.restart_no": "Na, nes ymlaen",
+  "gui.mtr_no_original_trains.restart_subtitle": "Dewis wedi'i gadw. Mae'n gweithredu ar ôl ailgychwyn.",
+  "gui.mtr_no_original_trains.restart_title": "Ailgychwyn y gêm nawr?",
+  "gui.mtr_no_original_trains.restart_yes": "Iawn, ailgychwyn",
+  "gui.mtr_no_original_trains.saved": "Wedi cadw",
+  "gui.mtr_no_original_trains.select_all": "Dewis popeth",
+  "gui.mtr_no_original_trains.select_none": "Dad-ddewis popeth",
+  "gui.mtr_no_original_trains.subtitle": "Dewis pa deuluoedd o drenau mewnol sy'n aros. Mae newidiadau'n gweithredu ar ôl ailgychwyn.",
+  "gui.mtr_no_original_trains.title": "Cadw trenau MTR",
+  "gui.mtr_no_original_trains.tooltip": "Dewis pa drenau MTR mewnol i'w cadw",
+  "gui.mtr_no_original_trains.vehicles": "%s cerbyd"
+}

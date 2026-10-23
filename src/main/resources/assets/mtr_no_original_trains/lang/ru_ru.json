@@ -1,0 +1,23 @@
+{
+  "gui.mtr_no_original_trains.button": "Выбор поездов MTR",
+  "gui.mtr_no_original_trains.cancel": "Отмена",
+  "gui.mtr_no_original_trains.collapse": "Свернуть",
+  "gui.mtr_no_original_trains.done": "Готово",
+  "gui.mtr_no_original_trains.expand": "Развернуть",
+  "gui.mtr_no_original_trains.kept_summary": "Оставлено %1$s / %2$s семейств",
+  "gui.mtr_no_original_trains.reset": "Сбросить",
+  "gui.mtr_no_original_trains.restart_cancel": "Отмена",
+  "gui.mtr_no_original_trains.restart_hint": "Перезапустите игру.",
+  "gui.mtr_no_original_trains.restart_never": "Больше не показывать",
+  "gui.mtr_no_original_trains.restart_no": "Нет, позже",
+  "gui.mtr_no_original_trains.restart_subtitle": "Выбор сохранён. Он применится после перезапуска.",
+  "gui.mtr_no_original_trains.restart_title": "Перезапустить игру сейчас?",
+  "gui.mtr_no_original_trains.restart_yes": "Да, перезапустить",
+  "gui.mtr_no_original_trains.saved": "Сохранено",
+  "gui.mtr_no_original_trains.select_all": "Выбрать все",
+  "gui.mtr_no_original_trains.select_none": "Снять все",
+  "gui.mtr_no_original_trains.subtitle": "Выберите, какие семейства встроенных поездов оставить. Изменения применятся после перезапуска.",
+  "gui.mtr_no_original_trains.title": "Оставить поезда MTR",
+  "gui.mtr_no_original_trains.tooltip": "Выберите, какие встроенные поезда MTR оставить",
+  "gui.mtr_no_original_trains.vehicles": "%s ед."
+}

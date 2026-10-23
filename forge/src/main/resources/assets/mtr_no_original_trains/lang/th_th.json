@@ -1,0 +1,23 @@
+{
+  "gui.mtr_no_original_trains.button": "เลือกขบวนรถ MTR",
+  "gui.mtr_no_original_trains.cancel": "ยกเลิก",
+  "gui.mtr_no_original_trains.collapse": "ย่อ",
+  "gui.mtr_no_original_trains.done": "เสร็จ",
+  "gui.mtr_no_original_trains.expand": "ขยาย",
+  "gui.mtr_no_original_trains.kept_summary": "เก็บไว้ %1$s / %2$s ตระกูล",
+  "gui.mtr_no_original_trains.reset": "รีเซ็ต",
+  "gui.mtr_no_original_trains.restart_cancel": "ยกเลิก",
+  "gui.mtr_no_original_trains.restart_hint": "รีสตาร์ทเกม",
+  "gui.mtr_no_original_trains.restart_never": "ไม่ต้องแสดงอีก",
+  "gui.mtr_no_original_trains.restart_no": "ไม่ใช่ ทีหลัง",
+  "gui.mtr_no_original_trains.restart_subtitle": "บันทึกการเลือกแล้ว จะมีผลหลังรีสตาร์ท",
+  "gui.mtr_no_original_trains.restart_title": "รีสตาร์ทเกมตอนนี้หรือไม่?",
+  "gui.mtr_no_original_trains.restart_yes": "ใช่ รีสตาร์ท",
+  "gui.mtr_no_original_trains.saved": "บันทึกแล้ว",
+  "gui.mtr_no_original_trains.select_all": "เลือกทั้งหมด",
+  "gui.mtr_no_original_trains.select_none": "ไม่เลือกเลย",
+  "gui.mtr_no_original_trains.subtitle": "เลือกตระกูลขบวนรถในเกมที่จะเก็บไว้ การเปลี่ยนแปลงมีผลหลังรีสตาร์ท",
+  "gui.mtr_no_original_trains.title": "เก็บขบวนรถ MTR",
+  "gui.mtr_no_original_trains.tooltip": "เลือกขบวนรถในเกมของ MTR ที่ต้องการเก็บไว้",
+  "gui.mtr_no_original_trains.vehicles": "%s คัน"
+}

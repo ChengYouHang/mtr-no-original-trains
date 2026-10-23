@@ -1,0 +1,23 @@
+{
+  "gui.mtr_no_original_trains.button": "Sélection des trains MTR",
+  "gui.mtr_no_original_trains.cancel": "Annuler",
+  "gui.mtr_no_original_trains.collapse": "Réduire",
+  "gui.mtr_no_original_trains.done": "Terminé",
+  "gui.mtr_no_original_trains.expand": "Développer",
+  "gui.mtr_no_original_trains.kept_summary": "%1$s / %2$s familles conservées",
+  "gui.mtr_no_original_trains.reset": "Réinitialiser",
+  "gui.mtr_no_original_trains.restart_cancel": "Annuler",
+  "gui.mtr_no_original_trains.restart_hint": "Redémarrez le jeu.",
+  "gui.mtr_no_original_trains.restart_never": "Ne plus afficher",
+  "gui.mtr_no_original_trains.restart_no": "Non, plus tard",
+  "gui.mtr_no_original_trains.restart_subtitle": "Sélection enregistrée. Elle s'applique après un redémarrage.",
+  "gui.mtr_no_original_trains.restart_title": "Redémarrer le jeu maintenant ?",
+  "gui.mtr_no_original_trains.restart_yes": "Oui, redémarrer",
+  "gui.mtr_no_original_trains.saved": "Enregistré",
+  "gui.mtr_no_original_trains.select_all": "Tout sélectionner",
+  "gui.mtr_no_original_trains.select_none": "Tout désélectionner",
+  "gui.mtr_no_original_trains.subtitle": "Choisissez les familles de trains intégrés à conserver. Les changements s'appliquent après redémarrage.",
+  "gui.mtr_no_original_trains.title": "Conserver les trains MTR",
+  "gui.mtr_no_original_trains.tooltip": "Choisissez quels trains intégrés de MTR conserver",
+  "gui.mtr_no_original_trains.vehicles": "%s véhicules"
+}

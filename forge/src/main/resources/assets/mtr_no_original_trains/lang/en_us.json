@@ -1,0 +1,23 @@
+{
+  "gui.mtr_no_original_trains.button": "MTR Train Selection",
+  "gui.mtr_no_original_trains.cancel": "Cancel",
+  "gui.mtr_no_original_trains.collapse": "Collapse",
+  "gui.mtr_no_original_trains.done": "Done",
+  "gui.mtr_no_original_trains.expand": "Expand",
+  "gui.mtr_no_original_trains.kept_summary": "Keeping %1$s / %2$s families",
+  "gui.mtr_no_original_trains.reset": "Reset",
+  "gui.mtr_no_original_trains.restart_cancel": "Cancel",
+  "gui.mtr_no_original_trains.restart_hint": "Restart the game to apply.",
+  "gui.mtr_no_original_trains.restart_never": "Don't show again",
+  "gui.mtr_no_original_trains.restart_no": "No, later",
+  "gui.mtr_no_original_trains.restart_subtitle": "Train selection saved. It takes effect after restarting.",
+  "gui.mtr_no_original_trains.restart_title": "Restart the game now?",
+  "gui.mtr_no_original_trains.restart_yes": "Yes, restart",
+  "gui.mtr_no_original_trains.saved": "Saved",
+  "gui.mtr_no_original_trains.select_all": "Select All",
+  "gui.mtr_no_original_trains.select_none": "Select None",
+  "gui.mtr_no_original_trains.subtitle": "Pick which built-in train families stay. Changes apply after restart.",
+  "gui.mtr_no_original_trains.title": "Keep MTR Trains",
+  "gui.mtr_no_original_trains.tooltip": "Choose which of MTR's built-in trains to keep",
+  "gui.mtr_no_original_trains.vehicles": "%s vehicles"
+}

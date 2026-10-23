@@ -1,0 +1,23 @@
+{
+  "gui.mtr_no_original_trains.button": "Выбар цягнікоў MTR",
+  "gui.mtr_no_original_trains.cancel": "Адмена",
+  "gui.mtr_no_original_trains.collapse": "Згарнуць",
+  "gui.mtr_no_original_trains.done": "Гатова",
+  "gui.mtr_no_original_trains.expand": "Разгарнуць",
+  "gui.mtr_no_original_trains.kept_summary": "Пакінута %1$s / %2$s сямействаў",
+  "gui.mtr_no_original_trains.reset": "Скінуць",
+  "gui.mtr_no_original_trains.restart_cancel": "Адмена",
+  "gui.mtr_no_original_trains.restart_hint": "Перазапусціце гульню.",
+  "gui.mtr_no_original_trains.restart_never": "Больш не паказваць",
+  "gui.mtr_no_original_trains.restart_no": "Не, пазней",
+  "gui.mtr_no_original_trains.restart_subtitle": "Выбар захаваны. Дзейнічае пасля перазапуску.",
+  "gui.mtr_no_original_trains.restart_title": "Перазапусціць гульню зараз?",
+  "gui.mtr_no_original_trains.restart_yes": "Так, перазапусціць",
+  "gui.mtr_no_original_trains.saved": "Захавана",
+  "gui.mtr_no_original_trains.select_all": "Выбраць усё",
+  "gui.mtr_no_original_trains.select_none": "Зняць выбар",
+  "gui.mtr_no_original_trains.subtitle": "Выберыце, якія сямействы ўбудаваных цягнікоў застануцца. Змены дзейнічаюць пасля перазапуску.",
+  "gui.mtr_no_original_trains.title": "Пакінуць цягнікі MTR",
+  "gui.mtr_no_original_trains.tooltip": "Выберыце, якія ўбудаваныя цягнікі MTR пакінуць",
+  "gui.mtr_no_original_trains.vehicles": "%s адз."
+}

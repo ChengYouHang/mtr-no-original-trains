@@ -1,0 +1,23 @@
+{
+  "gui.mtr_no_original_trains.button": "Pagpili ng MTR tren",
+  "gui.mtr_no_original_trains.cancel": "Kanselahin",
+  "gui.mtr_no_original_trains.collapse": "I-collapse",
+  "gui.mtr_no_original_trains.done": "Tapos",
+  "gui.mtr_no_original_trains.expand": "Palawakin",
+  "gui.mtr_no_original_trains.kept_summary": "Pinapanatili %1$s / %2$s pamilya",
+  "gui.mtr_no_original_trains.reset": "I-reset",
+  "gui.mtr_no_original_trains.restart_cancel": "Kanselahin",
+  "gui.mtr_no_original_trains.restart_hint": "I-restart ang laro.",
+  "gui.mtr_no_original_trains.restart_never": "Huwag nang ipakita",
+  "gui.mtr_no_original_trains.restart_no": "Hindi, mamaya",
+  "gui.mtr_no_original_trains.restart_subtitle": "Na-save ang pagpili. Magkakabisa pagkatapos mag-restart.",
+  "gui.mtr_no_original_trains.restart_title": "I-restart ang laro ngayon?",
+  "gui.mtr_no_original_trains.restart_yes": "Oo, i-restart",
+  "gui.mtr_no_original_trains.saved": "Na-save",
+  "gui.mtr_no_original_trains.select_all": "Piliin lahat",
+  "gui.mtr_no_original_trains.select_none": "Alisin lahat",
+  "gui.mtr_no_original_trains.subtitle": "Piliin kung aling pamilya ng built-in na tren ang mananatili. Magkakabisa ang mga pagbabago pagkatapos mag-restart.",
+  "gui.mtr_no_original_trains.title": "Panatilihin ang MTR tren",
+  "gui.mtr_no_original_trains.tooltip": "Piliin kung aling built-in na MTR tren ang pananatilihin",
+  "gui.mtr_no_original_trains.vehicles": "%s sasakyan"
+}

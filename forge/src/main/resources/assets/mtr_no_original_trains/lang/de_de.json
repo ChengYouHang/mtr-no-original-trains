@@ -1,0 +1,23 @@
+{
+  "gui.mtr_no_original_trains.button": "MTR-Zugauswahl",
+  "gui.mtr_no_original_trains.cancel": "Abbrechen",
+  "gui.mtr_no_original_trains.collapse": "Zuklappen",
+  "gui.mtr_no_original_trains.done": "Fertig",
+  "gui.mtr_no_original_trains.expand": "Aufklappen",
+  "gui.mtr_no_original_trains.kept_summary": "%1$s / %2$s Familien behalten",
+  "gui.mtr_no_original_trains.reset": "Zurücksetzen",
+  "gui.mtr_no_original_trains.restart_cancel": "Abbrechen",
+  "gui.mtr_no_original_trains.restart_hint": "Starte das Spiel neu.",
+  "gui.mtr_no_original_trains.restart_never": "Nicht mehr anzeigen",
+  "gui.mtr_no_original_trains.restart_no": "Nein, später",
+  "gui.mtr_no_original_trains.restart_subtitle": "Zugauswahl gespeichert. Sie gilt nach einem Neustart.",
+  "gui.mtr_no_original_trains.restart_title": "Spiel jetzt neu starten?",
+  "gui.mtr_no_original_trains.restart_yes": "Ja, neu starten",
+  "gui.mtr_no_original_trains.saved": "Gespeichert",
+  "gui.mtr_no_original_trains.select_all": "Alle auswählen",
+  "gui.mtr_no_original_trains.select_none": "Keine auswählen",
+  "gui.mtr_no_original_trains.subtitle": "Wähle, welche eingebauten Zugfamilien bleiben. Änderungen gelten nach Neustart.",
+  "gui.mtr_no_original_trains.title": "MTR-Züge behalten",
+  "gui.mtr_no_original_trains.tooltip": "Wähle, welche eingebauten MTR-Züge bleiben",
+  "gui.mtr_no_original_trains.vehicles": "%s Fahrzeuge"
+}

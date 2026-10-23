@@ -1,0 +1,23 @@
+{
+  "gui.mtr_no_original_trains.button": "Seleção de trens MTR",
+  "gui.mtr_no_original_trains.cancel": "Cancelar",
+  "gui.mtr_no_original_trains.collapse": "Recolher",
+  "gui.mtr_no_original_trains.done": "Concluído",
+  "gui.mtr_no_original_trains.expand": "Expandir",
+  "gui.mtr_no_original_trains.kept_summary": "Mantendo %1$s / %2$s famílias",
+  "gui.mtr_no_original_trains.reset": "Redefinir",
+  "gui.mtr_no_original_trains.restart_cancel": "Cancelar",
+  "gui.mtr_no_original_trains.restart_hint": "Reinicie o jogo.",
+  "gui.mtr_no_original_trains.restart_never": "Não mostrar novamente",
+  "gui.mtr_no_original_trains.restart_no": "Não, depois",
+  "gui.mtr_no_original_trains.restart_subtitle": "Seleção salva. Vale após reiniciar.",
+  "gui.mtr_no_original_trains.restart_title": "Reiniciar o jogo agora?",
+  "gui.mtr_no_original_trains.restart_yes": "Sim, reiniciar",
+  "gui.mtr_no_original_trains.saved": "Salvo",
+  "gui.mtr_no_original_trains.select_all": "Selecionar tudo",
+  "gui.mtr_no_original_trains.select_none": "Desmarcar tudo",
+  "gui.mtr_no_original_trains.subtitle": "Escolha quais famílias de trens embutidos ficam. As mudanças valem após reiniciar.",
+  "gui.mtr_no_original_trains.title": "Manter trens MTR",
+  "gui.mtr_no_original_trains.tooltip": "Escolha quais trens embutidos do MTR manter",
+  "gui.mtr_no_original_trains.vehicles": "%s veículos"
+}

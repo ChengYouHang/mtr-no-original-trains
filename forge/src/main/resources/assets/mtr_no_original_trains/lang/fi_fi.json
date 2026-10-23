@@ -1,0 +1,23 @@
+{
+  "gui.mtr_no_original_trains.button": "MTR-junien valinta",
+  "gui.mtr_no_original_trains.cancel": "Peruuta",
+  "gui.mtr_no_original_trains.collapse": "Tiivistä",
+  "gui.mtr_no_original_trains.done": "Valmis",
+  "gui.mtr_no_original_trains.expand": "Laajenna",
+  "gui.mtr_no_original_trains.kept_summary": "Säilytetään %1$s / %2$s ryhmää",
+  "gui.mtr_no_original_trains.reset": "Palauta",
+  "gui.mtr_no_original_trains.restart_cancel": "Peruuta",
+  "gui.mtr_no_original_trains.restart_hint": "Käynnistä peli uudelleen.",
+  "gui.mtr_no_original_trains.restart_never": "Älä näytä uudelleen",
+  "gui.mtr_no_original_trains.restart_no": "Ei, myöhemmin",
+  "gui.mtr_no_original_trains.restart_subtitle": "Valinta tallennettu. Se tulee voimaan uudelleenkäynnistyksen jälkeen.",
+  "gui.mtr_no_original_trains.restart_title": "Käynnistetäänkö peli uudelleen?",
+  "gui.mtr_no_original_trains.restart_yes": "Kyllä, käynnistä",
+  "gui.mtr_no_original_trains.saved": "Tallennettu",
+  "gui.mtr_no_original_trains.select_all": "Valitse kaikki",
+  "gui.mtr_no_original_trains.select_none": "Poista valinnat",
+  "gui.mtr_no_original_trains.subtitle": "Valitse mitkä sisäänrakennetut junaryhmät jäävät. Muutokset tulevat voimaan uudelleenkäynnistyksen jälkeen.",
+  "gui.mtr_no_original_trains.title": "Säilytä MTR-junat",
+  "gui.mtr_no_original_trains.tooltip": "Valitse mitkä sisäänrakennetut MTR-junat säilytetään",
+  "gui.mtr_no_original_trains.vehicles": "%s ajoneuvoa"
+}

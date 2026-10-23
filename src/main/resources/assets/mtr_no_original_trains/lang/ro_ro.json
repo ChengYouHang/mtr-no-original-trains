@@ -1,0 +1,23 @@
+{
+  "gui.mtr_no_original_trains.button": "Selecția trenurilor MTR",
+  "gui.mtr_no_original_trains.cancel": "Anulează",
+  "gui.mtr_no_original_trains.collapse": "Restrânge",
+  "gui.mtr_no_original_trains.done": "Gata",
+  "gui.mtr_no_original_trains.expand": "Extinde",
+  "gui.mtr_no_original_trains.kept_summary": "Păstrate %1$s / %2$s familii",
+  "gui.mtr_no_original_trains.reset": "Resetează",
+  "gui.mtr_no_original_trains.restart_cancel": "Anulează",
+  "gui.mtr_no_original_trains.restart_hint": "Repornește jocul.",
+  "gui.mtr_no_original_trains.restart_never": "Nu mai afișa",
+  "gui.mtr_no_original_trains.restart_no": "Nu, mai târziu",
+  "gui.mtr_no_original_trains.restart_subtitle": "Selecția a fost salvată. Se aplică după repornire.",
+  "gui.mtr_no_original_trains.restart_title": "Repornești jocul acum?",
+  "gui.mtr_no_original_trains.restart_yes": "Da, repornește",
+  "gui.mtr_no_original_trains.saved": "Salvat",
+  "gui.mtr_no_original_trains.select_all": "Selectează tot",
+  "gui.mtr_no_original_trains.select_none": "Deselectează tot",
+  "gui.mtr_no_original_trains.subtitle": "Alege ce familii de trenuri încorporate rămân. Modificările se aplică după repornire.",
+  "gui.mtr_no_original_trains.title": "Păstrează trenurile MTR",
+  "gui.mtr_no_original_trains.tooltip": "Alege ce trenuri încorporate MTR păstrezi",
+  "gui.mtr_no_original_trains.vehicles": "%s vehicule"
+}

@@ -1,0 +1,23 @@
+{
+  "gui.mtr_no_original_trains.button": "MTR ट्रेन चयन",
+  "gui.mtr_no_original_trains.cancel": "रद्द करें",
+  "gui.mtr_no_original_trains.collapse": "समेटें",
+  "gui.mtr_no_original_trains.done": "हो गया",
+  "gui.mtr_no_original_trains.expand": "विस्तार करें",
+  "gui.mtr_no_original_trains.kept_summary": "%1$s / %2$s परिवार रखे गए",
+  "gui.mtr_no_original_trains.reset": "रीसेट",
+  "gui.mtr_no_original_trains.restart_cancel": "रद्द करें",
+  "gui.mtr_no_original_trains.restart_hint": "गेम पुनः आरंभ करें।",
+  "gui.mtr_no_original_trains.restart_never": "दोबारा न दिखाएँ",
+  "gui.mtr_no_original_trains.restart_no": "नहीं, बाद में",
+  "gui.mtr_no_original_trains.restart_subtitle": "चयन सहेजा गया। पुनः आरंभ के बाद लागू होगा।",
+  "gui.mtr_no_original_trains.restart_title": "गेम अभी पुनः आरंभ करें?",
+  "gui.mtr_no_original_trains.restart_yes": "हाँ, पुनः आरंभ",
+  "gui.mtr_no_original_trains.saved": "सहेजा गया",
+  "gui.mtr_no_original_trains.select_all": "सभी चुनें",
+  "gui.mtr_no_original_trains.select_none": "कोई नहीं चुनें",
+  "gui.mtr_no_original_trains.subtitle": "चुनें कि कौन-से अंतर्निहित ट्रेन परिवार रहेंगे। बदलाव पुनः आरंभ के बाद लागू होंगे।",
+  "gui.mtr_no_original_trains.title": "MTR ट्रेनें रखें",
+  "gui.mtr_no_original_trains.tooltip": "चुनें कि कौन-सी अंतर्निहित MTR ट्रेनें रखनी हैं",
+  "gui.mtr_no_original_trains.vehicles": "%s वाहन"
+}

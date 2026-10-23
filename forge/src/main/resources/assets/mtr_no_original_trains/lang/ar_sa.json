@@ -1,0 +1,23 @@
+{
+  "gui.mtr_no_original_trains.button": "اختيار قطارات MTR",
+  "gui.mtr_no_original_trains.cancel": "إلغاء",
+  "gui.mtr_no_original_trains.collapse": "طي",
+  "gui.mtr_no_original_trains.done": "تم",
+  "gui.mtr_no_original_trains.expand": "توسيع",
+  "gui.mtr_no_original_trains.kept_summary": "يُبقى على %1$s / %2$s عائلة",
+  "gui.mtr_no_original_trains.reset": "إعادة تعيين",
+  "gui.mtr_no_original_trains.restart_cancel": "إلغاء",
+  "gui.mtr_no_original_trains.restart_hint": "أعد تشغيل اللعبة.",
+  "gui.mtr_no_original_trains.restart_never": "لا تُظهر هذا مجددًا",
+  "gui.mtr_no_original_trains.restart_no": "لا، لاحقًا",
+  "gui.mtr_no_original_trains.restart_subtitle": "تم حفظ اختيارك. سيُطبَّق بعد إعادة التشغيل.",
+  "gui.mtr_no_original_trains.restart_title": "هل تريد إعادة تشغيل اللعبة الآن؟",
+  "gui.mtr_no_original_trains.restart_yes": "نعم، أعد التشغيل",
+  "gui.mtr_no_original_trains.saved": "تم الحفظ",
+  "gui.mtr_no_original_trains.select_all": "تحديد الكل",
+  "gui.mtr_no_original_trains.select_none": "إلغاء تحديد الكل",
+  "gui.mtr_no_original_trains.subtitle": "اختر عائلات القطارات المدمجة التي تريد الإبقاء عليها. تُطبَّق التغييرات بعد إعادة التشغيل.",
+  "gui.mtr_no_original_trains.title": "الإبقاء على قطارات MTR",
+  "gui.mtr_no_original_trains.tooltip": "اختر قطارات MTR المدمجة التي تريد الإبقاء عليها",
+  "gui.mtr_no_original_trains.vehicles": "%s مركبة"
+}

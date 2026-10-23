@@ -6,7 +6,8 @@
   "client": [
     "CustomResourceLoaderMixin",
     "ModelPropertiesMixin",
-    "VehicleResourceMixin"
+    "VehicleResourceMixin",
+    "TitleScreenMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -1,0 +1,23 @@
+{
+  "gui.mtr_no_original_trains.button": "Избор на влакове MTR",
+  "gui.mtr_no_original_trains.cancel": "Отказ",
+  "gui.mtr_no_original_trains.collapse": "Свий",
+  "gui.mtr_no_original_trains.done": "Готово",
+  "gui.mtr_no_original_trains.expand": "Разгъни",
+  "gui.mtr_no_original_trains.kept_summary": "Запазени %1$s / %2$s семейства",
+  "gui.mtr_no_original_trains.reset": "Нулирай",
+  "gui.mtr_no_original_trains.restart_cancel": "Отказ",
+  "gui.mtr_no_original_trains.restart_hint": "Рестартирайте играта.",
+  "gui.mtr_no_original_trains.restart_never": "Без повторно показване",
+  "gui.mtr_no_original_trains.restart_no": "Не, по-късно",
+  "gui.mtr_no_original_trains.restart_subtitle": "Изборът е запазен. Прилага се след рестарт.",
+  "gui.mtr_no_original_trains.restart_title": "Рестартиране на играта сега?",
+  "gui.mtr_no_original_trains.restart_yes": "Да, рестартирай",
+  "gui.mtr_no_original_trains.saved": "Запазено",
+  "gui.mtr_no_original_trains.select_all": "Избери всички",
+  "gui.mtr_no_original_trains.select_none": "Изчисти",
+  "gui.mtr_no_original_trains.subtitle": "Изберете кои семейства вградени влакове остават. Промените се прилагат след рестарт.",
+  "gui.mtr_no_original_trains.title": "Запази влаковете MTR",
+  "gui.mtr_no_original_trains.tooltip": "Изберете кои вградени влакове MTR да запазите",
+  "gui.mtr_no_original_trains.vehicles": "%s превозни средства"
+}

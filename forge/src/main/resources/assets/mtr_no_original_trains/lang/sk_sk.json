@@ -1,0 +1,23 @@
+{
+  "gui.mtr_no_original_trains.button": "Výber vlakov MTR",
+  "gui.mtr_no_original_trains.cancel": "Zrušiť",
+  "gui.mtr_no_original_trains.collapse": "Zbaliť",
+  "gui.mtr_no_original_trains.done": "Hotovo",
+  "gui.mtr_no_original_trains.expand": "Rozbaliť",
+  "gui.mtr_no_original_trains.kept_summary": "Ponechaných %1$s / %2$s rodín",
+  "gui.mtr_no_original_trains.reset": "Obnoviť",
+  "gui.mtr_no_original_trains.restart_cancel": "Zrušiť",
+  "gui.mtr_no_original_trains.restart_hint": "Reštartujte hru.",
+  "gui.mtr_no_original_trains.restart_never": "Nabudúce nezobrazovať",
+  "gui.mtr_no_original_trains.restart_no": "Nie, neskôr",
+  "gui.mtr_no_original_trains.restart_subtitle": "Výber uložený. Prejaví sa po reštarte.",
+  "gui.mtr_no_original_trains.restart_title": "Reštartovať hru teraz?",
+  "gui.mtr_no_original_trains.restart_yes": "Áno, reštartovať",
+  "gui.mtr_no_original_trains.saved": "Uložené",
+  "gui.mtr_no_original_trains.select_all": "Vybrať všetko",
+  "gui.mtr_no_original_trains.select_none": "Zrušiť výber",
+  "gui.mtr_no_original_trains.subtitle": "Vyberte, ktoré rodiny vstavaných vlakov zostanú. Zmeny platia po reštarte.",
+  "gui.mtr_no_original_trains.title": "Ponechať vlaky MTR",
+  "gui.mtr_no_original_trains.tooltip": "Vyberte, ktoré vstavané vlaky MTR ponechať",
+  "gui.mtr_no_original_trains.vehicles": "%s vozidiel"
+}

@@ -1,0 +1,23 @@
+{
+  "gui.mtr_no_original_trains.button": "MTR tren seçimi",
+  "gui.mtr_no_original_trains.cancel": "İptal",
+  "gui.mtr_no_original_trains.collapse": "Daralt",
+  "gui.mtr_no_original_trains.done": "Bitti",
+  "gui.mtr_no_original_trains.expand": "Genişlet",
+  "gui.mtr_no_original_trains.kept_summary": "%1$s / %2$s aile korunuyor",
+  "gui.mtr_no_original_trains.reset": "Sıfırla",
+  "gui.mtr_no_original_trains.restart_cancel": "İptal",
+  "gui.mtr_no_original_trains.restart_hint": "Oyunu yeniden başlatın.",
+  "gui.mtr_no_original_trains.restart_never": "Bir daha gösterme",
+  "gui.mtr_no_original_trains.restart_no": "Hayır, sonra",
+  "gui.mtr_no_original_trains.restart_subtitle": "Seçim kaydedildi. Yeniden başlatmadan sonra geçerli olur.",
+  "gui.mtr_no_original_trains.restart_title": "Oyun şimdi yeniden başlatılsın mı?",
+  "gui.mtr_no_original_trains.restart_yes": "Evet, başlat",
+  "gui.mtr_no_original_trains.saved": "Kaydedildi",
+  "gui.mtr_no_original_trains.select_all": "Tümünü seç",
+  "gui.mtr_no_original_trains.select_none": "Hiçbirini seçme",
+  "gui.mtr_no_original_trains.subtitle": "Hangi yerleşik tren ailelerinin kalacağını seçin. Değişiklikler yeniden başlatmadan sonra geçerli olur.",
+  "gui.mtr_no_original_trains.title": "MTR trenlerini koru",
+  "gui.mtr_no_original_trains.tooltip": "Hangi yerleşik MTR trenlerini koruyacağınızı seçin",
+  "gui.mtr_no_original_trains.vehicles": "%s araç"
+}

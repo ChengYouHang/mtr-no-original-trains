@@ -1,0 +1,23 @@
+{
+  "gui.mtr_no_original_trains.button": "Вибір поїздів MTR",
+  "gui.mtr_no_original_trains.cancel": "Скасувати",
+  "gui.mtr_no_original_trains.collapse": "Згорнути",
+  "gui.mtr_no_original_trains.done": "Готово",
+  "gui.mtr_no_original_trains.expand": "Розгорнути",
+  "gui.mtr_no_original_trains.kept_summary": "Залишено %1$s / %2$s родин",
+  "gui.mtr_no_original_trains.reset": "Скинути",
+  "gui.mtr_no_original_trains.restart_cancel": "Скасувати",
+  "gui.mtr_no_original_trains.restart_hint": "Перезапустіть гру.",
+  "gui.mtr_no_original_trains.restart_never": "Більше не показувати",
+  "gui.mtr_no_original_trains.restart_no": "Ні, пізніше",
+  "gui.mtr_no_original_trains.restart_subtitle": "Вибір збережено. Він застосується після перезапуску.",
+  "gui.mtr_no_original_trains.restart_title": "Перезапустити гру зараз?",
+  "gui.mtr_no_original_trains.restart_yes": "Так, перезапустити",
+  "gui.mtr_no_original_trains.saved": "Збережено",
+  "gui.mtr_no_original_trains.select_all": "Вибрати все",
+  "gui.mtr_no_original_trains.select_none": "Зняти все",
+  "gui.mtr_no_original_trains.subtitle": "Виберіть, які родини вбудованих поїздів залишити. Зміни застосуються після перезапуску.",
+  "gui.mtr_no_original_trains.title": "Залишити поїзди MTR",
+  "gui.mtr_no_original_trains.tooltip": "Виберіть, які вбудовані поїзди MTR залишити",
+  "gui.mtr_no_original_trains.vehicles": "%s од."
+}

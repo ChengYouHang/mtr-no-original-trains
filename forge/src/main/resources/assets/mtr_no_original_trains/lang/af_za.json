@@ -1,0 +1,23 @@
+{
+  "gui.mtr_no_original_trains.button": "MTR-trein keuse",
+  "gui.mtr_no_original_trains.cancel": "Kanselleer",
+  "gui.mtr_no_original_trains.collapse": "Vou toe",
+  "gui.mtr_no_original_trains.done": "Klaar",
+  "gui.mtr_no_original_trains.expand": "Vou oop",
+  "gui.mtr_no_original_trains.kept_summary": "%1$s / %2$s families behou",
+  "gui.mtr_no_original_trains.reset": "Herstel",
+  "gui.mtr_no_original_trains.restart_cancel": "Kanselleer",
+  "gui.mtr_no_original_trains.restart_hint": "Herbegin die speletjie.",
+  "gui.mtr_no_original_trains.restart_never": "Moenie weer wys nie",
+  "gui.mtr_no_original_trains.restart_no": "Nee, later",
+  "gui.mtr_no_original_trains.restart_subtitle": "Keuse gestoor. Dit geld ná herbegin.",
+  "gui.mtr_no_original_trains.restart_title": "Herbegin die speletjie nou?",
+  "gui.mtr_no_original_trains.restart_yes": "Ja, herbegin",
+  "gui.mtr_no_original_trains.saved": "Gestoor",
+  "gui.mtr_no_original_trains.select_all": "Kies alles",
+  "gui.mtr_no_original_trains.select_none": "Kies niks",
+  "gui.mtr_no_original_trains.subtitle": "Kies watter ingeboude treinfamilies bly. Veranderinge geld ná herbegin.",
+  "gui.mtr_no_original_trains.title": "Hou MTR-treine",
+  "gui.mtr_no_original_trains.tooltip": "Kies watter ingeboude MTR-treine jy hou",
+  "gui.mtr_no_original_trains.vehicles": "%s voertuie"
+}

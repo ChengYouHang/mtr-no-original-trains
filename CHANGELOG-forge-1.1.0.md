@@ -21,11 +21,11 @@ Starting with 1.1.0, this mod **requires two additional mods** and **will refuse
 
 **What you will see if they are missing.** The game will stop at the loading screen with a "missing mandatory dependencies" error naming `ferritecore` and `modernfix`. It will not reach the main menu. Install both and it loads normally.
 
-**Upgrading from 1.0.0.** Install the Forge builds of FerriteCore and ModernFix first, then replace the jar. Your config file is not touched and no setting needs changing.
+**Upgrading from 1.0.0.** Install the **Forge** builds of FerriteCore and ModernFix first, then replace the jar. Your config file is not touched and no setting needs changing.
 
 ### Requirements
 
 - Minecraft 1.20.1
 - Forge 47.x
-- Minecraft Transit Railway **4.0.5 or newer** (any 4.x)
+- Minecraft Transit Railway **4.0.0 or newer** (any 4.x)
 - **FerriteCore** and **ModernFix** (both are hard requirements from this version on)

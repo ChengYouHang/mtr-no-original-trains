@@ -1,0 +1,23 @@
+{
+  "gui.mtr_no_original_trains.button": "MTR 列車保留選擇",
+  "gui.mtr_no_original_trains.cancel": "取消",
+  "gui.mtr_no_original_trains.collapse": "收合",
+  "gui.mtr_no_original_trains.done": "完成",
+  "gui.mtr_no_original_trains.expand": "展開",
+  "gui.mtr_no_original_trains.kept_summary": "已保留 %1$s / %2$s 個車系",
+  "gui.mtr_no_original_trains.reset": "恢復預設",
+  "gui.mtr_no_original_trains.restart_cancel": "取消",
+  "gui.mtr_no_original_trains.restart_hint": "重新啟動遊戲後生效。",
+  "gui.mtr_no_original_trains.restart_never": "不再顯示此介面",
+  "gui.mtr_no_original_trains.restart_no": "否，稍後重啟",
+  "gui.mtr_no_original_trains.restart_subtitle": "列車保留選擇已儲存，需要重啟遊戲才會生效。",
+  "gui.mtr_no_original_trains.restart_title": "是否重啟遊戲以生效？",
+  "gui.mtr_no_original_trains.restart_yes": "是，立即重啟",
+  "gui.mtr_no_original_trains.saved": "已儲存",
+  "gui.mtr_no_original_trains.select_all": "全選",
+  "gui.mtr_no_original_trains.select_none": "全不選",
+  "gui.mtr_no_original_trains.subtitle": "勾選要保留的內建車系，修改後重新啟動遊戲生效。",
+  "gui.mtr_no_original_trains.title": "MTR 列車保留選擇",
+  "gui.mtr_no_original_trains.tooltip": "選擇要保留的 MTR 內建列車",
+  "gui.mtr_no_original_trains.vehicles": "%s 輛"
+}

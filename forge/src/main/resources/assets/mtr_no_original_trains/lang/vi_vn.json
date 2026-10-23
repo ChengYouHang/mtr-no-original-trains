@@ -1,0 +1,23 @@
+{
+  "gui.mtr_no_original_trains.button": "Chọn tàu MTR",
+  "gui.mtr_no_original_trains.cancel": "Hủy",
+  "gui.mtr_no_original_trains.collapse": "Thu gọn",
+  "gui.mtr_no_original_trains.done": "Xong",
+  "gui.mtr_no_original_trains.expand": "Mở rộng",
+  "gui.mtr_no_original_trains.kept_summary": "Đang giữ %1$s / %2$s họ tàu",
+  "gui.mtr_no_original_trains.reset": "Đặt lại",
+  "gui.mtr_no_original_trains.restart_cancel": "Hủy",
+  "gui.mtr_no_original_trains.restart_hint": "Khởi động lại trò chơi.",
+  "gui.mtr_no_original_trains.restart_never": "Không hiển thị lại",
+  "gui.mtr_no_original_trains.restart_no": "Không, để sau",
+  "gui.mtr_no_original_trains.restart_subtitle": "Đã lưu lựa chọn. Có hiệu lực sau khi khởi động lại.",
+  "gui.mtr_no_original_trains.restart_title": "Khởi động lại trò chơi ngay?",
+  "gui.mtr_no_original_trains.restart_yes": "Có, khởi động lại",
+  "gui.mtr_no_original_trains.saved": "Đã lưu",
+  "gui.mtr_no_original_trains.select_all": "Chọn tất cả",
+  "gui.mtr_no_original_trains.select_none": "Bỏ chọn tất cả",
+  "gui.mtr_no_original_trains.subtitle": "Chọn họ tàu có sẵn nào được giữ lại. Thay đổi có hiệu lực sau khi khởi động lại.",
+  "gui.mtr_no_original_trains.title": "Giữ tàu MTR",
+  "gui.mtr_no_original_trains.tooltip": "Chọn tàu có sẵn của MTR để giữ lại",
+  "gui.mtr_no_original_trains.vehicles": "%s phương tiện"
+}

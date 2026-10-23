@@ -1,0 +1,23 @@
+{
+  "gui.mtr_no_original_trains.button": "MTR-treinen selecteren",
+  "gui.mtr_no_original_trains.cancel": "Annuleren",
+  "gui.mtr_no_original_trains.collapse": "Invouwen",
+  "gui.mtr_no_original_trains.done": "Klaar",
+  "gui.mtr_no_original_trains.expand": "Uitvouwen",
+  "gui.mtr_no_original_trains.kept_summary": "%1$s / %2$s families behouden",
+  "gui.mtr_no_original_trains.reset": "Herstellen",
+  "gui.mtr_no_original_trains.restart_cancel": "Annuleren",
+  "gui.mtr_no_original_trains.restart_hint": "Herstart het spel.",
+  "gui.mtr_no_original_trains.restart_never": "Niet meer tonen",
+  "gui.mtr_no_original_trains.restart_no": "Nee, later",
+  "gui.mtr_no_original_trains.restart_subtitle": "Selectie opgeslagen. Geldt na herstart.",
+  "gui.mtr_no_original_trains.restart_title": "Spel nu herstarten?",
+  "gui.mtr_no_original_trains.restart_yes": "Ja, herstarten",
+  "gui.mtr_no_original_trains.saved": "Opgeslagen",
+  "gui.mtr_no_original_trains.select_all": "Alles selecteren",
+  "gui.mtr_no_original_trains.select_none": "Niets selecteren",
+  "gui.mtr_no_original_trains.subtitle": "Kies welke ingebouwde treinfamilies blijven. Wijzigingen gelden na herstart.",
+  "gui.mtr_no_original_trains.title": "MTR-treinen behouden",
+  "gui.mtr_no_original_trains.tooltip": "Kies welke ingebouwde MTR-treinen je behoudt",
+  "gui.mtr_no_original_trains.vehicles": "%s voertuigen"
+}

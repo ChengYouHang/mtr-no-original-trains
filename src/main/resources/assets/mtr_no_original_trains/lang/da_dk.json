@@ -1,0 +1,23 @@
+{
+  "gui.mtr_no_original_trains.button": "MTR-togvalg",
+  "gui.mtr_no_original_trains.cancel": "Annuller",
+  "gui.mtr_no_original_trains.collapse": "Fold sammen",
+  "gui.mtr_no_original_trains.done": "Færdig",
+  "gui.mtr_no_original_trains.expand": "Udfold",
+  "gui.mtr_no_original_trains.kept_summary": "Beholder %1$s / %2$s familier",
+  "gui.mtr_no_original_trains.reset": "Nulstil",
+  "gui.mtr_no_original_trains.restart_cancel": "Annuller",
+  "gui.mtr_no_original_trains.restart_hint": "Genstart spillet.",
+  "gui.mtr_no_original_trains.restart_never": "Vis ikke igen",
+  "gui.mtr_no_original_trains.restart_no": "Nej, senere",
+  "gui.mtr_no_original_trains.restart_subtitle": "Valget er gemt. Det gælder efter genstart.",
+  "gui.mtr_no_original_trains.restart_title": "Genstart spillet nu?",
+  "gui.mtr_no_original_trains.restart_yes": "Ja, genstart",
+  "gui.mtr_no_original_trains.saved": "Gemt",
+  "gui.mtr_no_original_trains.select_all": "Vælg alle",
+  "gui.mtr_no_original_trains.select_none": "Fravælg alle",
+  "gui.mtr_no_original_trains.subtitle": "Vælg hvilke indbyggede togfamilier der bliver. Ændringer gælder efter genstart.",
+  "gui.mtr_no_original_trains.title": "Behold MTR-tog",
+  "gui.mtr_no_original_trains.tooltip": "Vælg hvilke indbyggede MTR-tog du beholder",
+  "gui.mtr_no_original_trains.vehicles": "%s køretøjer"
+}
