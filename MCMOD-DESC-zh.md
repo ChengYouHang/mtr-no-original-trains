@@ -1,9 +1,5 @@
 这个模组会把 [MTR] 我的世界铁路 自带的内置列车全部移除，你自己装的追加包列车一个都不动。仅客户端。
 
-ModID：mtr_no_original_trains
-CurseForge：https://www.curseforge.com/minecraft/mc-mods/no-original-trains
-MIT 协议开源，源码：{源码地址}
-
 ## 它做什么
 
 MTR 4.0.5 自带 423 个车辆定义，其中 378 个是内置列车。这些车会出现在车辆选择列表里，模型和贴图也会全部加载进内存——就算你一次都不会放。玩主题追加包的话，这 378 个车纯属累赘。装上本模组之后：
