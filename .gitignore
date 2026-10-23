@@ -34,3 +34,6 @@ _tools/launch_detached.py
 
 # 备份文件
 *.bak
+
+# libs 子目录的依赖 jar 一并排除
+libs/**/*.jar
