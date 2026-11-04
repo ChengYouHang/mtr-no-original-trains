@@ -10,6 +10,8 @@ import net.minecraft.client.gui.widget.ElementListWidget;
 import net.minecraft.text.Text;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -53,6 +55,78 @@ public class AddonSelectScreen extends Screen {
     /** 明细页当前查看的追加包（资源包原始名）。 */
     private String selectedRaw;
     private String selectedDisplay;
+
+    /** 展开中的车系（键 = 包原始名 + "|" + 车系键），明细页用。 */
+    private final Set<String> expandedFamilies = new LinkedHashSet<>();
+
+    /**
+     * 推导追加包车辆所属的「车系」。
+     *
+     * <p>追加包通常<b>不提供</b> {@code family:} 标签（实测上海地铁 legacy 包与合肥现代包
+     * 的 tags 都是空的），因此只能按规则推：
+     * <ol>
+     *   <li><b>按显示名</b>：去掉括号里的方向/变体说明，如
+     *       {@code 合肥轨道交通1号线1期(Forwards)} 与 {@code …(Backwards)} 归一为同一车系；</li>
+     *   <li><b>按 ID 兜底</b>：剥掉 {@code mtr_custom_train_} 前缀与
+     *       {@code _cab_N} / {@code _trailer} / {@code _fN} / {@code _bN} 变体后缀，
+     *       如 {@code mtr_custom_train_ac01_cab_1} → {@code ac01}。</li>
+     * </ol>
+     * 名称里看不出共性时，每辆车自成一组 —— 退化成平铺列表，不影响拦截功能。
+     */
+    static String familyKeyOf(String id, String name) {
+        if (name != null) {
+            String base = name.trim();
+            // ① 去掉结尾的括号说明（可能多层，如「…(Trailer受电弓)」「…(Forwards)」）
+            String prev = null;
+            while (prev == null || !prev.equals(base)) {
+                prev = base;
+                base = base.replaceAll("\\s*[（(][^（()）]*[)）]\\s*$", "").trim();
+            }
+            // ② 去掉结尾的显示变体标记（lcd 车厢等）
+            base = base.replaceAll("(?i)\\s*[_\\-\\s]?lcd$", "").trim();
+            // ③ 去掉开头的括号说明（如「(彩蛋车)合肥…」）
+            prev = null;
+            while (prev == null || !prev.equals(base)) {
+                prev = base;
+                base = base.replaceAll("^\\s*[（(][^（()）]*[)）]\\s*", "").trim();
+            }
+            if (!base.isEmpty() && !base.equals(id)) {
+                return base;
+            }
+        }
+        String key = id == null ? "" : id;
+        if (key.startsWith("mtr_custom_train_")) {
+            key = key.substring("mtr_custom_train_".length());
+        }
+        key = key.replaceAll("(?i)_(cab_\\d+|trailer|f\\d*|b\\d*|t\\d*t?)$", "");
+        return key.isEmpty() ? String.valueOf(id) : key;
+    }
+
+    /**
+     * 取一辆车的显示名：运行时捕获的名字 → 追加包 JSON 自带的名字 → 退回 ID。
+     *
+     * <p>中间那一层很关键：车辆被拦截后就不会注册，运行时名称捕不到，
+     * 而 JSON 里的名字是扫描阶段读到的，<b>永远在</b>。
+     */
+    static String labelOf(String id, Map<String, String> captured) {
+        String name = captured == null ? null : captured.get(id);
+        if (name == null || name.isEmpty()) {
+            name = AddonPackScanner.displayTrainName(id);
+        }
+        if (name == null || name.isEmpty()) {
+            name = id;
+        }
+        return name;
+    }
+
+    /** ID 的最后一个 {@code _xxx} 段（用于区分 legacy 包里同名的不带/带弓/头车/尾车）。 */
+    static String tailOf(String id) {
+        if (id == null) {
+            return "?";
+        }
+        final int us = id.lastIndexOf('_');
+        return us >= 0 && us < id.length() - 1 ? id.substring(us + 1) : id;
+    }
 
     private AddonListWidget list;
 
@@ -244,20 +318,49 @@ public class AddonSelectScreen extends Screen {
 
     /** 一行：包头（vehicleId == null）或单辆追加包列车。 */
     private static final class Row {
+        static final int KIND_PACK = 0;
+        static final int KIND_FAMILY = 1;
+        static final int KIND_VEHICLE = 2;
+        static final int KIND_EMPTY = 3;
+
+        final int kind;
         final String rawPack;
         final String packDisplay;
+        /** 车系键（KIND_FAMILY 用）。 */
+        final String familyKey;
+        final String familyDisplay;
+        /** 该车系下的全部列车 ID（KIND_FAMILY 用，便于整族勾选）。 */
+        final List<String> familyIds;
         final String vehicleId;
         final String vehicleName;
 
-        Row(String rawPack, String packDisplay, String vehicleId, String vehicleName) {
+        private Row(int kind, String rawPack, String packDisplay, String familyKey, String familyDisplay,
+                    List<String> familyIds, String vehicleId, String vehicleName) {
+            this.kind = kind;
             this.rawPack = rawPack;
             this.packDisplay = packDisplay;
+            this.familyKey = familyKey;
+            this.familyDisplay = familyDisplay;
+            this.familyIds = familyIds;
             this.vehicleId = vehicleId;
             this.vehicleName = vehicleName;
         }
 
-        boolean isPackRow() {
-            return vehicleId == null;
+        static Row pack(String rawPack, String packDisplay) {
+            return new Row(KIND_PACK, rawPack, packDisplay, null, null, null, null, null);
+        }
+
+        static Row family(String rawPack, String packDisplay, String familyKey, String familyDisplay,
+                          List<String> ids) {
+            return new Row(KIND_FAMILY, rawPack, packDisplay, familyKey, familyDisplay, ids, null, null);
+        }
+
+        static Row vehicle(String rawPack, String packDisplay, String vehicleId, String vehicleName) {
+            return new Row(KIND_VEHICLE, rawPack, packDisplay, null, null, null, vehicleId, vehicleName);
+        }
+
+        static Row empty() {
+            return new Row(KIND_EMPTY, null, null, null, null, null, null, null);
         }
     }
 
@@ -273,17 +376,38 @@ public class AddonSelectScreen extends Screen {
             final Map<String, String> names = BuiltinTrainFilter.capturedAddonNames();
             if (mode == 0) {
                 if (packs.isEmpty()) {
-                    rows.add(new Row(null, null, null, null)); // 空提示行
+                    rows.add(Row.empty());
                 } else {
                     for (var e : packs.entrySet()) {
-                        rows.add(new Row(e.getKey(), AddonPackScanner.displayPackName(e.getKey()), null, null));
+                        rows.add(Row.pack(e.getKey(), AddonPackScanner.displayPackName(e.getKey())));
                     }
                 }
             } else {
                 final Set<String> ids = packs.get(selectedRaw);
                 if (ids != null) {
+                    // 按推导出的车系分组；组内保持原始声明顺序
+                    final Map<String, List<String>> byFamily = new LinkedHashMap<>();
                     for (String id : ids) {
-                        rows.add(new Row(selectedRaw, selectedDisplay, id, names.getOrDefault(id, id)));
+                        final String key = familyKeyOf(id, labelOf(id, names));
+                        byFamily.computeIfAbsent(key, k -> new ArrayList<>()).add(id);
+                    }
+                    for (var e : byFamily.entrySet()) {
+                        final String key = e.getKey();
+                        rows.add(Row.family(selectedRaw, selectedDisplay, key, key, e.getValue()));
+                        if (expandedFamilies.contains(selectedRaw + "|" + key)) {
+                            // legacy 包的 4 个变体（trailer / cab_1..3）共用同一个名字，
+                            // 展开时补上变体后缀，否则司机看到 4 行一模一样的字
+                            final Map<String, Integer> nameCount = new HashMap<>();
+                            for (String id : e.getValue()) {
+                                nameCount.merge(labelOf(id, names), 1, Integer::sum);
+                            }
+                            for (String id : e.getValue()) {
+                                final String base = labelOf(id, names);
+                                final String label = nameCount.getOrDefault(base, 0) > 1
+                                        ? base + "  ·  " + tailOf(id) : base;
+                                rows.add(Row.vehicle(selectedRaw, selectedDisplay, id, label));
+                            }
+                        }
                     }
                 }
             }
@@ -306,12 +430,26 @@ public class AddonSelectScreen extends Screen {
 
     private final class AddonEntry extends ElementListWidget.Entry<AddonEntry> {
         private final Row row;
+        private final ButtonWidget foldButton;
         /** 勾选框命中区域（render 时更新）。 */
         private int hitX;
         private int hitY;
 
         AddonEntry(Row row) {
             this.row = row;
+            if (row.kind == Row.KIND_FAMILY) {
+                final String key = row.rawPack + "|" + row.familyKey;
+                this.foldButton = ButtonWidget.builder(
+                        Text.literal(expandedFamilies.contains(key) ? "−" : "+"),
+                        b -> {
+                            if (!expandedFamilies.remove(key)) {
+                                expandedFamilies.add(key);
+                            }
+                            list.refreshRows();
+                        }).dimensions(0, 0, 16, 18).build();
+            } else {
+                this.foldButton = null;
+            }
         }
 
         @Override
@@ -320,7 +458,7 @@ public class AddonSelectScreen extends Screen {
             final TextRenderer font = AddonSelectScreen.this.textRenderer;
 
             // 空提示行（没有检测到任何追加包）
-            if (row.rawPack == null && row.vehicleId == null) {
+            if (row.kind == Row.KIND_EMPTY) {
                 ctx.drawCenteredTextWithShadow(font, tr("addon_empty"),
                         AddonSelectScreen.this.width / 2, y + 7, 0x808080);
                 return;
@@ -330,11 +468,19 @@ public class AddonSelectScreen extends Screen {
                 ctx.fill(x - 2, y, x + entryWidth, y + entryHeight - 2, 0x30FFFFFF);
             }
 
-            final boolean packRow = row.isPackRow();
-            final boolean checked = packRow
-                    ? isPackFullyBlocked(row.rawPack)
-                    : blockedAddons.contains(row.vehicleId);
-            final boolean partial = packRow && isPackPartiallyBlocked(row.rawPack);
+            final boolean packRow = row.kind == Row.KIND_PACK;
+            final boolean checked;
+            final boolean partial;
+            if (packRow) {
+                checked = isPackFullyBlocked(row.rawPack);
+                partial = isPackPartiallyBlocked(row.rawPack);
+            } else if (row.kind == Row.KIND_FAMILY) {
+                checked = isFamilyFullyBlocked(row.familyIds);
+                partial = isFamilyPartiallyBlocked(row.familyIds);
+            } else {
+                checked = blockedAddons.contains(row.vehicleId);
+                partial = false;
+            }
 
             int textX;
             if (packRow) {
@@ -359,8 +505,25 @@ public class AddonSelectScreen extends Screen {
                 textX = bx + 22;
             }
 
-            final String name = packRow ? row.packDisplay : row.vehicleName;
-            final int color = packRow ? 0xFFFFFF : (checked ? 0xE0C0B0 : 0xA0A0A0);
+            // 车系行多一个展开按钮
+            if (this.foldButton != null) {
+                this.foldButton.setX(textX);
+                this.foldButton.setY(y + 1);
+                this.foldButton.render(ctx, mouseX, mouseY, delta);
+                textX += 22;
+            }
+
+            final String name;
+            if (packRow) {
+                name = row.packDisplay;
+            } else if (row.kind == Row.KIND_FAMILY) {
+                name = row.familyDisplay;
+            } else {
+                name = row.vehicleName;
+            }
+            final boolean groupRow = packRow || row.kind == Row.KIND_FAMILY;
+            final int color = groupRow ? (checked ? 0xFFFFFF : 0xC0C0C0)
+                    : (checked ? 0xE0C0B0 : 0xA0A0A0);
             ctx.drawTextWithShadow(font,
                     Text.literal(font.trimToWidth(name, entryWidth - (textX - x) - 70)),
                     textX, y + 7, color);
@@ -370,7 +533,35 @@ public class AddonSelectScreen extends Screen {
                 final Text right = tr("vehicles", ids == null ? 0 : ids.size());
                 final int rw = font.getWidth(right);
                 ctx.drawTextWithShadow(font, right, x + entryWidth - rw - 6, y + 7, 0x808080);
+            } else if (row.kind == Row.KIND_FAMILY) {
+                final Text right = tr("vehicles", row.familyIds.size());
+                final int rw = font.getWidth(right);
+                ctx.drawTextWithShadow(font, right, x + entryWidth - rw - 6, y + 7, 0x808080);
             }
+        }
+
+        private boolean isFamilyFullyBlocked(List<String> ids) {
+            if (ids == null || ids.isEmpty()) {
+                return false;
+            }
+            for (String id : ids) {
+                if (!blockedAddons.contains(id)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        private boolean isFamilyPartiallyBlocked(List<String> ids) {
+            if (ids == null) {
+                return false;
+            }
+            for (String id : ids) {
+                if (blockedAddons.contains(id)) {
+                    return true;
+                }
+            }
+            return false;
         }
 
         private boolean isPackFullyBlocked(String raw) {
@@ -401,15 +592,29 @@ public class AddonSelectScreen extends Screen {
 
         @Override
         public boolean mouseClicked(double mouseX, double mouseY, int button) {
-            if (row.rawPack == null && row.vehicleId == null) {
+            if (row.kind == Row.KIND_EMPTY) {
                 return false;
             }
             if (button != 0) {
                 return super.mouseClicked(mouseX, mouseY, button);
             }
-            if (row.isPackRow()) {
+            if (row.kind == Row.KIND_PACK) {
                 // 包行任意点击 → 进入明细
                 enterPack(row.rawPack, row.packDisplay);
+                return true;
+            }
+            // 展开/折叠按钮优先
+            if (this.foldButton != null && this.foldButton.mouseClicked(mouseX, mouseY, button)) {
+                return true;
+            }
+            if (row.kind == Row.KIND_FAMILY) {
+                // 车系行：整族切换
+                if (isFamilyFullyBlocked(row.familyIds)) {
+                    blockedAddons.removeAll(row.familyIds);
+                } else {
+                    blockedAddons.addAll(row.familyIds);
+                }
+                list.refreshRows();
                 return true;
             }
             // 车辆行：整行任意位置点击都算切换（明细页就一个操作，不必分区）

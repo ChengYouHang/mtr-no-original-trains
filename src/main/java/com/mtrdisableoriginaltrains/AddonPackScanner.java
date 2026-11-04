@@ -73,6 +73,16 @@ public final class AddonPackScanner {
      */
     private static volatile Map<String, Set<String>> addonPackTrains = Collections.emptyMap();
     /**
+     * 从追加包 JSON 里直接读到的 {@code 车辆 ID → 显示名}（现代格式取 {@code vehicles[].name}，
+     * legacy 格式取 {@code custom_trains[key].name}）。
+     *
+     * <p>为什么不能只靠运行时捕获：只有<b>真的被注册进 MTR</b> 的车辆才有显示名，
+     * 一旦某辆车被拦截（{@code blockedAddonIds} 命中），它就不会注册、也就捕不到名字，
+     * 选择界面会退化成显示一串 {@code mtr_custom_train_xxx_cab_1}。从 JSON 里读一份
+     * 兜底名字，就能保证「拦截之后回来再看，名字还在」。
+     */
+    private static volatile Map<String, String> addonTrainNames = Collections.emptyMap();
+    /**
      * 运行时从 <b>MTR 本体清单</b>里提取出来的内置列车 ID。
      *
      * <p>这是「支持全部 MTR 4.x 版本」的关键：内置清单不再是过期就失效的静态快照，
@@ -110,6 +120,7 @@ public final class AddonPackScanner {
         final List<String> packNames = new ArrayList<>();
         final List<Set<String>> packAllIds = new ArrayList<>();
         final List<Set<String>> packTrainIds = new ArrayList<>();
+        final List<Map<String, String>> packTrainNames = new ArrayList<>();
         int skipped = 0;
 
         try {
@@ -119,6 +130,7 @@ public final class AddonPackScanner {
                 final String packName = String.valueOf(resource.getResourcePackName());
                 final Set<String> allIds = new LinkedHashSet<>();
                 final Set<String> trainIds = new LinkedHashSet<>();
+                final Map<String, String> trainNames = new LinkedHashMap<>();
                 try (InputStream in = resource.getInputStream();
                      Reader reader = new InputStreamReader(in, StandardCharsets.UTF_8)) {
                     final JsonElement parsed = JsonParser.parseReader(reader);
@@ -128,7 +140,7 @@ public final class AddonPackScanner {
                     }
                     final JsonObject root = parsed.getAsJsonObject();
                     collectDeclaredIds(root, allIds);
-                    collectTrainIds(root, trainIds);
+                    collectTrainIds(root, trainIds, trainNames);
                 } catch (Throwable t) {
                     // 单份解析失败只跳过这一份，不影响其它包
                     skipped++;
@@ -140,6 +152,7 @@ public final class AddonPackScanner {
                 packNames.add(packName);
                 packAllIds.add(allIds);
                 packTrainIds.add(trainIds);
+                packTrainNames.add(trainNames);
             }
         } catch (Throwable t) {
             MtrDisableOriginalTrains.LOGGER.warn(
@@ -173,6 +186,7 @@ public final class AddonPackScanner {
         final Set<String> collectedIds = new LinkedHashSet<>();
         final Set<String> collectedPacks = new LinkedHashSet<>();
         final Map<String, Set<String>> collectedPackTrains = new LinkedHashMap<>();
+        final Map<String, String> collectedTrainNames = new LinkedHashMap<>();
         for (int i = 0; i < packNames.size(); i++) {
             if (i == builtinIndex) {
                 continue;
@@ -183,11 +197,16 @@ public final class AddonPackScanner {
             if (trains != null && !trains.isEmpty()) {
                 collectedPackTrains.put(packNames.get(i), new LinkedHashSet<>(trains));
             }
+            final Map<String, String> names = packTrainNames.get(i);
+            if (names != null) {
+                collectedTrainNames.putAll(names);
+            }
         }
 
         declaredIds = collectedIds;
         sourcePacks = collectedPacks;
         addonPackTrains = Collections.unmodifiableMap(collectedPackTrains);
+        addonTrainNames = Collections.unmodifiableMap(collectedTrainNames);
         builtinFound = builtinIndex >= 0;
         builtinPackName = builtinFound ? packNames.get(builtinIndex) : "未识别";
         dynamicBuiltinIds = builtinFound ? packTrainIds.get(builtinIndex) : Collections.emptySet();
@@ -208,6 +227,7 @@ public final class AddonPackScanner {
         declaredIds = Collections.emptySet();
         sourcePacks = Collections.emptySet();
         addonPackTrains = Collections.emptyMap();
+        addonTrainNames = Collections.emptyMap();
         builtinFound = false;
         builtinPackName = "未识别";
         dynamicBuiltinIds = Collections.emptySet();
@@ -292,6 +312,16 @@ public final class AddonPackScanner {
     }
 
     /**
+     * 追加包 JSON 里自带的车辆显示名（可能是 null）。
+     *
+     * <p>与运行时捕获的名字相比，这份名字<b>不依赖车辆是否被注册</b>，
+     * 因此拦截之后重新打开选择界面也能正常显示。
+     */
+    public static String displayTrainName(String id) {
+        return id == null ? null : addonTrainNames.get(id);
+    }
+
+    /**
      * 把资源包的原始名转成适合展示的名字。
      *
      * <p>引擎给 zip 包的名字形如 {@code file/上海地铁v3.zip}（fabric）或
@@ -315,7 +345,7 @@ public final class AddonPackScanner {
     }
 
     /** 单份 JSON 里属于「列车」的车辆 ID（现代格式判 transportMode，legacy 车一律算列车）。 */
-    private static void collectTrainIds(JsonObject root, Set<String> out) {
+    private static void collectTrainIds(JsonObject root, Set<String> out, Map<String, String> names) {
         final JsonElement vehicles = root.get("vehicles");
         if (vehicles != null && vehicles.isJsonArray()) {
             for (JsonElement element : vehicles.getAsJsonArray()) {
@@ -332,7 +362,15 @@ public final class AddonPackScanner {
                         continue;
                     }
                 }
-                addString(out, vehicle.get("id"));
+                final String id = stringOf(vehicle.get("id"));
+                if (id == null) {
+                    continue;
+                }
+                out.add(id);
+                final String name = stringOf(vehicle.get("name"));
+                if (name != null) {
+                    names.put(id, name);
+                }
             }
         }
 
@@ -340,13 +378,25 @@ public final class AddonPackScanner {
         final JsonElement legacy = root.get("custom_trains");
         if (legacy != null) {
             if (legacy.isJsonObject()) {
-                for (String key : legacy.getAsJsonObject().keySet()) {
-                    addLegacyIds(out, key);
+                for (Map.Entry<String, JsonElement> entry : legacy.getAsJsonObject().entrySet()) {
+                    String name = null;
+                    final JsonElement value = entry.getValue();
+                    if (value != null && value.isJsonObject()) {
+                        name = stringOf(value.getAsJsonObject().get("name"));
+                    }
+                    addLegacyIds(out, entry.getKey(), names, name);
                 }
             } else if (legacy.isJsonArray()) {
                 for (JsonElement element : legacy.getAsJsonArray()) {
                     if (element != null && element.isJsonObject()) {
-                        addString(out, element.getAsJsonObject().get("id"));
+                        final String id = stringOf(element.getAsJsonObject().get("id"));
+                        if (id != null) {
+                            out.add(id);
+                            final String name = stringOf(element.getAsJsonObject().get("name"));
+                            if (name != null) {
+                                names.put(id, name);
+                            }
+                        }
                     }
                 }
             }
@@ -370,7 +420,8 @@ public final class AddonPackScanner {
         if (legacy != null) {
             if (legacy.isJsonObject()) {
                 for (String key : legacy.getAsJsonObject().keySet()) {
-                    addLegacyIds(out, key);
+                    // 这里只要 ID，不需要名字
+                    addLegacyIds(out, key, null, null);
                 }
             } else if (legacy.isJsonArray()) {
                 for (JsonElement element : legacy.getAsJsonArray()) {
@@ -383,22 +434,35 @@ public final class AddonPackScanner {
     }
 
     /** 把一个 legacy {@code custom_trains} 键名展开成 4 个真实车辆 ID。 */
-    private static void addLegacyIds(Set<String> out, String key) {
+    private static void addLegacyIds(Set<String> out, String key, Map<String, String> names, String name) {
         if (key == null || key.isEmpty()) {
             return;
         }
         final String lowerKey = key.toLowerCase(Locale.ENGLISH);
         for (String variant : LEGACY_VARIANTS) {
-            out.add("mtr_custom_train_" + lowerKey + "_" + variant);
+            final String id = "mtr_custom_train_" + lowerKey + "_" + variant;
+            out.add(id);
+            if (name != null && !name.isEmpty()) {
+                names.put(id, name);
+            }
         }
     }
 
     private static void addString(Set<String> out, JsonElement element) {
+        final String value = stringOf(element);
+        if (value != null) {
+            out.add(value);
+        }
+    }
+
+    /** JSON 原始值转字符串，非字符串/空串一律返回 null。 */
+    private static String stringOf(JsonElement element) {
         if (element != null && element.isJsonPrimitive()) {
             final String value = element.getAsString();
             if (value != null && !value.isEmpty()) {
-                out.add(value);
+                return value;
             }
         }
+        return null;
     }
 }
