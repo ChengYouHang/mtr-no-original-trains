@@ -21,7 +21,7 @@ FPS does not change. What changes is how much the game carries around before you
 
 ## Pick what to keep
 
-You do not have to remove all 378. A **MTR train selection** button on the main menu opens a picker:
+You do not have to remove all 378. A **MTR Train Selection** button on the main menu opens a picker:
 
 - **Grouped by family.** Ticking "SP1900" keeps the whole family — no hunting for individual car IDs.
 - **Select all / select none / reset to default**, with a collapsible list and a live count (`kept 4 / 32 families`).
@@ -32,7 +32,7 @@ Prefer the config file? Nothing changed — `keepIds` and `extraRemoveIds` work 
 
 ## Filter addon pack trains, too
 
-The same picker now covers trains that addon packs add. The main menu button opens a small hub first — **Built-in trains**, **Addon pack trains**, **Cancel**. *Built-in trains* is the screen described above; *Addon pack trains* lists every pack in your resource pack folder that actually declares vehicles.
+The same picker now covers trains that addon packs add. The main menu button opens a small hub first — **Built-in Trains**, **Addon Trains**, **Cancel**. *Built-in Trains* is the screen described above; *Addon Trains* lists every pack in your resource pack folder that actually declares vehicles.
 
 - **Only real train packs are listed.** A pack appears only if it ships a `mtr:mtr_custom_resources.json` containing vehicles. Texture packs, shader packs and sound packs never show up, however many you have installed.
 - **Old and new pack formats both work.** Packs written for MTR 3 (`custom_trains`) and packs written for MTR 4 (`vehicles[]`) are read the same way.

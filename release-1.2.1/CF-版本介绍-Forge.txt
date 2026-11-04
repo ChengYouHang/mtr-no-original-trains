@@ -1,0 +1,47 @@
+No Original Trains 1.2.1 — Forge
+File: mtr_no_original_trains-forge-1.2.1.jar
+Minecraft 1.20.1 · Forge 47.x
+
+
+ABOUT THIS VERSION
+
+1.2.1 extends the train picker to trains added by ADDON PACKS. Until 1.2.0 you could only choose which of MTR's own built-in trains stay; a 100-car metro pack still flooded the vehicle list. Now you can block those too, per pack, per line, per model or per car.
+
+Nothing about the 1.2.0 flow changed. If you never open the Addon Trains screen, this build behaves exactly as 1.2.0 did.
+
+This is the Forge build. It has the same features as the Fabric build apart from loader code.
+
+
+WHAT'S NEW
+
+- The main menu button now opens a small hub with three choices: Built-in Trains, Addon Trains, Cancel. Built-in Trains leads to the picker you already know.
+- Addon Trains lists every pack in your resource pack folder that declares vehicles, with a car count next to each one. Click a pack to drill in, Back to return to the pack list, Done to save.
+- Only real train packs show up. A pack is listed only if it actually ships an mtr:mtr_custom_resources.json declaring vehicles. Texture packs, shader packs, sound packs and anything else sitting in your resource pack folder are never scanned in.
+- Both pack formats are supported. Modern packs (vehicles[]) and old-style packs (custom_trains) are read the same way, so a pack that has not been updated for MTR 4 still lists its trains properly.
+- Trains are grouped two levels deep: line, then model. Addon packs carry no family tag at all, so both levels are derived from the names and IDs the pack declares itself. The Shanghai pack's 248 cars open as 18 lines; a line with several models (Line 16 has seven) opens into those models, and a model opens into its individual cars.
+- Tick a line to block the whole line at once, tick a model to block just that model, or expand a model and tick single cars. Select All and Select None work on the current screen.
+- Nested rows drop the repeated line prefix, so a model nested under Shanghai Metro Line 16 shows as 16A01(AC19) instead of repeating the whole line name on every row.
+- Names come from the pack manifest, not from the running game, so a train keeps its real name even after you have blocked it. The row does not degrade into a raw ID like mtr_custom_train_ac01_cab_1 the next time you open the screen.
+- Counters tell you where you stand. The pack list header reads "N addon packs, M trains in total"; a pack's own page reads "Blocking 12 / 109 trains in this pack".
+
+
+FIXED
+
+- The new screens showed raw translation keys on Forge (gui.mtr_no_original_trains.tab_builtin and friends) instead of text. Forge keeps its own copy of the language files and the new keys had only been added on the Fabric side. Both sides are now generated from the same source. The Fabric build was never affected.
+
+
+BEHAVIOUR
+
+- Addon trains are never touched unless you explicitly tick them. By default every addon pack car is allowed through, identical to 1.2.0.
+- Built-in keep rules always win. If a built-in train is on your keep list, no addon setting can remove it.
+- Saving goes through the same restart dialog as the built-in picker: restart now, restart later, or never ask again. Nothing takes effect until the game restarts.
+- Trains only, never boats or aircraft. The picker counts and filters vehicles whose transport mode is TRAIN; pack-declared boats, airships and cable cars are left alone.
+
+
+INSTALL
+
+- Delete the 1.2.0 jar first — both builds share the same mod ID and will conflict if you keep two.
+- Drop mtr_no_original_trains-forge-1.2.1.jar into mods/.
+- Requires Minecraft Transit Railway 4.0.0 or newer, plus FerriteCore (Forge) and ModernFix (Forge). All three are hard requirements.
+- Client-side only. Servers do not need it. Do not install this jar on Fabric — use the Fabric build.
+- Known good on Forge 47.4.26. Any Forge 47.x on 1.20.1 should work.

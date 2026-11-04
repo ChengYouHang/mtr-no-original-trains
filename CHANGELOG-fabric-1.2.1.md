@@ -2,11 +2,11 @@
 
 1.2.0 let you pick which **built-in** MTR trains to keep. This update extends the same picker to **trains added by addon packs**, so a 100-car Chinese metro pack no longer floods your train menu.
 
-Nothing about the 1.2.0 flow changed. If you never open the addon tab, the mod behaves exactly as it did before.
+Nothing about the 1.2.0 flow changed. If you never open the Addon Trains screen, the mod behaves exactly as it did before.
 
 ### New: addon pack train filter
 
-- **The main menu button now opens a small hub** with three choices: **Built-in trains**, **Addon pack trains**, and **Cancel**. Built-in trains leads to the exact screen you already know.
+- **The main menu button now opens a small hub** with three choices: **Built-in Trains**, **Addon Trains**, and **Cancel**. Built-in Trains leads to the exact screen you already know.
 - **Addon packs are listed by name, with a car count next to each one.** Click a pack to drill into it. Click **Back** to return to the pack list, **Done** to save.
 - **Only real train packs show up.** A pack appears in the list only if it actually ships a `mtr:mtr_custom_resources.json` declaring vehicles. Pure texture packs, shader packs, sound packs, and anything else that merely sits in your resource pack folder are never scanned in — the list stays clean.
 - **Both pack formats are supported.** Modern packs (`vehicles[]`) and old-style packs (`custom_trains`) are read the same way, so a pack that has not been updated for MTR 4 still lists its trains properly.
