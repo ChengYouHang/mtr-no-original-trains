@@ -1,4 +1,9 @@
 {
+  "gui.mtr_no_original_trains.addon_empty": "Ingen addon-tog fundet",
+  "gui.mtr_no_original_trains.addon_list_summary": "%1$s addon packs, %2$s trains in total",
+  "gui.mtr_no_original_trains.addon_pack_summary": "Blocking %1$s / %2$s trains in this pack",
+  "gui.mtr_no_original_trains.addon_summary": "Blokerer %1$s / %2$s addon-tog (%3$s pakker)",
+  "gui.mtr_no_original_trains.back": "Back",
   "gui.mtr_no_original_trains.button": "MTR-togvalg",
   "gui.mtr_no_original_trains.cancel": "Annuller",
   "gui.mtr_no_original_trains.collapse": "Fold sammen",
@@ -17,6 +22,8 @@
   "gui.mtr_no_original_trains.select_all": "Vælg alle",
   "gui.mtr_no_original_trains.select_none": "Fravælg alle",
   "gui.mtr_no_original_trains.subtitle": "Vælg hvilke indbyggede togfamilier der bliver. Ændringer gælder efter genstart.",
+  "gui.mtr_no_original_trains.tab_addon": "Addon-tog",
+  "gui.mtr_no_original_trains.tab_builtin": "Indbyggede tog",
   "gui.mtr_no_original_trains.title": "Behold MTR-tog",
   "gui.mtr_no_original_trains.tooltip": "Vælg hvilke indbyggede MTR-tog du beholder",
   "gui.mtr_no_original_trains.vehicles": "%s køretøjer"

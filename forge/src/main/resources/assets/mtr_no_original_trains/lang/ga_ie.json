@@ -1,4 +1,9 @@
 {
+  "gui.mtr_no_original_trains.addon_empty": "No addon pack trains detected",
+  "gui.mtr_no_original_trains.addon_list_summary": "%1$s addon packs, %2$s trains in total",
+  "gui.mtr_no_original_trains.addon_pack_summary": "Blocking %1$s / %2$s trains in this pack",
+  "gui.mtr_no_original_trains.addon_summary": "Blocking %1$s / %2$s addon trains across %3$s packs",
+  "gui.mtr_no_original_trains.back": "Back",
   "gui.mtr_no_original_trains.button": "Roghnú traenacha MTR",
   "gui.mtr_no_original_trains.cancel": "Cealaigh",
   "gui.mtr_no_original_trains.collapse": "Crap",
@@ -17,6 +22,8 @@
   "gui.mtr_no_original_trains.select_all": "Roghnaigh uile",
   "gui.mtr_no_original_trains.select_none": "Díroghnaigh uile",
   "gui.mtr_no_original_trains.subtitle": "Roghnaigh cé na teaghlaigh traenach ionsuite a fhanann. Bíonn na hathruithe i bhfeidhm tar éis atosú.",
+  "gui.mtr_no_original_trains.tab_addon": "Addon Trains",
+  "gui.mtr_no_original_trains.tab_builtin": "Built-in Trains",
   "gui.mtr_no_original_trains.title": "Coinnigh traenacha MTR",
   "gui.mtr_no_original_trains.tooltip": "Roghnaigh cé na traenacha ionsuite MTR le coinneáil",
   "gui.mtr_no_original_trains.vehicles": "%s feithicil"

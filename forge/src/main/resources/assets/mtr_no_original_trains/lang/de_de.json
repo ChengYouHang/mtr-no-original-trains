@@ -1,4 +1,9 @@
 {
+  "gui.mtr_no_original_trains.addon_empty": "Keine Addon-Züge erkannt",
+  "gui.mtr_no_original_trains.addon_list_summary": "%1$s Addon-Pakete, insgesamt %2$s Züge",
+  "gui.mtr_no_original_trains.addon_pack_summary": "%1$s / %2$s Züge dieses Pakets blockiert",
+  "gui.mtr_no_original_trains.addon_summary": "%1$s / %2$s Addon-Züge blockiert (%3$s Pakete)",
+  "gui.mtr_no_original_trains.back": "Zurück",
   "gui.mtr_no_original_trains.button": "MTR-Zugauswahl",
   "gui.mtr_no_original_trains.cancel": "Abbrechen",
   "gui.mtr_no_original_trains.collapse": "Zuklappen",
@@ -17,6 +22,8 @@
   "gui.mtr_no_original_trains.select_all": "Alle auswählen",
   "gui.mtr_no_original_trains.select_none": "Keine auswählen",
   "gui.mtr_no_original_trains.subtitle": "Wähle, welche eingebauten Zugfamilien bleiben. Änderungen gelten nach Neustart.",
+  "gui.mtr_no_original_trains.tab_addon": "Addon-Züge",
+  "gui.mtr_no_original_trains.tab_builtin": "Eingebaute Züge",
   "gui.mtr_no_original_trains.title": "MTR-Züge behalten",
   "gui.mtr_no_original_trains.tooltip": "Wähle, welche eingebauten MTR-Züge bleiben",
   "gui.mtr_no_original_trains.vehicles": "%s Fahrzeuge"

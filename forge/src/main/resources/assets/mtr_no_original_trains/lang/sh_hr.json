@@ -1,4 +1,9 @@
 {
+  "gui.mtr_no_original_trains.addon_empty": "No addon pack trains detected",
+  "gui.mtr_no_original_trains.addon_list_summary": "%1$s addon packs, %2$s trains in total",
+  "gui.mtr_no_original_trains.addon_pack_summary": "Blocking %1$s / %2$s trains in this pack",
+  "gui.mtr_no_original_trains.addon_summary": "Blocking %1$s / %2$s addon trains across %3$s packs",
+  "gui.mtr_no_original_trains.back": "Back",
   "gui.mtr_no_original_trains.button": "Odabir vlakova MTR",
   "gui.mtr_no_original_trains.cancel": "Odustani",
   "gui.mtr_no_original_trains.collapse": "Sažmi",
@@ -17,6 +22,8 @@
   "gui.mtr_no_original_trains.select_all": "Odaberi sve",
   "gui.mtr_no_original_trains.select_none": "Poništi odabir",
   "gui.mtr_no_original_trains.subtitle": "Odaberite koje obitelji ugrađenih vlakova ostaju. Promjene vrijede nakon ponovnog pokretanja.",
+  "gui.mtr_no_original_trains.tab_addon": "Addon Trains",
+  "gui.mtr_no_original_trains.tab_builtin": "Built-in Trains",
   "gui.mtr_no_original_trains.title": "Zadrži vlakove MTR",
   "gui.mtr_no_original_trains.tooltip": "Odaberite koje ugrađene vlakove MTR zadržati",
   "gui.mtr_no_original_trains.vehicles": "%s vozila"

@@ -1,4 +1,9 @@
 {
+  "gui.mtr_no_original_trains.addon_empty": "Niciun tren din addon detectat",
+  "gui.mtr_no_original_trains.addon_list_summary": "%1$s addon packs, %2$s trains in total",
+  "gui.mtr_no_original_trains.addon_pack_summary": "Blocking %1$s / %2$s trains in this pack",
+  "gui.mtr_no_original_trains.addon_summary": "Se blochează %1$s / %2$s trenuri din addonuri (%3$s pachete)",
+  "gui.mtr_no_original_trains.back": "Back",
   "gui.mtr_no_original_trains.button": "Selecția trenurilor MTR",
   "gui.mtr_no_original_trains.cancel": "Anulează",
   "gui.mtr_no_original_trains.collapse": "Restrânge",
@@ -17,6 +22,8 @@
   "gui.mtr_no_original_trains.select_all": "Selectează tot",
   "gui.mtr_no_original_trains.select_none": "Deselectează tot",
   "gui.mtr_no_original_trains.subtitle": "Alege ce familii de trenuri încorporate rămân. Modificările se aplică după repornire.",
+  "gui.mtr_no_original_trains.tab_addon": "Trenuri din addonuri",
+  "gui.mtr_no_original_trains.tab_builtin": "Trenuri integrate",
   "gui.mtr_no_original_trains.title": "Păstrează trenurile MTR",
   "gui.mtr_no_original_trains.tooltip": "Alege ce trenuri încorporate MTR păstrezi",
   "gui.mtr_no_original_trains.vehicles": "%s vehicule"

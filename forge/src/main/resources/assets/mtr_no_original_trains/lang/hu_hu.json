@@ -1,4 +1,9 @@
 {
+  "gui.mtr_no_original_trains.addon_empty": "Nem észlelhető addon vonat",
+  "gui.mtr_no_original_trains.addon_list_summary": "%1$s addon packs, %2$s trains in total",
+  "gui.mtr_no_original_trains.addon_pack_summary": "Blocking %1$s / %2$s trains in this pack",
+  "gui.mtr_no_original_trains.addon_summary": "%1$s / %2$s addon vonat blokkolva (%3$s csomag)",
+  "gui.mtr_no_original_trains.back": "Back",
   "gui.mtr_no_original_trains.button": "MTR vonatválasztás",
   "gui.mtr_no_original_trains.cancel": "Mégse",
   "gui.mtr_no_original_trains.collapse": "Bezár",
@@ -17,6 +22,8 @@
   "gui.mtr_no_original_trains.select_all": "Mindet kijelöl",
   "gui.mtr_no_original_trains.select_none": "Kijelölés törlése",
   "gui.mtr_no_original_trains.subtitle": "Válaszd ki, mely beépített vonatcsaládok maradjanak. A változások újraindítás után lépnek életbe.",
+  "gui.mtr_no_original_trains.tab_addon": "Addon vonatok",
+  "gui.mtr_no_original_trains.tab_builtin": "Beépített vonatok",
   "gui.mtr_no_original_trains.title": "MTR vonatok megtartása",
   "gui.mtr_no_original_trains.tooltip": "Válaszd ki, mely beépített MTR vonatokat tartod meg",
   "gui.mtr_no_original_trains.vehicles": "%s jármű"

@@ -1,4 +1,9 @@
 {
+  "gui.mtr_no_original_trains.addon_empty": "Addon-junia ei havaittu",
+  "gui.mtr_no_original_trains.addon_list_summary": "%1$s addon packs, %2$s trains in total",
+  "gui.mtr_no_original_trains.addon_pack_summary": "Blocking %1$s / %2$s trains in this pack",
+  "gui.mtr_no_original_trains.addon_summary": "Estetään %1$s / %2$s addon-junaa (%3$s pakettia)",
+  "gui.mtr_no_original_trains.back": "Back",
   "gui.mtr_no_original_trains.button": "MTR-junien valinta",
   "gui.mtr_no_original_trains.cancel": "Peruuta",
   "gui.mtr_no_original_trains.collapse": "Tiivistä",
@@ -17,6 +22,8 @@
   "gui.mtr_no_original_trains.select_all": "Valitse kaikki",
   "gui.mtr_no_original_trains.select_none": "Poista valinnat",
   "gui.mtr_no_original_trains.subtitle": "Valitse mitkä sisäänrakennetut junaryhmät jäävät. Muutokset tulevat voimaan uudelleenkäynnistyksen jälkeen.",
+  "gui.mtr_no_original_trains.tab_addon": "Addon-junat",
+  "gui.mtr_no_original_trains.tab_builtin": "Sisäänrakennetut junat",
   "gui.mtr_no_original_trains.title": "Säilytä MTR-junat",
   "gui.mtr_no_original_trains.tooltip": "Valitse mitkä sisäänrakennetut MTR-junat säilytetään",
   "gui.mtr_no_original_trains.vehicles": "%s ajoneuvoa"

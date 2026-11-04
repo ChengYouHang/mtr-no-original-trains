@@ -1,4 +1,9 @@
 {
+  "gui.mtr_no_original_trains.addon_empty": "لم يتم اكتشاف قطارات الإضافات",
+  "gui.mtr_no_original_trains.addon_list_summary": "%1$s addon packs, %2$s trains in total",
+  "gui.mtr_no_original_trains.addon_pack_summary": "Blocking %1$s / %2$s trains in this pack",
+  "gui.mtr_no_original_trains.addon_summary": "يتم حظر %1$s / %2$s من قطارات الإضافات (%3$s حزم)",
+  "gui.mtr_no_original_trains.back": "Back",
   "gui.mtr_no_original_trains.button": "اختيار قطارات MTR",
   "gui.mtr_no_original_trains.cancel": "إلغاء",
   "gui.mtr_no_original_trains.collapse": "طي",
@@ -17,6 +22,8 @@
   "gui.mtr_no_original_trains.select_all": "تحديد الكل",
   "gui.mtr_no_original_trains.select_none": "إلغاء تحديد الكل",
   "gui.mtr_no_original_trains.subtitle": "اختر عائلات القطارات المدمجة التي تريد الإبقاء عليها. تُطبَّق التغييرات بعد إعادة التشغيل.",
+  "gui.mtr_no_original_trains.tab_addon": "قطارات الإضافات",
+  "gui.mtr_no_original_trains.tab_builtin": "القطارات المدمجة",
   "gui.mtr_no_original_trains.title": "الإبقاء على قطارات MTR",
   "gui.mtr_no_original_trains.tooltip": "اختر قطارات MTR المدمجة التي تريد الإبقاء عليها",
   "gui.mtr_no_original_trains.vehicles": "%s مركبة"

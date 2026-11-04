@@ -1,4 +1,9 @@
 {
+  "gui.mtr_no_original_trains.addon_empty": "Nenhum comboio de addon detetado",
+  "gui.mtr_no_original_trains.addon_list_summary": "%1$s addon packs, %2$s trains in total",
+  "gui.mtr_no_original_trains.addon_pack_summary": "Blocking %1$s / %2$s trains in this pack",
+  "gui.mtr_no_original_trains.addon_summary": "A bloquear %1$s / %2$s comboios de addons (%3$s pacotes)",
+  "gui.mtr_no_original_trains.back": "Back",
   "gui.mtr_no_original_trains.button": "Seleção de comboios MTR",
   "gui.mtr_no_original_trains.cancel": "Cancelar",
   "gui.mtr_no_original_trains.collapse": "Recolher",
@@ -17,6 +22,8 @@
   "gui.mtr_no_original_trains.select_all": "Selecionar tudo",
   "gui.mtr_no_original_trains.select_none": "Desmarcar tudo",
   "gui.mtr_no_original_trains.subtitle": "Escolha que famílias de comboios integrados ficam. As alterações aplicam-se após reiniciar.",
+  "gui.mtr_no_original_trains.tab_addon": "Comboios de addons",
+  "gui.mtr_no_original_trains.tab_builtin": "Comboios integrados",
   "gui.mtr_no_original_trains.title": "Manter comboios MTR",
   "gui.mtr_no_original_trains.tooltip": "Escolha que comboios integrados do MTR manter",
   "gui.mtr_no_original_trains.vehicles": "%s veículos"

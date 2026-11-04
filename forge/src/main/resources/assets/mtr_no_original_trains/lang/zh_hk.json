@@ -1,4 +1,9 @@
 {
+  "gui.mtr_no_original_trains.addon_empty": "未偵測到附加包列車",
+  "gui.mtr_no_original_trains.addon_list_summary": "共 %1$s 個附加包，%2$s 輛列車",
+  "gui.mtr_no_original_trains.addon_pack_summary": "已攔截該包列車 %1$s / %2$s 輛",
+  "gui.mtr_no_original_trains.addon_summary": "已攔截附加包列車 %1$s / %2$s 輛（%3$s 個包）",
+  "gui.mtr_no_original_trains.back": "返回",
   "gui.mtr_no_original_trains.button": "MTR 列車保留選擇",
   "gui.mtr_no_original_trains.cancel": "取消",
   "gui.mtr_no_original_trains.collapse": "收合",
@@ -17,6 +22,8 @@
   "gui.mtr_no_original_trains.select_all": "全選",
   "gui.mtr_no_original_trains.select_none": "全不選",
   "gui.mtr_no_original_trains.subtitle": "勾選要保留的內建車系，修改後重新啟動遊戲生效。",
+  "gui.mtr_no_original_trains.tab_addon": "附加包列車",
+  "gui.mtr_no_original_trains.tab_builtin": "內置列車",
   "gui.mtr_no_original_trains.title": "MTR 列車保留選擇",
   "gui.mtr_no_original_trains.tooltip": "選擇要保留的 MTR 內建列車",
   "gui.mtr_no_original_trains.vehicles": "%s 輛"

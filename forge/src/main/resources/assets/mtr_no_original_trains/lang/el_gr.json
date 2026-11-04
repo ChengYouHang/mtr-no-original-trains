@@ -1,4 +1,9 @@
 {
+  "gui.mtr_no_original_trains.addon_empty": "Δεν εντοπίστηκαν τρένα addon",
+  "gui.mtr_no_original_trains.addon_list_summary": "%1$s addon packs, %2$s trains in total",
+  "gui.mtr_no_original_trains.addon_pack_summary": "Blocking %1$s / %2$s trains in this pack",
+  "gui.mtr_no_original_trains.addon_summary": "Μπλοκάρονται %1$s / %2$s τρένα addon (%3$s πακέτα)",
+  "gui.mtr_no_original_trains.back": "Back",
   "gui.mtr_no_original_trains.button": "Επιλογή τρένων MTR",
   "gui.mtr_no_original_trains.cancel": "Άκυρο",
   "gui.mtr_no_original_trains.collapse": "Σύμπτυξη",
@@ -17,6 +22,8 @@
   "gui.mtr_no_original_trains.select_all": "Επιλογή όλων",
   "gui.mtr_no_original_trains.select_none": "Καμία επιλογή",
   "gui.mtr_no_original_trains.subtitle": "Επιλέξτε ποιες ενσωματωμένες οικογένειες τρένων μένουν. Οι αλλαγές ισχύουν μετά την επανεκκίνηση.",
+  "gui.mtr_no_original_trains.tab_addon": "Τρένα addon",
+  "gui.mtr_no_original_trains.tab_builtin": "Ενσωματωμένα τρένα",
   "gui.mtr_no_original_trains.title": "Διατήρηση τρένων MTR",
   "gui.mtr_no_original_trains.tooltip": "Επιλέξτε ποια ενσωματωμένα τρένα MTR θα διατηρήσετε",
   "gui.mtr_no_original_trains.vehicles": "%s οχήματα"

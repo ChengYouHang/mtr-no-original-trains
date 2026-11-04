@@ -1,4 +1,9 @@
 {
+  "gui.mtr_no_original_trains.addon_empty": "No addon pack trains detected",
+  "gui.mtr_no_original_trains.addon_list_summary": "%1$s addon packs, %2$s trains in total",
+  "gui.mtr_no_original_trains.addon_pack_summary": "Blocking %1$s / %2$s trains in this pack",
+  "gui.mtr_no_original_trains.addon_summary": "Blocking %1$s / %2$s addon trains across %3$s packs",
+  "gui.mtr_no_original_trains.back": "Back",
   "gui.mtr_no_original_trains.button": "Pagpili ng MTR tren",
   "gui.mtr_no_original_trains.cancel": "Kanselahin",
   "gui.mtr_no_original_trains.collapse": "I-collapse",
@@ -17,6 +22,8 @@
   "gui.mtr_no_original_trains.select_all": "Piliin lahat",
   "gui.mtr_no_original_trains.select_none": "Alisin lahat",
   "gui.mtr_no_original_trains.subtitle": "Piliin kung aling pamilya ng built-in na tren ang mananatili. Magkakabisa ang mga pagbabago pagkatapos mag-restart.",
+  "gui.mtr_no_original_trains.tab_addon": "Addon Trains",
+  "gui.mtr_no_original_trains.tab_builtin": "Built-in Trains",
   "gui.mtr_no_original_trains.title": "Panatilihin ang MTR tren",
   "gui.mtr_no_original_trains.tooltip": "Piliin kung aling built-in na MTR tren ang pananatilihin",
   "gui.mtr_no_original_trains.vehicles": "%s sasakyan"

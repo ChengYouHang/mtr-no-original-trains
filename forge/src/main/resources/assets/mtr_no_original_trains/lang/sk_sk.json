@@ -1,4 +1,9 @@
 {
+  "gui.mtr_no_original_trains.addon_empty": "Neboli zistené žiadne vlaky z addonov",
+  "gui.mtr_no_original_trains.addon_list_summary": "%1$s addon packs, %2$s trains in total",
+  "gui.mtr_no_original_trains.addon_pack_summary": "Blocking %1$s / %2$s trains in this pack",
+  "gui.mtr_no_original_trains.addon_summary": "Blokovaných %1$s / %2$s vlakov z addonov (%3$s balíkov)",
+  "gui.mtr_no_original_trains.back": "Back",
   "gui.mtr_no_original_trains.button": "Výber vlakov MTR",
   "gui.mtr_no_original_trains.cancel": "Zrušiť",
   "gui.mtr_no_original_trains.collapse": "Zbaliť",
@@ -17,6 +22,8 @@
   "gui.mtr_no_original_trains.select_all": "Vybrať všetko",
   "gui.mtr_no_original_trains.select_none": "Zrušiť výber",
   "gui.mtr_no_original_trains.subtitle": "Vyberte, ktoré rodiny vstavaných vlakov zostanú. Zmeny platia po reštarte.",
+  "gui.mtr_no_original_trains.tab_addon": "Vlaky z addonov",
+  "gui.mtr_no_original_trains.tab_builtin": "Vstavané vlaky",
   "gui.mtr_no_original_trains.title": "Ponechať vlaky MTR",
   "gui.mtr_no_original_trains.tooltip": "Vyberte, ktoré vstavané vlaky MTR ponechať",
   "gui.mtr_no_original_trains.vehicles": "%s vozidiel"

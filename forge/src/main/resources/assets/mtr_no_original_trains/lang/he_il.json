@@ -1,4 +1,9 @@
 {
+  "gui.mtr_no_original_trains.addon_empty": "לא זוהו רכבות תוספים",
+  "gui.mtr_no_original_trains.addon_list_summary": "%1$s addon packs, %2$s trains in total",
+  "gui.mtr_no_original_trains.addon_pack_summary": "Blocking %1$s / %2$s trains in this pack",
+  "gui.mtr_no_original_trains.addon_summary": "חוסמים %1$s / %2$s רכבות תוספים (%3$s חבילות)",
+  "gui.mtr_no_original_trains.back": "Back",
   "gui.mtr_no_original_trains.button": "בחירת רכבות MTR",
   "gui.mtr_no_original_trains.cancel": "ביטול",
   "gui.mtr_no_original_trains.collapse": "כווץ",
@@ -17,6 +22,8 @@
   "gui.mtr_no_original_trains.select_all": "בחר הכול",
   "gui.mtr_no_original_trains.select_none": "בטל בחירה",
   "gui.mtr_no_original_trains.subtitle": "בחר אילו משפחות רכבות מובנות יישארו. השינויים יחולו לאחר הפעלה מחדש.",
+  "gui.mtr_no_original_trains.tab_addon": "רכבות תוספים",
+  "gui.mtr_no_original_trains.tab_builtin": "רכבות מובנות",
   "gui.mtr_no_original_trains.title": "שמור רכבות MTR",
   "gui.mtr_no_original_trains.tooltip": "בחר אילו רכבות MTR מובנות לשמור",
   "gui.mtr_no_original_trains.vehicles": "%s כלי רכב"

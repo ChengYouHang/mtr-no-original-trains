@@ -14,6 +14,10 @@ import os
 
 HERE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..",
                     "src", "main", "resources", "assets", "mtr_no_original_trains", "lang")
+# Forge 的资源目录是独立拷贝，必须同步补键（否则 Forge 端新界面显示原始键名）
+HERE_FORGE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..",
+                          "forge", "src", "main", "resources", "assets",
+                          "mtr_no_original_trains", "lang")
 
 P = "gui.mtr_no_original_trains."
 
@@ -154,13 +158,13 @@ T2 = {
            "Пакетов аддонов: %1$s, всего поездов: %2$s"),
 }
 
-def main():
+def patch_dir(here):
     n = 0
-    for fn in sorted(os.listdir(HERE)):
+    for fn in sorted(os.listdir(here)):
         if not fn.endswith(".json"):
             continue
         lang = fn[:-5]
-        path = os.path.join(HERE, fn)
+        path = os.path.join(here, fn)
         with io.open(path, "r", encoding="utf-8") as f:
             data = json.load(f)
         t = T.get(lang, T["en_us"])
@@ -176,7 +180,11 @@ def main():
             json.dump(data, f, ensure_ascii=False, indent=2, sort_keys=True)
             f.write("\n")
         n += 1
-    print("patched", n, "lang files")
+    return n
+
+def main():
+    print("patched", patch_dir(HERE), "fabric lang files")
+    print("patched", patch_dir(HERE_FORGE), "forge lang files")
 
 if __name__ == "__main__":
     main()
