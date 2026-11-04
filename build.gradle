@@ -35,3 +35,13 @@ tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
     options.release = 17
 }
+
+// fabric.mod.json 里的 ${version} 用 gradle.properties 的 mod_version 填充。
+// 以前这里是写死的版本号，改版本时忘了同步 —— 1.2.1 的 jar 里版本仍是 1.2.0，
+// CF / Modrinth / ModMenu 读到的都是错的。
+processResources {
+    inputs.property "version", project.version
+    filesMatching("fabric.mod.json") {
+        expand "version": project.version
+    }
+}

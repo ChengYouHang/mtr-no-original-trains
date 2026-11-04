@@ -11,9 +11,9 @@ Nothing about the 1.2.0 flow changed. If you never open the addon tab, the mod b
 - **Only real train packs show up.** A pack appears in the list only if it actually ships a `mtr:mtr_custom_resources.json` declaring vehicles. Pure texture packs, shader packs, sound packs, and anything else that merely sits in your resource pack folder are never scanned in — the list stays clean.
 - **Both pack formats are supported.** Modern packs (`vehicles[]`) and old-style packs (`custom_trains`) are read the same way, so a pack that has not been updated for MTR 4 still lists its trains properly.
 - **Trains are grouped two levels deep: line, then model.** Addon packs carry no `family:` tag — almost none of them do — so both levels are derived from the names and IDs the pack declares itself. The Shanghai pack's 248 cars open as **18 lines**; a line with several models (Line 16 has seven) opens into those models, and a model opens into its individual cars. Tick a line to block the whole line at once, tick a model to block just that model.
-- **Nested rows drop the repeated line prefix**, so a model under Line 16 reads `16A01(AC19)抹茶-大站车` rather than repeating the line name in front of it.
+- **Nested rows drop the repeated line prefix**, so a model nested under `Shanghai Metro Line 16` shows as `16A01(AC19)` rather than repeating the whole line name on every row.
 - **Names come from the pack manifest, not from the running game.** That means a train shows its real name even *after* you have blocked it — the row does not degrade into a raw ID like `mtr_custom_train_ac01_cab_1` the next time you open the screen.
-- **Per-pack and overall counters.** Each pack row shows how many of its cars you have blocked (`blocked 3 / 8`), and the hub keeps a running total across all packs.
+- **Counters tell you where you stand.** A pack's page header reads *Blocking 12 / 109 trains in this pack*, and the pack list header shows how many packs and how many trains the scan found in total.
 
 ### Behaviour you should know about
 
