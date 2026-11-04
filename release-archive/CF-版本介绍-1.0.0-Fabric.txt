@@ -1,0 +1,37 @@
+No Original Trains 1.0.0 — Fabric
+File: mtr_no_original_trains-1.0.0.jar
+Minecraft 1.20.1 · Fabric Loader 0.14.21+
+
+
+ABOUT THIS VERSION
+
+1.0.0 is the first public release. Earlier internal builds were never published under this project.
+
+It does one thing and does it completely: removes MTR's 378 built-in trains, and only those. Addon packs are never touched — their vehicles are detected at runtime and allowed through automatically, with no whitelist to maintain. It also fixes addon train gangways.
+
+
+WHAT IT DOES
+
+- Removes MTR's 378 built-in trains from the vehicle list.
+- Those trains are never loaded, so their models and textures cost no memory.
+- MTR's boats, airships and cable cars are kept. Only trains are removed.
+- Fixes addon train gangways — missing, black-and-purple, or oddly long connection pieces between carriages — without modifying your addon zip.
+- Addon vehicles are detected at runtime and allowed through automatically. No whitelist editing, ever.
+- Trains are chosen from the config file in this version: keepIds brings specific built-in IDs back, extraRemoveIds removes extra IDs. There is no in-game picker yet; that arrives in 1.2.0.
+
+
+INSTALL
+
+- Drop mtr_no_original_trains-1.0.0.jar into mods/.
+- Requires Minecraft Transit Railway 4.0.5 or newer. This build was compiled against 4.0.5.
+- No other mods required. 1.0.0 has no mandatory dependencies beyond MTR itself; FerriteCore and ModernFix become hard requirements in 1.1.0.
+- Client-side only. Servers do not need it.
+- Config is generated at config/mtr_no_original_trains.json on first launch: enabled, fixGangway, keepIds, extraRemoveIds.
+- Verify it is running: search your log for [MTR_NoOriginalTrains].
+
+
+KNOWN LIMITATIONS
+
+- On a server where other players use MTR's stock trains, you will not see those trains — the filter runs on your client.
+- NeoForge is not supported on 1.20.1. MTR has no NeoForge build for Minecraft 1.20.1, so there is nothing to attach to.
+- Do not install the Forge build alongside this one. Both share a mod ID and will conflict.

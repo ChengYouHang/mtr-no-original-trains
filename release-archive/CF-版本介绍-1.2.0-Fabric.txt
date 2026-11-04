@@ -1,0 +1,38 @@
+No Original Trains 1.2.0 — Fabric
+File: mtr_no_original_trains-fabric-1.2.0.jar
+Minecraft 1.20.1 · Fabric Loader 0.14.21+
+
+
+ABOUT THIS VERSION
+
+1.2.0 adds the feature most people asked for: you no longer have to edit a config file to keep specific built-in trains. A button on the main menu opens a picker where you tick the train families you want to keep, hit Done, and restart to apply.
+
+Everything 1.1.0 did still works exactly the same way. This release is purely additive.
+
+
+WHAT'S NEW
+
+- A new main menu button, labelled "MTR Train Selection", opens the mod's own picker. No config editing, no restarting to find out you typed an ID wrong.
+- Trains are grouped by family — tick "SP1900" instead of hunting for the individual car IDs. Each family row shows how many cars it contains.
+- Select All, Select None and Reset, plus a collapsible list, so the screen stays usable however many families your addon packs declare.
+- A live count of what you have kept, e.g. "Keeping 4 / 32 families".
+- Saving opens a dialog: restart now, restart later, or never ask again. Nothing takes effect until the game restarts, and the dialog says so instead of leaving you guessing.
+- The button places itself. It anchors directly above the Options/Quit row, and if there is not enough room it pushes the vanilla buttons down, or shrinks itself, rather than covering them or dropping below Quit. Works at any GUI scale, including the Forge layout where Realms and Mods share a row.
+- The picker builds its family list from the MTR build you actually have installed, so it always matches your MTR version — including trains renamed or added in a 4.x update.
+- Config keys are unchanged. keepIds and extraRemoveIds still work exactly as before; the picker simply writes the same keys for you.
+
+
+FIXED
+
+- Keeping several families used to shrink the picker catalogue and leave it inconsistent. With many families kept, the screen could show far fewer than you had selected — the symptom was a count like "Keeping 32 / 1 families" — and the family mapping stopped resolving for the ones it dropped.
+- Cause: train definitions were only captured when a train was actually blocked, so the more you kept, the less the mod knew about, and the catalogue was rebuilt from an ever-shrinking set.
+- Fix: every built-in train is now registered into the catalogue on first sight, whether or not it ends up blocked; and the static map built from MTR's shipped manifest is kept separate from the runtime map, with lookup falling back to the static one. A family now always resolves, even if the runtime list is incomplete.
+- Verified across five paths: block everything, keep 32 families, keep 2 individual car IDs, extra-remove conflicting with keep, and fully disabled. The catalogue stays at 32 families / 378 cars in every case.
+
+
+INSTALL
+
+- Delete the 1.1.0 jar first. Since 1.2.0 the file name carries the loader, and both builds share the same mod ID.
+- Drop mtr_no_original_trains-fabric-1.2.0.jar into mods/.
+- Requires Minecraft Transit Railway 4.0.0 or newer, plus FerriteCore (Fabric) and ModernFix (Fabric). Both have been hard requirements since 1.1.0.
+- Client-side only. Servers do not need it. Do not install this jar on Forge — use the Forge build.
