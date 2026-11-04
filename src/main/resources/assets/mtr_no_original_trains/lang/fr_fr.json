@@ -1,4 +1,9 @@
 {
+  "gui.mtr_no_original_trains.addon_empty": "Aucun train d'addon détecté",
+  "gui.mtr_no_original_trains.addon_list_summary": "%1$s packs d'addons, %2$s trains au total",
+  "gui.mtr_no_original_trains.addon_pack_summary": "%1$s / %2$s trains de ce pack bloqués",
+  "gui.mtr_no_original_trains.addon_summary": "%1$s / %2$s trains d'addons bloqués (%3$s packs)",
+  "gui.mtr_no_original_trains.back": "Retour",
   "gui.mtr_no_original_trains.button": "Sélection des trains MTR",
   "gui.mtr_no_original_trains.cancel": "Annuler",
   "gui.mtr_no_original_trains.collapse": "Réduire",
@@ -17,6 +22,8 @@
   "gui.mtr_no_original_trains.select_all": "Tout sélectionner",
   "gui.mtr_no_original_trains.select_none": "Tout désélectionner",
   "gui.mtr_no_original_trains.subtitle": "Choisissez les familles de trains intégrés à conserver. Les changements s'appliquent après redémarrage.",
+  "gui.mtr_no_original_trains.tab_addon": "Trains d'addons",
+  "gui.mtr_no_original_trains.tab_builtin": "Trains intégrés",
   "gui.mtr_no_original_trains.title": "Conserver les trains MTR",
   "gui.mtr_no_original_trains.tooltip": "Choisissez quels trains intégrés de MTR conserver",
   "gui.mtr_no_original_trains.vehicles": "%s véhicules"

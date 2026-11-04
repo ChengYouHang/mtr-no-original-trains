@@ -1,4 +1,9 @@
 {
+  "gui.mtr_no_original_trains.addon_empty": "Tidak ada kereta addon terdeteksi",
+  "gui.mtr_no_original_trains.addon_list_summary": "%1$s addon packs, %2$s trains in total",
+  "gui.mtr_no_original_trains.addon_pack_summary": "Blocking %1$s / %2$s trains in this pack",
+  "gui.mtr_no_original_trains.addon_summary": "Memblokir %1$s / %2$s kereta addon (%3$s paket)",
+  "gui.mtr_no_original_trains.back": "Back",
   "gui.mtr_no_original_trains.button": "Pemilihan kereta MTR",
   "gui.mtr_no_original_trains.cancel": "Batal",
   "gui.mtr_no_original_trains.collapse": "Ciutkan",
@@ -17,6 +22,8 @@
   "gui.mtr_no_original_trains.select_all": "Pilih semua",
   "gui.mtr_no_original_trains.select_none": "Batal pilih",
   "gui.mtr_no_original_trains.subtitle": "Pilih keluarga kereta bawaan yang dipertahankan. Perubahan berlaku setelah mulai ulang.",
+  "gui.mtr_no_original_trains.tab_addon": "Kereta addon",
+  "gui.mtr_no_original_trains.tab_builtin": "Kereta bawaan",
   "gui.mtr_no_original_trains.title": "Pertahankan kereta MTR",
   "gui.mtr_no_original_trains.tooltip": "Pilih kereta bawaan MTR yang ingin dipertahankan",
   "gui.mtr_no_original_trains.vehicles": "%s kendaraan"

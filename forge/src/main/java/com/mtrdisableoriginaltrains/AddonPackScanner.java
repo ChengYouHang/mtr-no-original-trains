@@ -14,9 +14,11 @@ import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -63,6 +65,14 @@ public final class AddonPackScanner {
 
     /** 「其他资源包」声明过的全部车辆 ID。 */
     private static volatile Set<String> declaredIds = Collections.emptySet();
+    /**
+     * 每个追加包各自声明的<b>列车</b> ID（{@code 资源包名 → 列车 ID 集合}）。
+     *
+     * <p>供「追加包列车拦截」功能使用：选择界面按包分组展示，用户勾选后
+     * 把车辆 ID 写进配置的 {@code blockedAddonIds}，过滤逻辑据此移除。
+     * 未启用拦截时，这些 ID 依旧全部放行 —— 行为与旧版本完全一致。
+     */
+    private static volatile Map<String, Set<String>> addonPackTrains = Collections.emptyMap();
     /**
      * 运行时从 <b>MTR 本体清单</b>里提取出来的内置列车 ID。
      *
@@ -163,18 +173,25 @@ public final class AddonPackScanner {
         }
 
         // ---- 除本体外的所有包，其声明的 ID 一律登记为「绝不拦截」 ----
+        // 同时按包登记列车明细（仅内存记录，不影响任何放行判定）
         final Set<String> collectedIds = new LinkedHashSet<>();
         final Set<String> collectedPacks = new LinkedHashSet<>();
+        final Map<String, Set<String>> collectedPackTrains = new LinkedHashMap<>();
         for (int i = 0; i < packNames.size(); i++) {
             if (i == builtinIndex) {
                 continue;
             }
             collectedIds.addAll(packAllIds.get(i));
             collectedPacks.add(packNames.get(i));
+            final Set<String> trains = packTrainIds.get(i);
+            if (trains != null && !trains.isEmpty()) {
+                collectedPackTrains.put(packNames.get(i), new LinkedHashSet<>(trains));
+            }
         }
 
         declaredIds = collectedIds;
         sourcePacks = collectedPacks;
+        addonPackTrains = Collections.unmodifiableMap(collectedPackTrains);
         builtinFound = builtinIndex >= 0;
         builtinPackName = builtinFound ? packNames.get(builtinIndex) : "未识别";
         dynamicBuiltinIds = builtinFound ? packTrainIds.get(builtinIndex) : Collections.emptySet();
@@ -194,6 +211,7 @@ public final class AddonPackScanner {
     private static void reset() {
         declaredIds = Collections.emptySet();
         sourcePacks = Collections.emptySet();
+        addonPackTrains = Collections.emptyMap();
         builtinFound = false;
         builtinPackName = "未识别";
         dynamicBuiltinIds = Collections.emptySet();
@@ -256,6 +274,48 @@ public final class AddonPackScanner {
      */
     public static Set<String> dynamicBuiltinIds() {
         return dynamicBuiltinIds;
+    }
+
+    /**
+     * 每个追加包各自声明的列车 ID（{@code 资源包名 → 列车 ID 集合}，不可变快照）。
+     *
+     * <p>资源包名是引擎内部的原始形式（如 {@code file/上海地铁v3.zip}），
+     * 展示前请先过 {@link #displayPackName(String)}。
+     */
+    public static Map<String, Set<String>> addonPacks() {
+        return addonPackTrains;
+    }
+
+    /** 全部追加包声明的列车 ID 总数（去重前按包累加）。 */
+    public static int addonTrainTotal() {
+        int total = 0;
+        for (Set<String> ids : addonPackTrains.values()) {
+            total += ids.size();
+        }
+        return total;
+    }
+
+    /**
+     * 把资源包的原始名转成适合展示的名字。
+     *
+     * <p>引擎给 zip 包的名字形如 {@code file/上海地铁v3.zip}（fabric）或
+     * {@code file/上海地铁v3.zip}（forge 亦类似），目录包可能是 {@code dir/xxx}。
+     * 这里剥掉目录前缀与 {@code .zip} / {@code .jar} 后缀，只留可读部分。
+     */
+    public static String displayPackName(String raw) {
+        if (raw == null || raw.isEmpty()) {
+            return raw;
+        }
+        String name = raw;
+        final int slash = Math.max(name.lastIndexOf('/'), name.lastIndexOf('\\'));
+        if (slash >= 0) {
+            name = name.substring(slash + 1);
+        }
+        final String lower = name.toLowerCase(Locale.ENGLISH);
+        if (lower.endsWith(".zip") || lower.endsWith(".jar")) {
+            name = name.substring(0, name.length() - 4);
+        }
+        return name;
     }
 
     /** 单份 JSON 里属于「列车」的车辆 ID（现代格式判 transportMode，legacy 车一律算列车）。 */

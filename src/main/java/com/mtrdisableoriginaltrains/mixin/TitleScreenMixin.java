@@ -2,7 +2,7 @@ package com.mtrdisableoriginaltrains.mixin;
 
 import com.mtrdisableoriginaltrains.MtrAvailability;
 import com.mtrdisableoriginaltrains.TitleButtonPlacer;
-import com.mtrdisableoriginaltrains.TrainSelectScreen;
+import com.mtrdisableoriginaltrains.TrainSelectHubScreen;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.screen.Screen;
@@ -94,7 +94,7 @@ public abstract class TitleScreenMixin extends Screen {
                         b -> {
                             final MinecraftClient mc = MinecraftClient.getInstance();
                             if (mc != null) {
-                                mc.setScreen(new TrainSelectScreen(this));
+                                mc.setScreen(new TrainSelectHubScreen(this));
                             }
                         })
                 .dimensions(plan.placement.x, plan.placement.y,

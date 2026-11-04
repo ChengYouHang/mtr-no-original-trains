@@ -1,4 +1,9 @@
 {
+  "gui.mtr_no_original_trains.addon_empty": "कोई ऐड-ऑन ट्रेन नहीं मिली",
+  "gui.mtr_no_original_trains.addon_list_summary": "%1$s addon packs, %2$s trains in total",
+  "gui.mtr_no_original_trains.addon_pack_summary": "Blocking %1$s / %2$s trains in this pack",
+  "gui.mtr_no_original_trains.addon_summary": "%1$s / %2$s ऐड-ऑन ट्रेनें अवरुद्ध (%3$s पैक)",
+  "gui.mtr_no_original_trains.back": "Back",
   "gui.mtr_no_original_trains.button": "MTR ट्रेन चयन",
   "gui.mtr_no_original_trains.cancel": "रद्द करें",
   "gui.mtr_no_original_trains.collapse": "समेटें",
@@ -17,6 +22,8 @@
   "gui.mtr_no_original_trains.select_all": "सभी चुनें",
   "gui.mtr_no_original_trains.select_none": "कोई नहीं चुनें",
   "gui.mtr_no_original_trains.subtitle": "चुनें कि कौन-से अंतर्निहित ट्रेन परिवार रहेंगे। बदलाव पुनः आरंभ के बाद लागू होंगे।",
+  "gui.mtr_no_original_trains.tab_addon": "ऐड-ऑन ट्रेनें",
+  "gui.mtr_no_original_trains.tab_builtin": "अंतर्निहित ट्रेनें",
   "gui.mtr_no_original_trains.title": "MTR ट्रेनें रखें",
   "gui.mtr_no_original_trains.tooltip": "चुनें कि कौन-सी अंतर्निहित MTR ट्रेनें रखनी हैं",
   "gui.mtr_no_original_trains.vehicles": "%s वाहन"

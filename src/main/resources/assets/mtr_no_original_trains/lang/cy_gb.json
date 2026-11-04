@@ -1,4 +1,9 @@
 {
+  "gui.mtr_no_original_trains.addon_empty": "No addon pack trains detected",
+  "gui.mtr_no_original_trains.addon_list_summary": "%1$s addon packs, %2$s trains in total",
+  "gui.mtr_no_original_trains.addon_pack_summary": "Blocking %1$s / %2$s trains in this pack",
+  "gui.mtr_no_original_trains.addon_summary": "Blocking %1$s / %2$s addon trains across %3$s packs",
+  "gui.mtr_no_original_trains.back": "Back",
   "gui.mtr_no_original_trains.button": "Dewis trenau MTR",
   "gui.mtr_no_original_trains.cancel": "Canslo",
   "gui.mtr_no_original_trains.collapse": "Crebachu",
@@ -17,6 +22,8 @@
   "gui.mtr_no_original_trains.select_all": "Dewis popeth",
   "gui.mtr_no_original_trains.select_none": "Dad-ddewis popeth",
   "gui.mtr_no_original_trains.subtitle": "Dewis pa deuluoedd o drenau mewnol sy'n aros. Mae newidiadau'n gweithredu ar ôl ailgychwyn.",
+  "gui.mtr_no_original_trains.tab_addon": "Addon Trains",
+  "gui.mtr_no_original_trains.tab_builtin": "Built-in Trains",
   "gui.mtr_no_original_trains.title": "Cadw trenau MTR",
   "gui.mtr_no_original_trains.tooltip": "Dewis pa drenau MTR mewnol i'w cadw",
   "gui.mtr_no_original_trains.vehicles": "%s cerbyd"

@@ -1,4 +1,9 @@
 {
+  "gui.mtr_no_original_trains.addon_empty": "Поезда аддонов не обнаружены",
+  "gui.mtr_no_original_trains.addon_list_summary": "Пакетов аддонов: %1$s, всего поездов: %2$s",
+  "gui.mtr_no_original_trains.addon_pack_summary": "Заблокировано поездов в этом пакете: %1$s / %2$s",
+  "gui.mtr_no_original_trains.addon_summary": "Заблокировано %1$s / %2$s поездов аддонов (%3$s пакетов)",
+  "gui.mtr_no_original_trains.back": "Назад",
   "gui.mtr_no_original_trains.button": "Выбор поездов MTR",
   "gui.mtr_no_original_trains.cancel": "Отмена",
   "gui.mtr_no_original_trains.collapse": "Свернуть",
@@ -17,6 +22,8 @@
   "gui.mtr_no_original_trains.select_all": "Выбрать все",
   "gui.mtr_no_original_trains.select_none": "Снять все",
   "gui.mtr_no_original_trains.subtitle": "Выберите, какие семейства встроенных поездов оставить. Изменения применятся после перезапуска.",
+  "gui.mtr_no_original_trains.tab_addon": "Поезда аддонов",
+  "gui.mtr_no_original_trains.tab_builtin": "Встроенные поезда",
   "gui.mtr_no_original_trains.title": "Оставить поезда MTR",
   "gui.mtr_no_original_trains.tooltip": "Выберите, какие встроенные поезда MTR оставить",
   "gui.mtr_no_original_trains.vehicles": "%s ед."

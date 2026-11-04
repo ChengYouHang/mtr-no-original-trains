@@ -23,7 +23,8 @@ import java.util.Set;
  *   "fixGangway": true,
  *   "keepIds": [],        // 逐辆车保留（界面单车辆勾选写这里）
  *   "keepFamilies": [],   // 整族保留（界面车系勾选写这里）
- *   "extraRemoveIds": []
+ *   "extraRemoveIds": [],
+ *   "blockedAddonIds": [] // 用户选择拦截的追加包列车 ID（界面追加包页写这里）
  * }
  * </pre>
  */
@@ -39,6 +40,8 @@ public final class ConfigAccess {
         public final Set<String> keepIds = new LinkedHashSet<>();
         public final Set<String> keepFamilies = new LinkedHashSet<>();
         public final Set<String> extraRemoveIds = new LinkedHashSet<>();
+        /** 用户勾选拦截的追加包列车 ID（空集 = 不拦截任何追加包列车）。 */
+        public final Set<String> blockedAddonIds = new LinkedHashSet<>();
     }
 
     private ConfigAccess() {
@@ -70,6 +73,7 @@ public final class ConfigAccess {
             collect(obj, "keepIds", state.keepIds);
             collect(obj, "keepFamilies", state.keepFamilies);
             collect(obj, "extraRemoveIds", state.extraRemoveIds);
+            collect(obj, "blockedAddonIds", state.blockedAddonIds);
         } catch (Throwable t) {
             MtrDisableOriginalTrains.LOGGER.warn("[MTR_NoOriginalTrains] 界面读取配置失败，按默认值显示", t);
         }
@@ -86,8 +90,17 @@ public final class ConfigAccess {
         }
     }
 
-    /** 写回选择结果（保留其他字段原样）。 */
+    /**
+     * 写回内置列车保留选择（保留其他字段原样，含追加包拦截键）。
+     * 「原版列车」页使用 —— 该页不感知追加包选择，原样保留磁盘上的值。
+     */
     public static void writeSelection(Set<String> keepFamilies, Set<String> keepIds) {
+        writeSelection(keepFamilies, keepIds, readLiveState().blockedAddonIds);
+    }
+
+    /** 写回完整选择结果（保留其他字段原样）。 */
+    public static void writeSelection(Set<String> keepFamilies, Set<String> keepIds,
+                                      Set<String> blockedAddonIds) {
         try {
             final Path path = configPath();
             final LiveState current = readLiveState();
@@ -97,13 +110,14 @@ public final class ConfigAccess {
             obj.add("keepIds", GSON.toJsonTree(keepIds));
             obj.add("keepFamilies", GSON.toJsonTree(keepFamilies));
             obj.add("extraRemoveIds", GSON.toJsonTree(current.extraRemoveIds));
+            obj.add("blockedAddonIds", GSON.toJsonTree(blockedAddonIds));
             Files.createDirectories(path.getParent());
             Files.writeString(path, GSON.toJson(obj) + "\n", StandardCharsets.UTF_8);
             MtrDisableOriginalTrains.LOGGER.info(
-                    "[MTR_NoOriginalTrains] 已保存列车保留选择：车系 {} 个，单车 {} 辆（重启后生效）",
-                    keepFamilies.size(), keepIds.size());
+                    "[MTR_NoOriginalTrains] 已保存列车选择：保留车系 {} 个 / 单车 {} 辆；拦截追加包列车 {} 辆（重启后生效）",
+                    keepFamilies.size(), keepIds.size(), blockedAddonIds.size());
         } catch (Throwable t) {
-            MtrDisableOriginalTrains.LOGGER.error("[MTR_NoOriginalTrains] 保存列车保留选择失败", t);
+            MtrDisableOriginalTrains.LOGGER.error("[MTR_NoOriginalTrains] 保存列车选择失败", t);
         }
     }
 }

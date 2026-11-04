@@ -158,6 +158,9 @@ public class RestartConfirmScreen extends Screen {
         if (this.backTo instanceof TrainSelectScreen select) {
             // 告诉它：这次回来别从磁盘重载，保留内存里的勾选
             select.prepareResume();
+        } else if (this.backTo instanceof AddonSelectScreen addon) {
+            // 追加包页同理：保留未保存的勾选与当前所在页
+            addon.prepareResume();
         }
         if (this.minecraft != null) {
             this.minecraft.setScreen(this.backTo != null ? this.backTo : this.parent);

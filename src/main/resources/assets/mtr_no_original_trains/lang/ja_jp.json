@@ -1,4 +1,9 @@
 {
+  "gui.mtr_no_original_trains.addon_empty": "追加パックの列車は検出されませんでした",
+  "gui.mtr_no_original_trains.addon_list_summary": "追加パック %1$s 個、合計 %2$s 両",
+  "gui.mtr_no_original_trains.addon_pack_summary": "このパックの列車を %1$s / %2$s 両ブロック中",
+  "gui.mtr_no_original_trains.addon_summary": "追加パックの列車を %1$s / %2$s 両ブロック中（%3$s パック）",
+  "gui.mtr_no_original_trains.back": "戻る",
   "gui.mtr_no_original_trains.button": "MTR 車両の選択",
   "gui.mtr_no_original_trains.cancel": "キャンセル",
   "gui.mtr_no_original_trains.collapse": "折りたたむ",
@@ -17,6 +22,8 @@
   "gui.mtr_no_original_trains.select_all": "すべて選択",
   "gui.mtr_no_original_trains.select_none": "すべて解除",
   "gui.mtr_no_original_trains.subtitle": "残す内蔵車両ファミリーを選択してください。変更は再起動後に反映されます。",
+  "gui.mtr_no_original_trains.tab_addon": "追加パック列車",
+  "gui.mtr_no_original_trains.tab_builtin": "内蔵列車",
   "gui.mtr_no_original_trains.title": "MTR 車両を残す",
   "gui.mtr_no_original_trains.tooltip": "残す MTR 内蔵車両を選択します",
   "gui.mtr_no_original_trains.vehicles": "%s 両"

@@ -11,6 +11,16 @@ MTR 4.0.5 carries 423 of its own vehicle definitions. 378 of them are built-in t
 - **Addon packs are safe** — any vehicle declared by another resource pack or addon is automatically allowed through.
 - **Trains only** — MTR's boats, airships and cable cars are kept.
 
+## Pick what to keep, in-game (new in 1.2.0)
+
+You do not have to remove all 378. A **"MTR train selection"** button on the main menu opens a picker where you tick the **train families** to keep:
+
+- **Grouped by family** — one click for "SP1900" instead of hunting down each car ID.
+- **Select all / none / reset**, collapsible list, live count (`kept 4 / 32 families`).
+- **Save asks whether to restart now** — the change applies after a restart, and the dialog says so.
+
+The button anchors itself above the Options/Quit row and pushes the vanilla buttons down if it needs the space, so it stays where it belongs at any GUI scale on both loaders. The config file still works exactly as before — the picker just writes `keepIds` for you.
+
 ## Works with any MTR 4.x
 
 Version 1.1.0 has no hard-coded train list. At startup it reads the train definitions straight out of whatever MTR build you have installed, works out which of them are MTR's own built-ins, and filters those. That means:
@@ -45,7 +55,7 @@ Pick the jar that matches your mod loader. Install **one** — never both in the
 | Minecraft | 1.20.1 | 1.20.1 |
 | MTR version | 4.0.0 or newer (any 4.x) | 4.0.0 or newer (any 4.x) |
 | Environment | Client-side only | Client-side only |
-| 1.1.0 file | `mtr_no_original_trains-1.1.0.jar` | `mtr_no_original_trains-forge-1.1.0.jar` |
+| 1.2.0 file | `mtr_no_original_trains-fabric-1.2.0.jar` | `mtr_no_original_trains-forge-1.2.0.jar` |
 
 ## How the addon-safety works
 
@@ -55,7 +65,7 @@ At startup the mod scans every installed resource pack and reads their MTR vehic
 
 - **Client-side only.** Install it in `mods/` and that is it. Servers do not need it.
 - **Multiplayer caveat.** Because it filters your client's vehicle registry, built-in trains become invisible **to you**. On a server where other players use MTR's stock trains, you will not see those trains. The mod is aimed at single-player worlds and servers that use addon trains exclusively.
-- **Upgrading from 1.0.0?** 1.1.0 adds FerriteCore and ModernFix as required dependencies. Install them **before** you replace the jar, or the game will refuse to start.
+- **Upgrading from 1.1.0?** Just replace the jar — the file name now includes the loader, so delete the old one first. Your config is untouched. From 1.0.0, install FerriteCore and ModernFix **before** you replace the jar, or the game will refuse to start.
 - **It adds no blocks or items, and never modifies your world or your addon files.** Removing the mod at any time restores the default behaviour.
 - **Not supported:** NeoForge on 1.20.1 — MTR has no 1.20.1 NeoForge build to attach to. Other Minecraft versions are not supported yet.
 - **Old MTR 4.0.0 betas are not supported.** beta-8 through beta-11 lack an internal method this mod hooks into. beta.12 and later work fine.

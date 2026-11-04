@@ -1,4 +1,9 @@
 {
+  "gui.mtr_no_original_trains.addon_empty": "감지된 애드온 열차가 없습니다",
+  "gui.mtr_no_original_trains.addon_list_summary": "애드온 팩 %1$s개, 총 %2$s량",
+  "gui.mtr_no_original_trains.addon_pack_summary": "이 팩의 열차 %1$s / %2$s량 차단 중",
+  "gui.mtr_no_original_trains.addon_summary": "애드온 열차 %1$s / %2$s량 차단 중 (%3$s개 팩)",
+  "gui.mtr_no_original_trains.back": "뒤로",
   "gui.mtr_no_original_trains.button": "MTR 열차 선택",
   "gui.mtr_no_original_trains.cancel": "취소",
   "gui.mtr_no_original_trains.collapse": "접기",
@@ -17,6 +22,8 @@
   "gui.mtr_no_original_trains.select_all": "모두 선택",
   "gui.mtr_no_original_trains.select_none": "모두 해제",
   "gui.mtr_no_original_trains.subtitle": "유지할 내장 열차 계열을 선택하세요. 변경 사항은 재시작 후 적용됩니다.",
+  "gui.mtr_no_original_trains.tab_addon": "애드온 열차",
+  "gui.mtr_no_original_trains.tab_builtin": "내장 열차",
   "gui.mtr_no_original_trains.title": "MTR 열차 유지",
   "gui.mtr_no_original_trains.tooltip": "유지할 MTR 내장 열차를 선택합니다",
   "gui.mtr_no_original_trains.vehicles": "%s량"

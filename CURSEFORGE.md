@@ -2,6 +2,8 @@
 
 **Removes MTR's 378 built-in trains — without touching a single one of your addon packs.** Available for **Fabric** and **Forge** on Minecraft 1.20.1, working with **any MTR 4.x**.
 
+Since **1.2.0** there is a button on the title screen that lets you pick which built-in trains to keep — no config editing required.
+
 ## Why this is an optimization mod
 
 MTR 4.0.5 ships with **423 vehicle definitions of its own, 378 of which are built-in trains**. Every one of them is registered and loaded at startup — models, textures and all — whether or not you ever place a single one.
@@ -14,6 +16,19 @@ If your world runs on an addon pack, that is pure dead weight. This mod removes 
 - **Never loaded** — their models and textures are not registered, so they cost no memory.
 - **Addon packs are safe** — any vehicle declared by another resource pack or addon is automatically allowed through.
 - **Trains only** — MTR's boats, airships and cable cars are kept.
+
+## Pick what to keep, in-game
+
+You do not have to give up all 378. A button on the main menu — **"MTR train selection"** — opens a picker where you can:
+
+- Tick the **train families** you want to keep (families, not individual cars, so "SP1900" is one click rather than eight).
+- Use **select all / select none / reset to default**, and collapse the list when it gets long.
+- See a live count of what you have kept (`kept 4 / 32 families`).
+- Save, and get asked whether to **restart the game now** or later — because the change only applies after a restart.
+
+The button finds its own spot above the Options/Quit row and shifts the vanilla buttons down if it needs the room, so it stays put at any GUI scale on both loaders.
+
+If you would rather stay in the config file, nothing has changed: `keepIds` and `extraRemoveIds` still work exactly as before.
 
 ## Works with any MTR 4.x
 
@@ -33,9 +48,9 @@ This mod ships as **two separate jars** — a **Fabric** build and a **Forge** b
 | Minecraft | 1.20.1 | 1.20.1 |
 | MTR version | **4.0.0 or newer** (any 4.x) | **4.0.0 or newer** (any 4.x) |
 | Environment | Client-side only | Client-side only |
-| File | `mtr_no_original_trains-1.1.0.jar` | `mtr_no_original_trains-forge-1.1.0.jar` |
+| File | `mtr_no_original_trains-fabric-1.2.0.jar` | `mtr_no_original_trains-forge-1.2.0.jar` |
 
-Install **one** of them — never both in the same `mods/` folder. They share a mod ID, so putting both in will conflict.
+Install **one** of them — never both in the same `mods/` folder. They share a mod ID, so putting both in will conflict. From 1.2.0 the loader is in the file name, so there is no longer any way to mix them up.
 
 ## Required dependencies — 1.1.0 and newer
 
@@ -62,10 +77,10 @@ At startup the mod scans every installed resource pack and reads their MTR vehic
 
 - **Client-side only.** Install it in `mods/` and that is it. Servers do not need it.
 - **Multiplayer caveat.** Because it filters your client's vehicle registry, built-in trains become invisible **to you**. On a server where other players use MTR's stock trains, you will not see those trains. The mod is aimed at single-player worlds and servers that use addon trains exclusively.
-- **Upgrading from 1.0.0?** 1.1.0 adds FerriteCore and ModernFix as required dependencies. Install them **before** you replace the jar, or the game will refuse to start.
+- **Upgrading from 1.1.0?** Just replace the jar — the file name changed to include the loader, so delete the old one first. Your config is untouched. From 1.0.0, install FerriteCore and ModernFix **before** replacing the jar, or the game will refuse to start.
 - **It adds no blocks or items, and never modifies your world or your addon files.** Removing the mod at any time restores the default behaviour.
 - **Not supported:** NeoForge on 1.20.1 — MTR has no 1.20.1 NeoForge build to attach to. Other Minecraft versions are not supported yet.
-- **Config (optional):** `config/mtr_no_original_trains.json` is generated on first launch.
+- **Config (optional):** `config/mtr_no_original_trains.json` is generated on first launch. Everything here can also be set from the in-game picker since 1.2.0.
   - `enabled` — master switch
   - `fixGangway` — set to `false` to leave addon gangways alone
   - `keepIds` — built-in train IDs you want back
@@ -74,6 +89,35 @@ At startup the mod scans every installed resource pack and reads their MTR vehic
 - **Old MTR 4.0.0 betas are not supported.** MTR 4.0.0-beta-8 through beta-11 lack an internal method this mod hooks into. All MTR 4.0.0-beta.12 and later work fine.
 
 ## Release notes in Chinese
+
+### 1.2.0 — 主菜单列车保留选择界面
+
+本版本加入呼声最高的功能：**保留哪些内置列车，不必再改配置文件。** 主菜单上多了一个按钮，点开就是车系列表，勾选要保留的车系、保存、重启游戏生效。1.1.0 的原有功能完全不变，本版本只是新增。
+
+**主菜单选择界面**
+
+- **主菜单新增「MTR 列车保留选择」按钮**，点开即进入选择界面，不用手写车 ID，也不用改完配置才发现拼错。
+- **按车系分组** —— 勾「SP1900」一次就行，不用一辆辆找车厢 ID。每个车系显示车辆数，界面右上角实时显示 `已保留 4 / 32 个车系`。
+- **全选 / 全不选 / 恢复默认**，列表可折叠，追加包再多也不会挤成一团。
+- **保存后提示重启** —— 弹窗给出「是，立即重启 / 否，稍后重启 / 不再显示此界面」，改完立即知道要不要重启才生效。
+- **按钮自己找位置** —— 固定在「选项 / 退出」按钮行正上方，空间不够时把原版按钮整体下移，再不够就收缩自身高度，不会压住原版按钮，也不会掉到退出按钮下面。Fabric 与 Forge、任意 GUI 缩放比例均适用，包括 Forge 上 Realms 与「模组」并排的特殊布局。
+
+**车系目录改为运行时构建**
+
+- 列表直接来自你实际安装的 MTR 版本，MTR 4.x 更新新增或改名的列车会自动出现。
+- 配置键未变，`keepIds` 与 `extraRemoveIds` 行为与之前一致，已有配置照常生效；界面只是替你写这两个键。
+
+**修复**
+
+- **保留车系后选择界面目录缩水、计数错乱。** 保留较多车系时，界面会显示成类似「已选择 32 / 1 个车系」的异常计数，车系列表也随之残缺，部分车系的映射失效。原因是车辆定义只在「真正被拦截」时才被记录 —— 保留得越多，模组知道的越少，目录便按残留部分重建，越缩越小。两处改动解决：
+  - 内置列车首次出现即登记进车系目录，无论最终是否被拦截。
+  - MTR 自带清单生成的静态映射与运行时映射分开保存，查找时静态映射兜底，运行时列表不全也能解析出车系。
+
+  五条路径实测通过：全部拦截、保留 32 车系、保留 2 辆车、额外移除与保留冲突、总开关关闭。目录始终为 32 车系 / 378 辆。
+
+**文件命名**
+
+两个 jar 的文件名带上加载器：`mtr_no_original_trains-fabric-1.2.0.jar` 与 `mtr_no_original_trains-forge-1.2.0.jar`，避免桌面上两个同名 jar 装错。升级时请先删掉旧 jar。
 
 ### 1.1.0 — 支持任意 MTR 4.x
 
@@ -107,8 +151,8 @@ At startup the mod scans every installed resource pack and reads their MTR vehic
 
 ### 文件说明
 
-- **Fabric：** `mtr_no_original_trains-1.1.0.jar`
-- **Forge：** `mtr_no_original_trains-forge-1.1.0.jar`
+- **Fabric：** `mtr_no_original_trains-fabric-1.2.0.jar`
+- **Forge：** `mtr_no_original_trains-forge-1.2.0.jar`
 
 两者只能装一个，不能同时放进 `mods/`。
 

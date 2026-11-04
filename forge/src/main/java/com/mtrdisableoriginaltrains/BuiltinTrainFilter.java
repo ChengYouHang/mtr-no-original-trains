@@ -121,6 +121,15 @@ public final class BuiltinTrainFilter {
     private static volatile Set<String> configKeepIds = Collections.emptySet();
     private static volatile Set<String> extraRemoveIds = Collections.emptySet();
     /**
+     * 用户选择拦截的<b>追加包</b>列车 ID。
+     *
+     * <p>空集 = 不拦截任何追加包列车（默认，与旧版本行为一致）。
+     * 命中此集合且确属列车的追加包车辆会被移除 —— 这是用户在「追加包列车」页
+     * 显式勾选的结果，因此优先于「追加包一律放行」的守卫；
+     * 但仍低于 {@link #configKeepIds} / {@link #configKeepFamilies} 的保留优先级。
+     */
+    private static volatile Set<String> configBlockedAddonIds = Collections.emptySet();
+    /**
      * 用户在「列车保留选择」界面勾选的<b>车系</b>。
      * 命中即保留该车系下的全部车辆（优先级等同 {@link #configKeepIds}）。
      */
@@ -143,6 +152,22 @@ public final class BuiltinTrainFilter {
 
     /** 上一次 reload 捕获的内置列车快照（reload 结束后仍可读，供 GUI 使用）。 */
     private static volatile Map<String, String> capturedSnapshot = Collections.emptyMap();
+
+    /**
+     * 本次 reload 中见到的<b>追加包</b>列车：{@code 车辆ID → 显示名}。
+     *
+     * <p>仅做名称捕获（供「追加包列车」页展示），不影响任何判定。
+     * 追加包车辆每次 reload 都会经过 {@link #isRemovable}，在此顺手登记。
+     */
+    private static final Map<String, String> CAPTURED_ADDON = new LinkedHashMap<>();
+
+    /** 上一次 reload 捕获的追加包列车快照。 */
+    private static volatile Map<String, String> capturedAddonSnapshot = Collections.emptyMap();
+
+    /** 追加包列车捕获快照，供选择界面「追加包列车」页显示名称。 */
+    public static Map<String, String> capturedAddonNames() {
+        return capturedAddonSnapshot;
+    }
 
     /** 是否已捕获过（用于让 GUI 判断能否用运行时目录）。 */
     public static boolean hasCapturedBuiltin() {
@@ -199,6 +224,10 @@ public final class BuiltinTrainFilter {
         if (effectiveBuiltinIds.contains(id)) {
             capture(vehicle);
         }
+        // ---- 0b. 追加包列车顺手登记显示名（仅记录，不影响判定）----
+        if (AddonPackScanner.isDeclaredByAddon(id)) {
+            captureAddon(vehicle);
+        }
 
         // ---- 1. 用户显式要保留 ----
         if (configKeepIds.contains(id)) {
@@ -215,9 +244,20 @@ public final class BuiltinTrainFilter {
             return true;
         }
 
-        // ---- 3. 「其他资源包声明过这个 ID」→ 一律不拦截 ----
+        // ---- 3. 「其他资源包声明过这个 ID」→ 默认一律不拦截 ----
+        // 例外：用户在「追加包列车」页显式勾选拦截的 ID（blockedAddonIds）。
+        // 这是用户的有意选择，因此优先于本守卫；但 keepIds / keepFamilies（步骤 1）
+        // 已在更早处返回，保留依旧优先于拦截。
         if (AddonPackScanner.isDeclaredByAddon(id)) {
-            return false;
+            if (!configBlockedAddonIds.contains(id)) {
+                return false;
+            }
+            // 与内置列车同原则：确认是列车才移除，避免误伤同名非列车载具
+            try {
+                return vehicle.getTransportMode() == TransportMode.TRAIN;
+            } catch (Throwable t) {
+                return false;
+            }
         }
 
         // ---- 4. 追加包 legacy 列车前缀 → 保留 ----
@@ -283,6 +323,37 @@ public final class BuiltinTrainFilter {
             }
             CAPTURED_BUILTIN.put(id, name);
             CAPTURED_FAMILY.put(id, readFamilyTag(vehicle, id));
+        } catch (Throwable t) {
+            // 捕获失败绝不影响主流程
+        }
+    }
+
+    /**
+     * 记录一辆<b>追加包</b>列车（ID + 显示名），供「追加包列车」页展示。
+     *
+     * <p>与 {@link #capture(VehicleResource)} 的区别：不做车系归类（追加包车辆
+     * 通常没有 family 标签，按包分组即可），只登记 ID 与名称。
+     * 追加包 ID 可能与内置列车重名，因此用独立的 map，避免覆盖内置目录。
+     */
+    private static void captureAddon(VehicleResource vehicle) {
+        try {
+            final String id = vehicle.getId();
+            if (id == null || id.isEmpty()) {
+                return;
+            }
+            String name = id;
+            try {
+                final Object text = vehicle.getName();
+                if (text != null) {
+                    final String s = (String) text.getClass().getMethod("getString").invoke(text);
+                    if (s != null && !s.isEmpty()) {
+                        name = s;
+                    }
+                }
+            } catch (Throwable ignored) {
+                // 名称拿不到就退回 ID
+            }
+            CAPTURED_ADDON.put(id, name);
         } catch (Throwable t) {
             // 捕获失败绝不影响主流程
         }
