@@ -26,5 +26,15 @@
   "gui.mtr_no_original_trains.tab_builtin": "Comboios integrados",
   "gui.mtr_no_original_trains.title": "Manter comboios MTR",
   "gui.mtr_no_original_trains.tooltip": "Escolha que comboios integrados do MTR manter",
-  "gui.mtr_no_original_trains.vehicles": "%s veículos"
+  "gui.mtr_no_original_trains.vehicles": "%s veículos",
+  "gui.mtr_no_original_trains.search_hint": "Procurar nome ou ID…",
+  "gui.mtr_no_original_trains.filter_all": "Todos",
+  "gui.mtr_no_original_trains.filter_kept": "Mantidos",
+  "gui.mtr_no_original_trains.filter_unkept": "Não mantidos",
+  "gui.mtr_no_original_trains.filter_blocked": "Bloqueados",
+  "gui.mtr_no_original_trains.filter_unblocked": "Não bloqueados",
+  "gui.mtr_no_original_trains.search_no_result": "Sem resultados",
+  "gui.mtr_no_original_trains.conflict_keep_tip": "Este comboio também está na lista de mantidos. Manter tem prioridade, bloquear não tem efeito.",
+  "gui.mtr_no_original_trains.conflict_multi_tip": "Outro pacote de addon declara este mesmo comboio. Bloquear remove-o dos dois.",
+  "gui.mtr_no_original_trains.conflict_count": "%s conflitos"
 }

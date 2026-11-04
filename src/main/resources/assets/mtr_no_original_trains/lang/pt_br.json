@@ -26,5 +26,15 @@
   "gui.mtr_no_original_trains.tab_builtin": "Trens integrados",
   "gui.mtr_no_original_trains.title": "Manter trens MTR",
   "gui.mtr_no_original_trains.tooltip": "Escolha quais trens embutidos do MTR manter",
-  "gui.mtr_no_original_trains.vehicles": "%s veículos"
+  "gui.mtr_no_original_trains.vehicles": "%s veículos",
+  "gui.mtr_no_original_trains.search_hint": "Buscar nome ou ID…",
+  "gui.mtr_no_original_trains.filter_all": "Todos",
+  "gui.mtr_no_original_trains.filter_kept": "Mantidos",
+  "gui.mtr_no_original_trains.filter_unkept": "Não mantidos",
+  "gui.mtr_no_original_trains.filter_blocked": "Bloqueados",
+  "gui.mtr_no_original_trains.filter_unblocked": "Não bloqueados",
+  "gui.mtr_no_original_trains.search_no_result": "Nenhum resultado",
+  "gui.mtr_no_original_trains.conflict_keep_tip": "Este trem também está na lista de mantidos. Manter tem prioridade, então bloquear não faz efeito.",
+  "gui.mtr_no_original_trains.conflict_multi_tip": "Outro pacote de addon declara este mesmo trem. Bloquear remove o trem dos dois.",
+  "gui.mtr_no_original_trains.conflict_count": "%s conflitos"
 }

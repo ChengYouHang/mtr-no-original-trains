@@ -26,5 +26,15 @@
   "gui.mtr_no_original_trains.tab_builtin": "Встроенные поезда",
   "gui.mtr_no_original_trains.title": "Оставить поезда MTR",
   "gui.mtr_no_original_trains.tooltip": "Выберите, какие встроенные поезда MTR оставить",
-  "gui.mtr_no_original_trains.vehicles": "%s ед."
+  "gui.mtr_no_original_trains.vehicles": "%s ед.",
+  "gui.mtr_no_original_trains.search_hint": "Поиск по названию или ID…",
+  "gui.mtr_no_original_trains.filter_all": "Все",
+  "gui.mtr_no_original_trains.filter_kept": "Сохранённые",
+  "gui.mtr_no_original_trains.filter_unkept": "Несохранённые",
+  "gui.mtr_no_original_trains.filter_blocked": "Заблокированные",
+  "gui.mtr_no_original_trains.filter_unblocked": "Незаблокированные",
+  "gui.mtr_no_original_trains.search_no_result": "Ничего не найдено",
+  "gui.mtr_no_original_trains.conflict_keep_tip": "Этот поезд также в списке сохранённых. Сохранение важнее — блокировка не подействует.",
+  "gui.mtr_no_original_trains.conflict_multi_tip": "Этот же поезд объявлен в другом аддон-паке. Блокировка уберёт его из обоих.",
+  "gui.mtr_no_original_trains.conflict_count": "Конфликтов: %s"
 }

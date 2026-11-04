@@ -26,5 +26,15 @@
   "gui.mtr_no_original_trains.tab_builtin": "Treni integrati",
   "gui.mtr_no_original_trains.title": "Mantieni treni MTR",
   "gui.mtr_no_original_trains.tooltip": "Scegli quali treni integrati di MTR mantenere",
-  "gui.mtr_no_original_trains.vehicles": "%s veicoli"
+  "gui.mtr_no_original_trains.vehicles": "%s veicoli",
+  "gui.mtr_no_original_trains.search_hint": "Cerca nome o ID…",
+  "gui.mtr_no_original_trains.filter_all": "Tutti",
+  "gui.mtr_no_original_trains.filter_kept": "Conservati",
+  "gui.mtr_no_original_trains.filter_unkept": "Non conservati",
+  "gui.mtr_no_original_trains.filter_blocked": "Bloccati",
+  "gui.mtr_no_original_trains.filter_unblocked": "Non bloccati",
+  "gui.mtr_no_original_trains.search_no_result": "Nessun risultato",
+  "gui.mtr_no_original_trains.conflict_keep_tip": "Anche questo treno è nell'elenco dei conservati. Conservare ha la precedenza, bloccarlo non ha effetto.",
+  "gui.mtr_no_original_trains.conflict_multi_tip": "Un altro pacchetto addon dichiara lo stesso treno. Bloccarlo lo rimuove da entrambi.",
+  "gui.mtr_no_original_trains.conflict_count": "%s conflitti"
 }

@@ -7,11 +7,13 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.ElementListWidget;
+import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.text.Text;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 /**
@@ -52,6 +54,19 @@ public class TrainSelectScreen extends Screen {
     /** 已展开的车系。 */
     private final Set<String> expanded = new LinkedHashSet<>();
 
+    /** 搜索框（按车系名 / 车辆名 / ID 过滤，1.3.0 新增）。 */
+    private TextFieldWidget searchField;
+    /** 当前搜索词，小写、已 trim。 */
+    private String query = "";
+    /**
+     * 状态筛选：0 = 全部，1 = 只看已保留，2 = 只看未保留。
+     *
+     * <p>「已保留」指整个车系全选（含通过逐辆勾选达成的全选）；
+     * 部分勾选的车系在两种筛选下都会出现 —— 它既包含保留的车，也包含没保留的车。
+     */
+    private int filterMode = 0;
+    private ButtonWidget filterButton;
+
     /** 打开界面时的选择快照，用于判断用户是否真的改过东西（没改就不必重启）。 */
     private Set<String> baselineFamilies = new LinkedHashSet<>();
     private Set<String> baselineVehicleIds = new LinkedHashSet<>();
@@ -78,6 +93,23 @@ public class TrainSelectScreen extends Screen {
         return Text.translatable(LANG_PREFIX + key, args);
     }
 
+    /** 筛选按钮上的文字，跟随当前筛选状态。 */
+    private Text filterLabel() {
+        return switch (this.filterMode) {
+            case 1 -> tr("filter_kept");
+            case 2 -> tr("filter_unkept");
+            default -> tr("filter_all");
+        };
+    }
+
+    /** 名称或 ID 是否命中当前搜索词（空搜索词一律命中）。 */
+    private boolean matches(String text) {
+        if (this.query.isEmpty()) {
+            return true;
+        }
+        return text != null && text.toLowerCase(Locale.ROOT).contains(this.query);
+    }
+
     @Override
     protected void init() {
         final ConfigAccess.LiveState state = ConfigAccess.readLiveState();
@@ -96,13 +128,32 @@ public class TrainSelectScreen extends Screen {
             baselineVehicleIds = new LinkedHashSet<>(keptVehicleIds);
         }
 
-        final int top = 60;
+        final int top = 84;
         final int bottom = this.height - 52;
         this.list = new TrainListWidget(this.client, this.width, this.height, top, bottom, 24);
         this.addDrawableChild(this.list);
 
-        // 顶部工具栏
-        final int by = 24;
+        // 第 1 行（y=22）：搜索框 + 状态筛选
+        final int filterW = 92;
+        final int searchW = Math.min(210, Math.max(120, this.width - filterW - 80));
+        final int searchX = (this.width - (searchW + 6 + filterW)) / 2;
+        this.searchField = new TextFieldWidget(this.textRenderer, searchX, 22, searchW, 20, tr("search_hint"));
+        this.searchField.setMaxLength(64);
+        this.searchField.setText(this.query);
+        this.searchField.setChangedListener(text -> {
+            this.query = text == null ? "" : text.trim().toLowerCase(Locale.ROOT);
+            this.list.refreshRows();
+        });
+        this.addDrawableChild(this.searchField);
+        this.filterButton = ButtonWidget.builder(filterLabel(), b -> {
+            this.filterMode = (this.filterMode + 1) % 3;
+            b.setMessage(filterLabel());
+            this.list.refreshRows();
+        }).dimensions(searchX + searchW + 6, 22, filterW, 20).build();
+        this.addDrawableChild(this.filterButton);
+
+        // 第 2 行（y=48）：全选 / 全不选 / 恢复默认
+        final int by = 48;
         final int bw = 110;
         final int gap = 6;
         final int totalW = bw * 3 + gap * 2;
@@ -153,6 +204,17 @@ public class TrainSelectScreen extends Screen {
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
         // GLFW_KEY_ESCAPE == 256
         if (keyCode == 256) {
+            // 搜索框里有内容（或正被聚焦）时，ESC 先清空搜索，不直接退出界面 ——
+            // 否则用户想「清掉搜索词」会把整个页面的改动一起丢掉。
+            if (!this.query.isEmpty() || (this.searchField != null && this.searchField.isFocused())) {
+                if (this.searchField != null) {
+                    this.searchField.setText("");
+                    this.searchField.setFocused(false);
+                }
+                this.query = "";
+                this.list.refreshRows();
+                return true;
+            }
             this.cancel();
             return true;
         }
@@ -224,9 +286,9 @@ public class TrainSelectScreen extends Screen {
 
         final int keptFam = keptFamilies.size();
         final int totalFam = TrainFamilyCatalog.families().size();
-        // 摘要画在工具栏按钮（24~44）与列表（top=60）之间的空档 y=48
+        // 摘要画在工具栏按钮（48~68）与列表（top=84）之间的空档 y=74
         ctx.drawCenteredTextWithShadow(font, tr("kept_summary", keptFam, totalFam),
-                this.width / 2, 48, 0xA0A0A0);
+                this.width / 2, 74, 0xA0A0A0);
 
         super.render(ctx, mouseX, mouseY, delta);
 
@@ -312,20 +374,35 @@ public class TrainSelectScreen extends Screen {
     // 列表控件
     // ------------------------------------------------------------------
 
-    /** 一行：车系行（vehicleId == null）或单辆车行。 */
+    /** 一行：车系行（vehicleId == null）或单辆车行；message != null 时是空状态提示行。 */
     private static final class Row {
         final TrainFamilyCatalog.Family family;
         final String vehicleId;
         final String vehicleName;
+        /** 空状态提示文字（搜索无结果时用），非 null 表示这一行只是提示。 */
+        final String message;
 
         Row(TrainFamilyCatalog.Family family, String vehicleId, String vehicleName) {
+            this(family, vehicleId, vehicleName, null);
+        }
+
+        private Row(TrainFamilyCatalog.Family family, String vehicleId, String vehicleName, String message) {
             this.family = family;
             this.vehicleId = vehicleId;
             this.vehicleName = vehicleName;
+            this.message = message;
+        }
+
+        static Row message(String text) {
+            return new Row(null, null, null, text);
+        }
+
+        boolean isMessage() {
+            return message != null;
         }
 
         boolean isFamilyRow() {
-            return vehicleId == null;
+            return vehicleId == null && message == null;
         }
     }
 
@@ -339,12 +416,42 @@ public class TrainSelectScreen extends Screen {
         void refreshRows() {
             final List<Row> rows = new ArrayList<>();
             for (TrainFamilyCatalog.Family f : TrainFamilyCatalog.families()) {
-                rows.add(new Row(f, null, null));
-                if (expanded.contains(f.id)) {
-                    for (var e : f.vehicles.entrySet()) {
-                        rows.add(new Row(f, e.getKey(), e.getValue()));
+                final boolean familyHit = matches(f.displayName) || matches(f.id);
+                // 命中的车辆：搜索词为空时全部命中；否则只要车系名/ID 已命中，整族都算命中
+                final List<String> vehicleHits = new ArrayList<>();
+                for (var e : f.vehicles.entrySet()) {
+                    if (familyHit || matches(e.getKey()) || matches(e.getValue())) {
+                        vehicleHits.add(e.getKey());
                     }
                 }
+                if (vehicleHits.isEmpty()) {
+                    continue;
+                }
+
+                // 状态筛选：部分勾选的车系在「只看已保留」和「只看未保留」下都保留，
+                // 因为它两边都有车，藏掉反而让人以为没这个车系。
+                final boolean fullyKept = isFamilyFullyKept(f);
+                final boolean partlyKept = isFamilyPartiallyKept(f);
+                if (filterMode == 1 && !fullyKept && !partlyKept) {
+                    continue;
+                }
+                if (filterMode == 2 && fullyKept) {
+                    continue;
+                }
+
+                rows.add(new Row(f, null, null));
+                // 搜索时自动展开命中的车，让用户直接看到命中在哪一辆；
+                // 没搜索时沿用用户自己的展开状态。
+                final boolean showVehicles = !query.isEmpty() || expanded.contains(f.id);
+                if (showVehicles) {
+                    final Iterable<String> ids = query.isEmpty() ? f.vehicles.keySet() : vehicleHits;
+                    for (String id : ids) {
+                        rows.add(new Row(f, id, f.vehicles.get(id)));
+                    }
+                }
+            }
+            if (rows.isEmpty()) {
+                rows.add(Row.message(tr("search_no_result").getString()));
             }
             this.clearEntries();
             for (Row r : rows) {
@@ -354,6 +461,10 @@ public class TrainSelectScreen extends Screen {
 
         /** 滚动到指定车系那一行（车系行之间每行占 itemHeight）。 */
         void scrollToFamily(String familyId) {
+            // 有搜索词或筛选时行数与车系顺序不对应，直接不滚（避免算错位置）
+            if (!query.isEmpty() || filterMode != 0) {
+                return;
+            }
             int index = 0;
             for (TrainFamilyCatalog.Family f : TrainFamilyCatalog.families()) {
                 if (f.id.equals(familyId)) {
@@ -400,6 +511,14 @@ public class TrainSelectScreen extends Screen {
         public void render(DrawContext ctx, int index, int y, int x, int entryWidth, int entryHeight,
                            int mouseX, int mouseY, boolean hovered, float delta) {
             final TextRenderer font = TrainSelectScreen.this.textRenderer;
+
+            // 空状态行（搜索/筛选没有命中任何车系）
+            if (row.isMessage()) {
+                ctx.drawCenteredTextWithShadow(font, Text.literal(row.message),
+                        TrainSelectScreen.this.width / 2, y + 7, 0x808080);
+                return;
+            }
+
             final TrainFamilyCatalog.Family f = row.family;
             final boolean familyRow = row.isFamilyRow();
 
@@ -450,6 +569,9 @@ public class TrainSelectScreen extends Screen {
 
         @Override
         public boolean mouseClicked(double mouseX, double mouseY, int button) {
+            if (row.isMessage()) {
+                return false;
+            }
             // 1) 勾选框命中检测（自绘，无按钮）
             if (button == 0
                     && mouseX >= hitCheckboxX && mouseX < hitCheckboxX + 16

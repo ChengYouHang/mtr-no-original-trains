@@ -26,5 +26,15 @@
   "gui.mtr_no_original_trains.tab_builtin": "内置列车",
   "gui.mtr_no_original_trains.title": "MTR 列车保留选择",
   "gui.mtr_no_original_trains.tooltip": "选择要保留的 MTR 内置列车",
-  "gui.mtr_no_original_trains.vehicles": "%s 辆"
+  "gui.mtr_no_original_trains.vehicles": "%s 辆",
+  "gui.mtr_no_original_trains.search_hint": "搜索名称或 ID…",
+  "gui.mtr_no_original_trains.filter_all": "全部",
+  "gui.mtr_no_original_trains.filter_kept": "已保留",
+  "gui.mtr_no_original_trains.filter_unkept": "未保留",
+  "gui.mtr_no_original_trains.filter_blocked": "已拦截",
+  "gui.mtr_no_original_trains.filter_unblocked": "未拦截",
+  "gui.mtr_no_original_trains.search_no_result": "没有匹配的列车",
+  "gui.mtr_no_original_trains.conflict_keep_tip": "这辆车同时在内置保留清单里，保留优先，勾选拦截不会生效。",
+  "gui.mtr_no_original_trains.conflict_multi_tip": "这辆车也被另一个追加包声明，拦截后两个包里的这辆车都会消失。",
+  "gui.mtr_no_original_trains.conflict_count": "%s 处冲突"
 }

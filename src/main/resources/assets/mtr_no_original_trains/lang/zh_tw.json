@@ -26,5 +26,15 @@
   "gui.mtr_no_original_trains.tab_builtin": "內建列車",
   "gui.mtr_no_original_trains.title": "MTR 列車保留選擇",
   "gui.mtr_no_original_trains.tooltip": "選擇要保留的 MTR 內建列車",
-  "gui.mtr_no_original_trains.vehicles": "%s 輛"
+  "gui.mtr_no_original_trains.vehicles": "%s 輛",
+  "gui.mtr_no_original_trains.search_hint": "搜尋名稱或 ID…",
+  "gui.mtr_no_original_trains.filter_all": "全部",
+  "gui.mtr_no_original_trains.filter_kept": "已保留",
+  "gui.mtr_no_original_trains.filter_unkept": "未保留",
+  "gui.mtr_no_original_trains.filter_blocked": "已攔截",
+  "gui.mtr_no_original_trains.filter_unblocked": "未攔截",
+  "gui.mtr_no_original_trains.search_no_result": "沒有符合的列車",
+  "gui.mtr_no_original_trains.conflict_keep_tip": "這輛車同時在內建保留清單裡，保留優先，勾選攔截不會生效。",
+  "gui.mtr_no_original_trains.conflict_multi_tip": "這輛車也被另一個附加包宣告，攔截後兩個包裡的這輛車都會消失。",
+  "gui.mtr_no_original_trains.conflict_count": "%s 處衝突"
 }

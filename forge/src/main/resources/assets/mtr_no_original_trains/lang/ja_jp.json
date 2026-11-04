@@ -26,5 +26,15 @@
   "gui.mtr_no_original_trains.tab_builtin": "内蔵列車",
   "gui.mtr_no_original_trains.title": "MTR 車両を残す",
   "gui.mtr_no_original_trains.tooltip": "残す MTR 内蔵車両を選択します",
-  "gui.mtr_no_original_trains.vehicles": "%s 両"
+  "gui.mtr_no_original_trains.vehicles": "%s 両",
+  "gui.mtr_no_original_trains.search_hint": "名前または ID で検索…",
+  "gui.mtr_no_original_trains.filter_all": "すべて",
+  "gui.mtr_no_original_trains.filter_kept": "保持中",
+  "gui.mtr_no_original_trains.filter_unkept": "未保持",
+  "gui.mtr_no_original_trains.filter_blocked": "ブロック中",
+  "gui.mtr_no_original_trains.filter_unblocked": "未ブロック",
+  "gui.mtr_no_original_trains.search_no_result": "一致する列車がありません",
+  "gui.mtr_no_original_trains.conflict_keep_tip": "この車両は内蔵の保持リストにも含まれています。保持が優先されるため、ブロックしても効果はありません。",
+  "gui.mtr_no_original_trains.conflict_multi_tip": "同じ車両が別のアドオンパックにも含まれています。ブロックすると両方から消えます。",
+  "gui.mtr_no_original_trains.conflict_count": "競合 %s 件"
 }

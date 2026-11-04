@@ -26,5 +26,15 @@
   "gui.mtr_no_original_trains.tab_builtin": "Wbudowane pociągi",
   "gui.mtr_no_original_trains.title": "Zachowaj pociągi MTR",
   "gui.mtr_no_original_trains.tooltip": "Wybierz, które wbudowane pociągi MTR zachować",
-  "gui.mtr_no_original_trains.vehicles": "%s pojazdów"
+  "gui.mtr_no_original_trains.vehicles": "%s pojazdów",
+  "gui.mtr_no_original_trains.search_hint": "Szukaj nazwy lub ID…",
+  "gui.mtr_no_original_trains.filter_all": "Wszystkie",
+  "gui.mtr_no_original_trains.filter_kept": "Zachowane",
+  "gui.mtr_no_original_trains.filter_unkept": "Niezachowane",
+  "gui.mtr_no_original_trains.filter_blocked": "Zablokowane",
+  "gui.mtr_no_original_trains.filter_unblocked": "Niezablokowane",
+  "gui.mtr_no_original_trains.search_no_result": "Brak wyników",
+  "gui.mtr_no_original_trains.conflict_keep_tip": "Ten pociąg jest też na liście zachowanych. Zachowanie ma priorytet, blokowanie nic nie da.",
+  "gui.mtr_no_original_trains.conflict_multi_tip": "Inny pakiet dodatku deklaruje ten sam pociąg. Zablokowanie usunie go z obu.",
+  "gui.mtr_no_original_trains.conflict_count": "Konflikty: %s"
 }

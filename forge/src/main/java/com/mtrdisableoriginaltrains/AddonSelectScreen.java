@@ -3,6 +3,7 @@ package com.mtrdisableoriginaltrains;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.ObjectSelectionList;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
@@ -12,6 +13,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -58,6 +60,23 @@ public class AddonSelectScreen extends Screen {
     private final Set<String> expandedFamilies = new LinkedHashSet<>();
     /** 展开中的「系列」（键 = 包原始名 + "|S|" + 系列键）。 */
     private final Set<String> expandedSeries = new LinkedHashSet<>();
+
+    /** 搜索框（包名 / 系列名 / 车型名 / 车辆名 / ID，1.3.0 新增）。 */
+    private EditBox searchField;
+    /** 当前搜索词，小写、已 trim。 */
+    private String query = "";
+    /** 状态筛选：0 = 全部，1 = 只看已拦截，2 = 只看未拦截。 */
+    private int filterMode = 0;
+    private Button filterButton;
+
+    /**
+     * 内置页里的保留清单（keepIds），只用于<b>冲突提示</b>：
+     * 某辆追加包车如果也在 keepIds 里，拦截勾选实际不会生效（保留优先），界面要提醒。
+     */
+    private final Set<String> keptIds = new LinkedHashSet<>();
+
+    /** 车辆 ID → 声明它的包数量，冲突提示用；rebuild 时算一次。 */
+    private Map<String, Integer> packCounts = new HashMap<>();
 
     /**
      * 推导追加包车辆所属的「车系」。
@@ -220,6 +239,9 @@ public class AddonSelectScreen extends Screen {
             selectedDisplay = null;
             mode = 0;
         }
+        // 冲突提示用：内置页的保留清单（每次都读，代价是一次小文件读取）
+        this.keptIds.clear();
+        this.keptIds.addAll(ConfigAccess.readLiveState().keepIds);
         rebuild();
     }
 
@@ -227,14 +249,43 @@ public class AddonSelectScreen extends Screen {
     private void rebuild() {
         this.clearWidgets();
 
-        final int top = 60;
+        // 冲突提示用：统计每个车辆 ID 被几个包声明（只算一次，别在 render 里反复算）
+        this.packCounts = new HashMap<>();
+        for (Set<String> ids : AddonPackScanner.addonPacks().values()) {
+            for (String id : ids) {
+                this.packCounts.merge(id, 1, Integer::sum);
+            }
+        }
+
+        final int top = mode == 1 ? 82 : 60;
         final int bottom = this.height - 52;
         this.list = new AddonListWidget(this.minecraft, this.width, this.height, top, bottom, 24);
         this.addRenderableWidget(this.list);
 
+        // 第 1 行（y=22）：搜索框 + 状态筛选（两个页面共用）
+        final int filterW = 92;
+        final int searchW = Math.min(210, Math.max(120, this.width - filterW - 80));
+        final int searchX = (this.width - (searchW + 6 + filterW)) / 2;
+        this.searchField = new EditBox(this.font, searchX, 22, searchW, 20, Component.literal(""));
+        this.searchField.setMaxLength(64);
+        this.searchField.setSuggestion(tr("search_hint").getString());
+        this.searchField.setValue(this.query);
+        this.searchField.setResponder(text -> {
+            this.query = text == null ? "" : text.trim().toLowerCase(Locale.ROOT);
+            this.searchField.setSuggestion(this.query.isEmpty() ? tr("search_hint").getString() : "");
+            this.list.refreshRows();
+        });
+        this.addRenderableWidget(this.searchField);
+        this.filterButton = Button.builder(filterLabel(), b -> {
+            this.filterMode = (this.filterMode + 1) % 3;
+            b.setMessage(filterLabel());
+            this.list.refreshRows();
+        }).bounds(searchX + searchW + 6, 22, filterW, 20).build();
+        this.addRenderableWidget(this.filterButton);
+
         if (mode == 1) {
             // 明细页：顶部 全选 / 全不选（只作用于当前包）
-            final int by = 24;
+            final int by = 46;
             final int bw = 110;
             final int gap = 6;
             final int totalW = bw * 2 + gap;
@@ -325,8 +376,18 @@ public class AddonSelectScreen extends Screen {
 
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-        // GLFW_KEY_ESCAPE == 256：明细页回列表，列表页回入口页（等同取消）
+        // GLFW_KEY_ESCAPE == 256：搜索框有内容时先清空搜索，再按一次才返回上一页
         if (keyCode == 256) {
+            if (!this.query.isEmpty() || (this.searchField != null && this.searchField.isFocused())) {
+                if (this.searchField != null) {
+                    this.searchField.setValue("");
+                    this.searchField.setSuggestion(tr("search_hint").getString());
+                    this.searchField.setFocused(false);
+                }
+                this.query = "";
+                this.list.refreshRows();
+                return true;
+            }
             this.onBack();
             return true;
         }
@@ -343,7 +404,7 @@ public class AddonSelectScreen extends Screen {
                 : this.title;
         ctx.drawCenteredString(font, title, this.width / 2, 8, 0xFFFFFF);
 
-        // 摘要（y=48，工具栏与列表之间）
+        // 摘要（mode 1 在工具栏下 y=70；mode 0 没有工具栏，仍在 y=48）
         if (mode == 1) {
             final Set<String> ids = AddonPackScanner.addonPacks().get(selectedRaw);
             final int total = ids == null ? 0 : ids.size();
@@ -355,8 +416,12 @@ public class AddonSelectScreen extends Screen {
                     }
                 }
             }
-            ctx.drawCenteredString(font, tr("addon_pack_summary", blockedInPack, total),
-                    this.width / 2, 48, 0xA0A0A0);
+            final int conflicts = conflictCountInPack();
+            final Component summary = conflicts > 0
+                    ? tr("addon_pack_summary", blockedInPack, total)
+                            .copy().append("  ·  ").append(tr("conflict_count", conflicts))
+                    : tr("addon_pack_summary", blockedInPack, total);
+            ctx.drawCenteredString(font, summary, this.width / 2, 70, 0xA0A0A0);
         } else {
             ctx.drawCenteredString(font, tr("addon_list_summary",
                             AddonPackScanner.addonPacks().size(), AddonPackScanner.addonTrainTotal()),
@@ -373,17 +438,75 @@ public class AddonSelectScreen extends Screen {
         return false;
     }
 
+    /** 筛选按钮上的文字，跟随当前筛选状态。 */
+    private Component filterLabel() {
+        return switch (this.filterMode) {
+            case 1 -> tr("filter_blocked");
+            case 2 -> tr("filter_unblocked");
+            default -> tr("filter_all");
+        };
+    }
+
+    /** 名称或 ID 是否命中当前搜索词（空搜索词一律命中）。 */
+    private boolean matches(String text) {
+        if (this.query.isEmpty()) {
+            return true;
+        }
+        return text != null && text.toLowerCase(Locale.ROOT).contains(this.query);
+    }
+
+    /**
+     * 冲突类型：0 = 无，1 = 这辆车同时在内置保留清单里（保留优先，勾了也不会被拦），
+     * 2 = 同一个 ID 被多个追加包同时声明（拦了会一起消失）。
+     */
+    private int conflictOf(String id) {
+        if (this.keptIds.contains(id)) {
+            return 1;
+        }
+        return this.packCounts.getOrDefault(id, 0) > 1 ? 2 : 0;
+    }
+
+    /** 这个包里是否有车同时被别的包声明（包行角标用）。 */
+    private boolean packHasSharedCars(String raw) {
+        final Set<String> ids = AddonPackScanner.addonPacks().get(raw);
+        if (ids == null) {
+            return false;
+        }
+        for (String id : ids) {
+            if (this.packCounts.getOrDefault(id, 0) > 1) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /** 当前包里有冲突的车辆数（页头提示用）。 */
+    private int conflictCountInPack() {
+        final Set<String> ids = AddonPackScanner.addonPacks().get(selectedRaw);
+        if (ids == null) {
+            return 0;
+        }
+        int n = 0;
+        for (String id : ids) {
+            if (conflictOf(id) != 0) {
+                n++;
+            }
+        }
+        return n;
+    }
+
     // ------------------------------------------------------------------
     // 列表控件
     // ------------------------------------------------------------------
 
-    /** 一行：包头 / 系列行 / 车型行 / 单车行。 */
+    /** 一行：包头 / 系列行 / 车型行 / 单车行 / 空状态提示行。 */
     private static final class Row {
         static final int KIND_PACK = 0;
         static final int KIND_SERIES = 1;
         static final int KIND_FAMILY = 2;
         static final int KIND_VEHICLE = 3;
         static final int KIND_EMPTY = 4;
+        static final int KIND_MESSAGE = 5;
 
         final int kind;
         final String rawPack;
@@ -397,9 +520,11 @@ public class AddonSelectScreen extends Screen {
         final String vehicleName;
         /** 缩进层级：0 = 顶层，1 = 车型在系列下，2 = 单车在车型下。 */
         final int indent;
+        /** 空状态提示文字（KIND_MESSAGE 用）。 */
+        final String message;
 
         private Row(int kind, String rawPack, String packDisplay, String familyKey, String familyDisplay,
-                    List<String> familyIds, String vehicleId, String vehicleName, int indent) {
+                    List<String> familyIds, String vehicleId, String vehicleName, int indent, String message) {
             this.kind = kind;
             this.rawPack = rawPack;
             this.packDisplay = packDisplay;
@@ -409,27 +534,34 @@ public class AddonSelectScreen extends Screen {
             this.vehicleId = vehicleId;
             this.vehicleName = vehicleName;
             this.indent = indent;
+            this.message = message;
         }
 
         static Row pack(String rawPack, String packDisplay) {
-            return new Row(KIND_PACK, rawPack, packDisplay, null, null, null, null, null, 0);
+            return new Row(KIND_PACK, rawPack, packDisplay, null, null, null, null, null, 0, null);
         }
 
         static Row series(String rawPack, String packDisplay, String seriesKey, List<String> ids) {
-            return new Row(KIND_SERIES, rawPack, packDisplay, seriesKey, seriesKey, ids, null, null, 0);
+            return new Row(KIND_SERIES, rawPack, packDisplay, seriesKey, seriesKey, ids, null, null, 0, null);
         }
 
         static Row family(String rawPack, String packDisplay, String familyKey, String familyDisplay,
                           List<String> ids, int indent) {
-            return new Row(KIND_FAMILY, rawPack, packDisplay, familyKey, familyDisplay, ids, null, null, indent);
+            return new Row(KIND_FAMILY, rawPack, packDisplay, familyKey, familyDisplay, ids, null, null,
+                    indent, null);
         }
 
         static Row vehicle(String rawPack, String packDisplay, String vehicleId, String vehicleName, int indent) {
-            return new Row(KIND_VEHICLE, rawPack, packDisplay, null, null, null, vehicleId, vehicleName, indent);
+            return new Row(KIND_VEHICLE, rawPack, packDisplay, null, null, null, vehicleId, vehicleName,
+                    indent, null);
         }
 
         static Row empty() {
-            return new Row(KIND_EMPTY, null, null, null, null, null, null, null, 0);
+            return new Row(KIND_EMPTY, null, null, null, null, null, null, null, 0, null);
+        }
+
+        static Row message(String text) {
+            return new Row(KIND_MESSAGE, null, null, null, null, null, null, null, 0, text);
         }
     }
 
@@ -447,8 +579,20 @@ public class AddonSelectScreen extends Screen {
                 if (packs.isEmpty()) {
                     rows.add(Row.empty());
                 } else {
+                    boolean any = false;
                     for (var e : packs.entrySet()) {
-                        rows.add(Row.pack(e.getKey(), AddonPackScanner.displayPackName(e.getKey())));
+                        final String display = AddonPackScanner.displayPackName(e.getKey());
+                        if (!matches(display) && !matches(e.getKey())) {
+                            continue;
+                        }
+                        if (!blockedFilterOk(new ArrayList<>(e.getValue()))) {
+                            continue;
+                        }
+                        rows.add(Row.pack(e.getKey(), display));
+                        any = true;
+                    }
+                    if (!any) {
+                        rows.add(Row.message(tr("search_no_result").getString()));
                     }
                 }
             } else {
@@ -469,28 +613,85 @@ public class AddonSelectScreen extends Screen {
                     for (var se : seriesToFamilies.entrySet()) {
                         final String seriesKey = se.getKey();
                         final List<String> families = se.getValue();
+                        // 搜索/筛选后仍然可见的车型
+                        final List<String> visible = new ArrayList<>();
+                        for (String familyKey : families) {
+                            if (familyVisible(familyKey, byFamily.get(familyKey), names)) {
+                                visible.add(familyKey);
+                            }
+                        }
+                        if (visible.isEmpty()) {
+                            continue;
+                        }
                         if (families.size() == 1) {
                             // 这条线下只有一个车型，省掉中间层，直接显示车型行
                             addFamilyRows(rows, byFamily, names, families.get(0), 0);
                             continue;
                         }
                         final List<String> seriesIds = new ArrayList<>();
-                        for (String familyKey : families) {
+                        for (String familyKey : visible) {
                             seriesIds.addAll(byFamily.get(familyKey));
                         }
                         rows.add(Row.series(selectedRaw, selectedDisplay, seriesKey, seriesIds));
-                        if (expandedSeries.contains(selectedRaw + "|S|" + seriesKey)) {
-                            for (String familyKey : families) {
+                        // 搜索或有筛选时强制展开，否则用户会看到「命中了但里面是空的」
+                        if (expandedSeries.contains(selectedRaw + "|S|" + seriesKey)
+                                || !query.isEmpty() || filterMode != 0) {
+                            for (String familyKey : visible) {
                                 addFamilyRows(rows, byFamily, names, familyKey, 1);
                             }
                         }
                     }
+                }
+                if (rows.isEmpty()) {
+                    rows.add(Row.message(tr("search_no_result").getString()));
                 }
             }
             this.clearEntries();
             for (Row r : rows) {
                 this.addEntry(new AddonEntry(r));
             }
+        }
+
+        /** 车型行是否可见：命中搜索词，且符合当前状态筛选。 */
+        private boolean familyVisible(String familyKey, List<String> ids, Map<String, String> names) {
+            if (ids == null || ids.isEmpty()) {
+                return false;
+            }
+            if (!matches(familyKey) && matchingIds(ids, names).isEmpty()) {
+                return false;
+            }
+            return blockedFilterOk(ids);
+        }
+
+        /** 命中当前搜索词的车辆 ID（搜索词为空时原样返回）。 */
+        private List<String> matchingIds(List<String> ids, Map<String, String> names) {
+            if (query.isEmpty()) {
+                return ids;
+            }
+            final List<String> out = new ArrayList<>();
+            for (String id : ids) {
+                if (matches(id) || matches(labelOf(id, names))) {
+                    out.add(id);
+                }
+            }
+            return out;
+        }
+
+        /** 状态筛选：1 = 只看已拦（至少一辆被拦），2 = 只看未拦（存在没被拦的车）。 */
+        private boolean blockedFilterOk(List<String> ids) {
+            if (filterMode == 0) {
+                return true;
+            }
+            boolean anyBlocked = false;
+            boolean allBlocked = true;
+            for (String id : ids) {
+                if (blockedAddons.contains(id)) {
+                    anyBlocked = true;
+                } else {
+                    allBlocked = false;
+                }
+            }
+            return filterMode == 1 ? anyBlocked : !allBlocked;
         }
 
         /** 追加一个车型行（必要时连带它展开的单车行）。 */
@@ -503,16 +704,21 @@ public class AddonSelectScreen extends Screen {
             // 嵌在系列下面时省掉重复的线路前缀：「上海地铁1号线-01A02伪八二世」 → 「01A02伪八二世」
             rows.add(Row.family(selectedRaw, selectedDisplay, familyKey,
                     indent > 0 ? stripSeriesPrefix(familyKey) : familyKey, familyIds, indent));
-            if (!expandedFamilies.contains(selectedRaw + "|F|" + familyKey)) {
+            // 搜索时强制展开命中的车辆；没搜索时沿用用户自己的展开状态
+            if (query.isEmpty() && !expandedFamilies.contains(selectedRaw + "|F|" + familyKey)) {
+                return;
+            }
+            final List<String> shown = matchingIds(familyIds, names);
+            if (shown.isEmpty()) {
                 return;
             }
             // legacy 包的 4 个变体（trailer / cab_1..3）共用同一个名字，
             // 展开时补上变体后缀，否则司机看到 4 行一模一样的字
             final Map<String, Integer> nameCount = new HashMap<>();
-            for (String id : familyIds) {
+            for (String id : shown) {
                 nameCount.merge(labelOf(id, names), 1, Integer::sum);
             }
-            for (String id : familyIds) {
+            for (String id : shown) {
                 final String base = labelOf(id, names);
                 final String label = nameCount.getOrDefault(base, 0) > 1
                         ? base + "  ·  " + tailOf(id) : base;
@@ -576,6 +782,11 @@ public class AddonSelectScreen extends Screen {
                         AddonSelectScreen.this.width / 2, y + 7, 0x808080);
                 return;
             }
+            if (row.kind == Row.KIND_MESSAGE) {
+                ctx.drawCenteredString(font, Component.literal(row.message),
+                        AddonSelectScreen.this.width / 2, y + 7, 0x808080);
+                return;
+            }
 
             if (hovered) {
                 ctx.fill(x - 2, y, x + entryWidth, y + entryHeight - 2, 0x30FFFFFF);
@@ -636,6 +847,30 @@ public class AddonSelectScreen extends Screen {
             } else {
                 name = row.vehicleName;
             }
+            // 冲突角标：只有「单车行」和「包行」需要，系列行/车型行不单独标（避免满屏感叹号）
+            final int conflict;
+            if (row.kind == Row.KIND_VEHICLE) {
+                conflict = conflictOf(row.vehicleId);
+            } else if (packRow) {
+                conflict = packHasSharedCars(row.rawPack) ? 2 : 0;
+            } else {
+                conflict = 0;
+            }
+            if (conflict != 0) {
+                final int bx2 = textX;
+                final int by2 = y + 5;
+                final int markColor = conflict == 1 ? 0xFFE8C060 : 0xFFE08060;
+                ctx.fill(bx2, by2, bx2 + 10, by2 + 13, 0x40000000 | (markColor & 0xFFFFFF));
+                ctx.renderOutline(bx2, by2, 10, 13, markColor);
+                ctx.drawString(font, Component.literal("!"), bx2 + 3, by2 + 3, 0xFFFFFFFF);
+                if (mouseX >= bx2 && mouseX < bx2 + 10 && mouseY >= by2 && mouseY < by2 + 13) {
+                    ctx.renderTooltip(font,
+                            tr(conflict == 1 ? "conflict_keep_tip" : "conflict_multi_tip"),
+                            mouseX, mouseY);
+                }
+                textX += 14;
+            }
+
             final boolean groupRow = packRow || row.kind == Row.KIND_FAMILY || row.kind == Row.KIND_SERIES;
             final int color = row.kind == Row.KIND_SERIES ? (checked ? 0xFFFFFF : 0xD8D8D8)
                     : groupRow ? (checked ? 0xFFFFFF : 0xC0C0C0)
@@ -708,7 +943,7 @@ public class AddonSelectScreen extends Screen {
 
         @Override
         public boolean mouseClicked(double mouseX, double mouseY, int button) {
-            if (row.kind == Row.KIND_EMPTY) {
+            if (row.kind == Row.KIND_EMPTY || row.kind == Row.KIND_MESSAGE) {
                 return false;
             }
             if (button != 0) {

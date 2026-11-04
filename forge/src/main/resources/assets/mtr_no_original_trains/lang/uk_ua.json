@@ -26,5 +26,15 @@
   "gui.mtr_no_original_trains.tab_builtin": "Вбудовані поїзди",
   "gui.mtr_no_original_trains.title": "Залишити поїзди MTR",
   "gui.mtr_no_original_trains.tooltip": "Виберіть, які вбудовані поїзди MTR залишити",
-  "gui.mtr_no_original_trains.vehicles": "%s од."
+  "gui.mtr_no_original_trains.vehicles": "%s од.",
+  "gui.mtr_no_original_trains.search_hint": "Search name or ID…",
+  "gui.mtr_no_original_trains.filter_all": "All",
+  "gui.mtr_no_original_trains.filter_kept": "Kept",
+  "gui.mtr_no_original_trains.filter_unkept": "Not kept",
+  "gui.mtr_no_original_trains.filter_blocked": "Blocked",
+  "gui.mtr_no_original_trains.filter_unblocked": "Not blocked",
+  "gui.mtr_no_original_trains.search_no_result": "Nothing matches your search",
+  "gui.mtr_no_original_trains.conflict_keep_tip": "This car is also on the built-in keep list. Keeping wins, so blocking it has no effect.",
+  "gui.mtr_no_original_trains.conflict_multi_tip": "Another addon pack declares this same car. Blocking it removes the car from both packs.",
+  "gui.mtr_no_original_trains.conflict_count": "%s conflicts"
 }

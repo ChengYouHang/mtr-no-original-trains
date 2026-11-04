@@ -26,5 +26,15 @@
   "gui.mtr_no_original_trains.tab_builtin": "내장 열차",
   "gui.mtr_no_original_trains.title": "MTR 열차 유지",
   "gui.mtr_no_original_trains.tooltip": "유지할 MTR 내장 열차를 선택합니다",
-  "gui.mtr_no_original_trains.vehicles": "%s량"
+  "gui.mtr_no_original_trains.vehicles": "%s량",
+  "gui.mtr_no_original_trains.search_hint": "이름 또는 ID 검색…",
+  "gui.mtr_no_original_trains.filter_all": "전체",
+  "gui.mtr_no_original_trains.filter_kept": "유지됨",
+  "gui.mtr_no_original_trains.filter_unkept": "유지 안 됨",
+  "gui.mtr_no_original_trains.filter_blocked": "차단됨",
+  "gui.mtr_no_original_trains.filter_unblocked": "차단 안 됨",
+  "gui.mtr_no_original_trains.search_no_result": "일치하는 열차가 없습니다",
+  "gui.mtr_no_original_trains.conflict_keep_tip": "이 차량은 내장 유지 목록에도 있습니다. 유지가 우선이라 차단해도 효과가 없습니다.",
+  "gui.mtr_no_original_trains.conflict_multi_tip": "같은 차량이 다른 애드온 팩에도 있습니다. 차단하면 두 팩 모두에서 사라집니다.",
+  "gui.mtr_no_original_trains.conflict_count": "충돌 %s건"
 }
