@@ -1,5 +1,5 @@
 No Original Trains 1.1.0 — Forge
-File: mtr_no_original_trains-forge-1.1.0.jar
+File: mtr_no_original_trains-1.1.0.jar
 Minecraft 1.20.1 · Forge 47.x
 
 
@@ -35,8 +35,9 @@ If they are missing, the game stops at the loading screen with a "missing mandat
 INSTALL
 
 - Install the Forge builds of FerriteCore and ModernFix first, then replace the jar. Your config file is not touched.
-- Drop mtr_no_original_trains-forge-1.1.0.jar into mods/.
+- Drop mtr_no_original_trains-1.1.0.jar into mods/.
 - Requires Minecraft Transit Railway 4.0.0 or newer (any 4.x), plus FerriteCore (Forge) and ModernFix (Forge).
 - Client-side only. Servers do not need it. Do not install this jar on Fabric.
 - Updating from 1.0.0: delete the old jar rather than keeping both, they share a mod ID.
 - Known good on Forge 47.4.26. Any Forge 47.x on 1.20.1 should work.
+- On 1.1.0 the Fabric and Forge builds share the same file name, mtr_no_original_trains-1.1.0.jar. Whichever one you downloaded is the one for this loader; the -fabric / -forge suffix only starts with 1.2.0.
