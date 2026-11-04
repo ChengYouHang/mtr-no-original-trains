@@ -37,3 +37,4 @@ _tools/launch_detached.py
 
 # libs 子目录的依赖 jar 一并排除
 libs/**/*.jar
+release-1.2.1/*-预览.html
