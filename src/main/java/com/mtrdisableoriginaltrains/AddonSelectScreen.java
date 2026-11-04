@@ -58,6 +58,8 @@ public class AddonSelectScreen extends Screen {
 
     /** 展开中的车系（键 = 包原始名 + "|" + 车系键），明细页用。 */
     private final Set<String> expandedFamilies = new LinkedHashSet<>();
+    /** 展开中的「系列」（键 = 包原始名 + "|S|" + 系列键）。 */
+    private final Set<String> expandedSeries = new LinkedHashSet<>();
 
     /**
      * 推导追加包车辆所属的「车系」。
@@ -101,6 +103,66 @@ public class AddonSelectScreen extends Screen {
         key = key.replaceAll("(?i)_(cab_\\d+|trailer|f\\d*|b\\d*|t\\d*t?)$", "");
         return key.isEmpty() ? String.valueOf(id) : key;
     }
+
+    /**
+     * 由「车型」名推出所属「系列」（线路 / 车系大类），用于列表的第二层归并。
+     *
+     * <p>{@link #familyKeyOf} 得到的是<b>车型</b>（如「上海地铁1号线-01A02伪八二世」），
+     * 一个车型在追加包里通常只有 4 辆车；但玩家真正想一键拦掉的是<b>一条线</b>。
+     * 实测两种命名习惯：
+     * <ol>
+     *   <li><b>「线路-车型」</b>（上海地铁包、多数日系包）：第一个 {@code -} 之前就是线路，
+     *       如 {@code 上海地铁16号线-16A01(AC19)抹茶-大站车} → {@code 上海地铁16号线}；</li>
+     *   <li><b>「线路 + 批次」</b>（合肥这类国产包）：线路后面直接跟期数/批次，
+     *       如 {@code 合肥轨道交通2号线增购车} → {@code 合肥轨道交通2号线}，
+     *       {@code 合肥轨道S1号线xcan+314} → {@code 合肥轨道S1号线}。</li>
+     * </ol>
+     * 两种都匹配不上时，车型自己就是一个系列（列表里少一层，不会凭空合并）。
+     */
+    static String seriesKeyOf(String familyKey) {
+        if (familyKey == null || familyKey.isEmpty()) {
+            return familyKey;
+        }
+        // ① 「线路-车型」写法：第一个 - 之前
+        final int dash = familyKey.indexOf('-');
+        if (dash > 0) {
+            final String head = familyKey.substring(0, dash).trim();
+            if (head.length() >= 2) {
+                return head;
+            }
+        }
+        // ② 「线路 + 批次」写法：反复剥结尾的批次词
+        String base = familyKey;
+        boolean changed = true;
+        while (changed) {
+            changed = false;
+            for (String token : SERIES_SUFFIX_TOKENS) {
+                final String next = base.replaceAll("(?i)\\s*" + token + "\\s*$", "").trim();
+                if (!next.isEmpty() && !next.equals(base)) {
+                    base = next;
+                    changed = true;
+                }
+            }
+        }
+        return base;
+    }
+
+    /** 把「系列前缀 + 分隔符」从车型名里去掉，缩进显示时不再重复写线路名。 */
+    static String stripSeriesPrefix(String familyKey) {
+        final String series = seriesKeyOf(familyKey);
+        if (series == null || series.equals(familyKey) || !familyKey.startsWith(series)) {
+            return familyKey;
+        }
+        String rest = familyKey.substring(series.length()).trim();
+        rest = rest.replaceAll("^[\\s\\-\u2014\u00b7\u3001]+", "").trim();
+        return rest.isEmpty() ? familyKey : rest;
+    }
+
+    /** {@link #seriesKeyOf} 第 ② 条要剥掉的批次词。 */
+    private static final String[] SERIES_SUFFIX_TOKENS = {
+            "第?\\d+期", "\\d+期", "增购车", "增购", "神秘列车", "彩蛋车", "扩编",
+            "xcan\\+?\\d*", "xcan", "lcd"
+    };
 
     /**
      * 取一辆车的显示名：运行时捕获的名字 → 追加包 JSON 自带的名字 → 退回 ID。
@@ -316,26 +378,29 @@ public class AddonSelectScreen extends Screen {
     // 列表控件
     // ------------------------------------------------------------------
 
-    /** 一行：包头（vehicleId == null）或单辆追加包列车。 */
+    /** 一行：包头 / 系列行 / 车型行 / 单车行。 */
     private static final class Row {
         static final int KIND_PACK = 0;
-        static final int KIND_FAMILY = 1;
-        static final int KIND_VEHICLE = 2;
-        static final int KIND_EMPTY = 3;
+        static final int KIND_SERIES = 1;
+        static final int KIND_FAMILY = 2;
+        static final int KIND_VEHICLE = 3;
+        static final int KIND_EMPTY = 4;
 
         final int kind;
         final String rawPack;
         final String packDisplay;
-        /** 车系键（KIND_FAMILY 用）。 */
+        /** 系列键或车型键（KIND_SERIES / KIND_FAMILY 用）。 */
         final String familyKey;
         final String familyDisplay;
-        /** 该车系下的全部列车 ID（KIND_FAMILY 用，便于整族勾选）。 */
+        /** 该行覆盖的全部列车 ID（整行勾选时用）。 */
         final List<String> familyIds;
         final String vehicleId;
         final String vehicleName;
+        /** 缩进层级：0 = 顶层，1 = 车型在系列下，2 = 单车在车型下。 */
+        final int indent;
 
         private Row(int kind, String rawPack, String packDisplay, String familyKey, String familyDisplay,
-                    List<String> familyIds, String vehicleId, String vehicleName) {
+                    List<String> familyIds, String vehicleId, String vehicleName, int indent) {
             this.kind = kind;
             this.rawPack = rawPack;
             this.packDisplay = packDisplay;
@@ -344,23 +409,28 @@ public class AddonSelectScreen extends Screen {
             this.familyIds = familyIds;
             this.vehicleId = vehicleId;
             this.vehicleName = vehicleName;
+            this.indent = indent;
         }
 
         static Row pack(String rawPack, String packDisplay) {
-            return new Row(KIND_PACK, rawPack, packDisplay, null, null, null, null, null);
+            return new Row(KIND_PACK, rawPack, packDisplay, null, null, null, null, null, 0);
+        }
+
+        static Row series(String rawPack, String packDisplay, String seriesKey, List<String> ids) {
+            return new Row(KIND_SERIES, rawPack, packDisplay, seriesKey, seriesKey, ids, null, null, 0);
         }
 
         static Row family(String rawPack, String packDisplay, String familyKey, String familyDisplay,
-                          List<String> ids) {
-            return new Row(KIND_FAMILY, rawPack, packDisplay, familyKey, familyDisplay, ids, null, null);
+                          List<String> ids, int indent) {
+            return new Row(KIND_FAMILY, rawPack, packDisplay, familyKey, familyDisplay, ids, null, null, indent);
         }
 
-        static Row vehicle(String rawPack, String packDisplay, String vehicleId, String vehicleName) {
-            return new Row(KIND_VEHICLE, rawPack, packDisplay, null, null, null, vehicleId, vehicleName);
+        static Row vehicle(String rawPack, String packDisplay, String vehicleId, String vehicleName, int indent) {
+            return new Row(KIND_VEHICLE, rawPack, packDisplay, null, null, null, vehicleId, vehicleName, indent);
         }
 
         static Row empty() {
-            return new Row(KIND_EMPTY, null, null, null, null, null, null, null);
+            return new Row(KIND_EMPTY, null, null, null, null, null, null, null, 0);
         }
     }
 
@@ -385,27 +455,34 @@ public class AddonSelectScreen extends Screen {
             } else {
                 final Set<String> ids = packs.get(selectedRaw);
                 if (ids != null) {
-                    // 按推导出的车系分组；组内保持原始声明顺序
+                    // 第一层：车型（组内保持原始声明顺序）
                     final Map<String, List<String>> byFamily = new LinkedHashMap<>();
                     for (String id : ids) {
                         final String key = familyKeyOf(id, labelOf(id, names));
                         byFamily.computeIfAbsent(key, k -> new ArrayList<>()).add(id);
                     }
-                    for (var e : byFamily.entrySet()) {
-                        final String key = e.getKey();
-                        rows.add(Row.family(selectedRaw, selectedDisplay, key, key, e.getValue()));
-                        if (expandedFamilies.contains(selectedRaw + "|" + key)) {
-                            // legacy 包的 4 个变体（trailer / cab_1..3）共用同一个名字，
-                            // 展开时补上变体后缀，否则司机看到 4 行一模一样的字
-                            final Map<String, Integer> nameCount = new HashMap<>();
-                            for (String id : e.getValue()) {
-                                nameCount.merge(labelOf(id, names), 1, Integer::sum);
-                            }
-                            for (String id : e.getValue()) {
-                                final String base = labelOf(id, names);
-                                final String label = nameCount.getOrDefault(base, 0) > 1
-                                        ? base + "  ·  " + tailOf(id) : base;
-                                rows.add(Row.vehicle(selectedRaw, selectedDisplay, id, label));
+                    // 第二层：车型再归并成系列（线路）
+                    final Map<String, List<String>> seriesToFamilies = new LinkedHashMap<>();
+                    for (String familyKey : byFamily.keySet()) {
+                        seriesToFamilies.computeIfAbsent(seriesKeyOf(familyKey), k -> new ArrayList<>())
+                                .add(familyKey);
+                    }
+                    for (var se : seriesToFamilies.entrySet()) {
+                        final String seriesKey = se.getKey();
+                        final List<String> families = se.getValue();
+                        if (families.size() == 1) {
+                            // 这条线下只有一个车型，省掉中间层，直接显示车型行
+                            addFamilyRows(rows, byFamily, names, families.get(0), 0);
+                            continue;
+                        }
+                        final List<String> seriesIds = new ArrayList<>();
+                        for (String familyKey : families) {
+                            seriesIds.addAll(byFamily.get(familyKey));
+                        }
+                        rows.add(Row.series(selectedRaw, selectedDisplay, seriesKey, seriesIds));
+                        if (expandedSeries.contains(selectedRaw + "|S|" + seriesKey)) {
+                            for (String familyKey : families) {
+                                addFamilyRows(rows, byFamily, names, familyKey, 1);
                             }
                         }
                     }
@@ -414,6 +491,33 @@ public class AddonSelectScreen extends Screen {
             this.clearEntries();
             for (Row r : rows) {
                 this.addEntry(new AddonEntry(r));
+            }
+        }
+
+        /** 追加一个车型行（必要时连带它展开的单车行）。 */
+        private void addFamilyRows(List<Row> rows, Map<String, List<String>> byFamily,
+                                   Map<String, String> names, String familyKey, int indent) {
+            final List<String> familyIds = byFamily.get(familyKey);
+            if (familyIds == null || familyIds.isEmpty()) {
+                return;
+            }
+            // 嵌在系列下面时省掉重复的线路前缀：「上海地铁1号线-01A02伪八二世」 → 「01A02伪八二世」
+            rows.add(Row.family(selectedRaw, selectedDisplay, familyKey,
+                    indent > 0 ? stripSeriesPrefix(familyKey) : familyKey, familyIds, indent));
+            if (!expandedFamilies.contains(selectedRaw + "|F|" + familyKey)) {
+                return;
+            }
+            // legacy 包的 4 个变体（trailer / cab_1..3）共用同一个名字，
+            // 展开时补上变体后缀，否则司机看到 4 行一模一样的字
+            final Map<String, Integer> nameCount = new HashMap<>();
+            for (String id : familyIds) {
+                nameCount.merge(labelOf(id, names), 1, Integer::sum);
+            }
+            for (String id : familyIds) {
+                final String base = labelOf(id, names);
+                final String label = nameCount.getOrDefault(base, 0) > 1
+                        ? base + "  ·  " + tailOf(id) : base;
+                rows.add(Row.vehicle(selectedRaw, selectedDisplay, id, label, indent + 1));
             }
         }
 
@@ -438,12 +542,22 @@ public class AddonSelectScreen extends Screen {
         AddonEntry(Row row) {
             this.row = row;
             if (row.kind == Row.KIND_FAMILY) {
-                final String key = row.rawPack + "|" + row.familyKey;
+                final String key = row.rawPack + "|F|" + row.familyKey;
                 this.foldButton = ButtonWidget.builder(
                         Text.literal(expandedFamilies.contains(key) ? "−" : "+"),
                         b -> {
                             if (!expandedFamilies.remove(key)) {
                                 expandedFamilies.add(key);
+                            }
+                            list.refreshRows();
+                        }).dimensions(0, 0, 16, 18).build();
+            } else if (row.kind == Row.KIND_SERIES) {
+                final String key = row.rawPack + "|S|" + row.familyKey;
+                this.foldButton = ButtonWidget.builder(
+                        Text.literal(expandedSeries.contains(key) ? "−" : "+"),
+                        b -> {
+                            if (!expandedSeries.remove(key)) {
+                                expandedSeries.add(key);
                             }
                             list.refreshRows();
                         }).dimensions(0, 0, 16, 18).build();
@@ -474,7 +588,7 @@ public class AddonSelectScreen extends Screen {
             if (packRow) {
                 checked = isPackFullyBlocked(row.rawPack);
                 partial = isPackPartiallyBlocked(row.rawPack);
-            } else if (row.kind == Row.KIND_FAMILY) {
+            } else if (row.kind == Row.KIND_FAMILY || row.kind == Row.KIND_SERIES) {
                 checked = isFamilyFullyBlocked(row.familyIds);
                 partial = isFamilyPartiallyBlocked(row.familyIds);
             } else {
@@ -482,12 +596,14 @@ public class AddonSelectScreen extends Screen {
                 partial = false;
             }
 
+            // 缩进：系列 > 车型 > 单车
+            final int rowX = x + row.indent * 10;
             int textX;
             if (packRow) {
                 // 包行：无勾选框，直接文字 + 右侧计数
-                textX = x + 8;
+                textX = rowX + 8;
             } else {
-                final int bx = x + 2;
+                final int bx = rowX + 2;
                 final int by = y + 2;
                 ctx.fill(bx, by, bx + 16, by + 16, 0xFF1A1A1A);
                 ctx.drawBorder(bx, by, 16, 16,
@@ -505,7 +621,7 @@ public class AddonSelectScreen extends Screen {
                 textX = bx + 22;
             }
 
-            // 车系行多一个展开按钮
+            // 系列行 / 车型行多一个展开按钮
             if (this.foldButton != null) {
                 this.foldButton.setX(textX);
                 this.foldButton.setY(y + 1);
@@ -516,13 +632,14 @@ public class AddonSelectScreen extends Screen {
             final String name;
             if (packRow) {
                 name = row.packDisplay;
-            } else if (row.kind == Row.KIND_FAMILY) {
+            } else if (row.kind == Row.KIND_FAMILY || row.kind == Row.KIND_SERIES) {
                 name = row.familyDisplay;
             } else {
                 name = row.vehicleName;
             }
-            final boolean groupRow = packRow || row.kind == Row.KIND_FAMILY;
-            final int color = groupRow ? (checked ? 0xFFFFFF : 0xC0C0C0)
+            final boolean groupRow = packRow || row.kind == Row.KIND_FAMILY || row.kind == Row.KIND_SERIES;
+            final int color = row.kind == Row.KIND_SERIES ? (checked ? 0xFFFFFF : 0xD8D8D8)
+                    : groupRow ? (checked ? 0xFFFFFF : 0xC0C0C0)
                     : (checked ? 0xE0C0B0 : 0xA0A0A0);
             ctx.drawTextWithShadow(font,
                     Text.literal(font.trimToWidth(name, entryWidth - (textX - x) - 70)),
@@ -533,7 +650,7 @@ public class AddonSelectScreen extends Screen {
                 final Text right = tr("vehicles", ids == null ? 0 : ids.size());
                 final int rw = font.getWidth(right);
                 ctx.drawTextWithShadow(font, right, x + entryWidth - rw - 6, y + 7, 0x808080);
-            } else if (row.kind == Row.KIND_FAMILY) {
+            } else if (row.kind == Row.KIND_FAMILY || row.kind == Row.KIND_SERIES) {
                 final Text right = tr("vehicles", row.familyIds.size());
                 final int rw = font.getWidth(right);
                 ctx.drawTextWithShadow(font, right, x + entryWidth - rw - 6, y + 7, 0x808080);
@@ -607,8 +724,8 @@ public class AddonSelectScreen extends Screen {
             if (this.foldButton != null && this.foldButton.mouseClicked(mouseX, mouseY, button)) {
                 return true;
             }
-            if (row.kind == Row.KIND_FAMILY) {
-                // 车系行：整族切换
+            if (row.kind == Row.KIND_FAMILY || row.kind == Row.KIND_SERIES) {
+                // 系列行 / 车型行：整行切换（系列 = 它下面所有车型的所有车）
                 if (isFamilyFullyBlocked(row.familyIds)) {
                     blockedAddons.removeAll(row.familyIds);
                 } else {

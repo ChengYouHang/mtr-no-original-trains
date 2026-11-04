@@ -9,7 +9,8 @@
 - Addon packs are listed by name with a car count next to each one. Click a pack to drill in. Back returns to the pack list, Done saves.
 - Only real train packs show up. A pack is listed only if it actually ships an mtr:mtr_custom_resources.json declaring vehicles. Texture packs, shader packs, sound packs and anything else sitting in your resource pack folder are never scanned in.
 - Both pack formats are supported. Modern packs (vehicles[]) and old-style packs (custom_trains) are read the same way, so a pack that has not been updated for MTR 4 still lists its trains properly.
-- Trains are grouped by family, derived from the names and IDs the pack itself declares. Most packs carry no family tag at all - a pack with 109 cars still collapses into 16 readable rows instead of 109 loose entries. Click + to expand a family and tick individual cars, or tick the family to block all of them at once.
+- Trains are grouped two levels deep: line, then model. Addon packs carry no family tag at all, so both levels are derived from the names and IDs the pack declares itself. The Shanghai pack's 248 cars open as 18 lines; a line with several models (Line 16 has seven) opens into those models, and a model opens into its individual cars. Tick a line to block the whole line at once, tick a model to block just that model.
+- Nested rows drop the repeated line prefix, so a model under Line 16 reads 16A01(AC19)抹茶-大站车 instead of repeating the line name in front of it.
 - Names come from the pack manifest, not from the running game, so a train keeps its real name even after you have blocked it. The row does not degrade into a raw ID like mtr_custom_train_ac01_cab_1 the next time you open the screen.
 - Per-pack and overall counters. Each pack row shows how many of its cars you have blocked, and the hub keeps a running total across all packs.
 

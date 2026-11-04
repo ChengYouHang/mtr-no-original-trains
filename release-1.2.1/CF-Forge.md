@@ -38,7 +38,7 @@ The same picker now covers trains that addon packs add. The main menu button ope
 
 - **Only real train packs are listed.** A pack appears only if it ships a `mtr:mtr_custom_resources.json` containing vehicles. Texture packs, shader packs and sound packs never show up, however many you have installed.
 - **Old and new pack formats both work.** Packs written for MTR 3 (`custom_trains`) and packs written for MTR 4 (`vehicles[]`) are read the same way.
-- **Grouped by family.** Addon packs almost never tag their families, so the mod derives them from the names and IDs the pack declares itself. A pack with 109 cars collapses into 16 readable rows; tick a family to block all of it, or press **+** to expand it and tick individual cars.
+- **Grouped by line, then by model.** Addon packs almost never tag their families, so the mod derives them from the names and IDs the pack declares itself. The Shanghai pack's 248 cars open as **18 lines** (Line 1, Line 2, Line 16 …); press **+** on a line to see its models, press **+** on a model to see individual cars. Tick a line to block the whole line in one click, or drill down and block a single model.
 - **Names are read from the pack file**, so a car still shows its real name after you have blocked it — no raw IDs.
 - **Nothing is blocked unless you tick it.** Every addon pack car is allowed through by default, exactly as in 1.2.0. And a built-in train on your keep list stays no matter what you do here.
 
