@@ -69,12 +69,8 @@ public class TrainSelectScreen extends Screen {
 
     /** 搜索框（按车系名 / 车辆名 / ID 过滤，1.3.0 新增）。 */
     private EditBox searchField;
-    /** 搜索框是否展开：默认收起，只留右侧一个「搜索」按钮，省地方。 */
-    private boolean searchOpen;
-    /** 收起状态下的「搜索」按钮。 */
-    private Button searchToggle;
-    /** 展开状态下输入框右边的「X」收起按钮。 */
-    private Button searchClose;
+    /** 右端「搜索」按钮：按输入框内容过滤列表，不点不生效。 */
+    private Button searchButton;
     /** 当前搜索词，小写、已 trim。 */
     private String query = "";
     /** 解析后的搜索词（分词、数字边界、ID 前缀剥离、命中打分）。 */
@@ -118,36 +114,24 @@ public class TrainSelectScreen extends Screen {
         this.list = new TrainListWidget(this.minecraft, this.width, this.height, top, bottom, 24);
         this.addRenderableWidget(this.list);
 
-        // 第 1 行（y=22）：搜索。收起时只有一个「搜索」按钮；点开后变成输入框 + X。
-        // 两种状态右对齐在同一条基线上，按钮不会因为展开/收起而横跳。
-        final int closeW = 20;
-        final int toggleW = 64;
-        final int searchW = Math.min(210, Math.max(140, this.width - closeW - 12 - 120));
-        final int searchRowW = searchW + 6 + closeW;
-        final int searchX = (this.width - searchRowW) / 2;
-        final int closeX = searchX + searchW + 6;
+        // 第 1 行（y=22）：搜索框 + 「搜索」按钮。输入后点按钮（或按回车）才过滤。
+        final int buttonW = 64;
+        final int searchW = Math.min(230, Math.max(140, this.width - buttonW - 12 - 120));
+        final int searchX = (this.width - (searchW + 6 + buttonW)) / 2;
+        final int buttonX = searchX + searchW + 6;
 
         this.searchField = new EditBox(this.font, searchX, 22, searchW, 20, Component.literal(""));
         this.searchField.setMaxLength(64);
         this.searchField.setSuggestion(tr("search_hint").getString());
         this.searchField.setValue(this.query);
-        this.searchField.setResponder(text -> {
-            this.query = text == null ? "" : text.trim().toLowerCase(Locale.ROOT);
-            this.needle = new SearchQuery(this.query);
-            this.searchField.setSuggestion(this.query.isEmpty() ? tr("search_hint").getString() : "");
-            this.list.refreshRows();
-        });
+        this.searchField.setResponder(text ->
+                this.searchField.setSuggestion(text == null || text.isEmpty()
+                        ? tr("search_hint").getString() : ""));
         this.addRenderableWidget(this.searchField);
 
-        this.searchClose = Button.builder(Component.literal("X"), b -> this.closeSearch())
-                .bounds(closeX, 22, closeW, 20).build();
-        this.addRenderableWidget(this.searchClose);
-
-        // 收起时：按钮右边界与展开态的 X 右边界对齐，视觉上始终落在同一处
-        this.searchToggle = Button.builder(tr("search"), b -> this.openSearch())
-                .bounds(closeX + closeW - toggleW, 22, toggleW, 20).build();
-        this.addRenderableWidget(this.searchToggle);
-        this.applySearchLayout();
+        this.searchButton = Button.builder(tr("search"), b -> this.applySearch())
+                .bounds(buttonX, 22, buttonW, 20).build();
+        this.addRenderableWidget(this.searchButton);
 
         // 第 2 行（y=48）：全选 / 全不选 / 恢复默认
         final int by = 48;
@@ -192,6 +176,16 @@ public class TrainSelectScreen extends Screen {
      * <p>与 {@link #onClose()} 的区别：onClose 表示用户按了「完成」，是有意的确认行为；
      * cancel 表示用户放弃，不应该把界面上的勾选当成确认结果写进配置。
      */
+    /** 画一个原版风格的斜对勾（短撇 + 长捺），bx/by 为 16×16 方框左上角。 */
+    private static void drawCheck(GuiGraphics ctx, int bx, int by, int color) {
+        for (int i = 0; i < 3; i++) {
+            ctx.fill(bx + 3 + i, by + 9 + i, bx + 6 + i, by + 11 + i, color);
+        }
+        for (int i = 0; i < 7; i++) {
+            ctx.fill(bx + 5 + i, by + 11 - i, bx + 8 + i, by + 13 - i, color);
+        }
+    }
+
     public void cancel() {
         MtrDisableOriginalTrains.LOGGER.info(
                 "[MTR_NoOriginalTrains] 用户取消选择界面，丢弃本次改动");
@@ -200,45 +194,33 @@ public class TrainSelectScreen extends Screen {
         }
     }
 
-    /** 展开搜索框并聚焦，光标直接可以打字。 */
-    private void openSearch() {
-        this.searchOpen = true;
-        this.applySearchLayout();
-        if (this.searchField != null) {
-            this.searchField.setFocused(true);
-            this.setFocused(this.searchField);
-        }
-    }
-
-    /** 收起搜索框，同时清空搜索词（收起却仍在过滤会让用户以为列表丢了东西）。 */
-    private void closeSearch() {
-        this.searchOpen = false;
-        if (this.searchField != null) {
-            this.searchField.setFocused(false);
-            this.searchField.setValue("");
-            this.searchField.setSuggestion(tr("search_hint").getString());
-        }
-        this.query = "";
-        this.needle = SearchQuery.EMPTY;
-        this.applySearchLayout();
+    /** 按输入框内容执行搜索（清空输入框再点搜索 = 取消过滤）。 */
+    private void applySearch() {
+        final String text = this.searchField == null ? "" : this.searchField.getValue();
+        this.query = text == null ? "" : text.trim().toLowerCase(Locale.ROOT);
+        this.needle = new SearchQuery(this.query);
         if (this.list != null) {
             this.list.refreshRows();
         }
     }
 
-    /** 按 searchOpen 切换「按钮」和「输入框 + X」两组控件的可见性。 */
-    private void applySearchLayout() {
+    /** 输入框里有没有内容，或当前是否正在按关键词过滤。 */
+    private boolean hasSearch() {
+        if (!this.query.isEmpty()) {
+            return true;
+        }
+        return this.searchField != null && !this.searchField.getValue().isEmpty();
+    }
+
+    /** 清空输入框，并取消已生效的过滤。 */
+    private void clearSearch() {
         if (this.searchField != null) {
-            this.searchField.setVisible(this.searchOpen);
-            if (!this.searchOpen) {
-                this.searchField.setFocused(false);
-            }
+            this.searchField.setValue("");
         }
-        if (this.searchClose != null) {
-            this.searchClose.visible = this.searchOpen;
-        }
-        if (this.searchToggle != null) {
-            this.searchToggle.visible = !this.searchOpen;
+        this.query = "";
+        this.needle = SearchQuery.EMPTY;
+        if (this.list != null) {
+            this.list.refreshRows();
         }
     }
 
@@ -255,15 +237,18 @@ public class TrainSelectScreen extends Screen {
 
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-        // GLFW_KEY_ESCAPE == 256
+        // GLFW_KEY_ESCAPE == 256：先清掉搜索（输入框 + 已生效的过滤），再按一次才返回上一页
         if (keyCode == 256) {
-            // 搜索框展开时，ESC 先收起搜索（清空搜索词），再按一次才退出界面 ——
-            // 否则用户想「清掉搜索词」会把整个页面的改动一起丢掉。
-            if (this.searchOpen) {
-                this.closeSearch();
+            if (this.hasSearch()) {
+                this.clearSearch();
                 return true;
             }
             this.cancel();
+            return true;
+        }
+        // GLFW_KEY_ENTER == 257：输入框里按回车等于点「搜索」
+        if (keyCode == 257 && this.searchField != null && this.searchField.isFocused()) {
+            this.applySearch();
             return true;
         }
         return super.keyPressed(keyCode, scanCode, modifiers);
@@ -570,12 +555,11 @@ public class TrainSelectScreen extends Screen {
             ctx.fill(bx, by, bx + 16, by + 16, 0xFF1A1A1A);
             ctx.renderOutline(bx, by, 16, 16, (kept || partial) ? 0xFF6FCF6F : 0xFF808080);
             if (kept) {
-                // ✓ 勾：两段线组成对勾
-                ctx.renderOutline(bx + 4, by + 7, 3, 3, 0xFF5FBF5F);
-                ctx.fill(bx + 6, by + 9, bx + 13, by + 12, 0xFF5FBF5F);
-                ctx.fill(bx + 4, by + 6, bx + 7, by + 9, 0xFF5FBF5F);
+                // 原版风格斜对勾：短撇 + 长捺
+                drawCheck(ctx, bx, by, 0xFF5FBF5F);
             } else if (partial) {
-                ctx.fill(bx + 3, by + 7, bx + 13, by + 10, 0xFFE8C060);
+                // 部分保留：同形状的半透明勾
+                drawCheck(ctx, bx, by, 0x99E8C060);
             }
             hitCheckboxX = bx;
             hitCheckboxY = by;
