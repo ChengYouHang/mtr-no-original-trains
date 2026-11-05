@@ -35,7 +35,7 @@
   "gui.mtr_no_original_trains.subtitle": "Wähle, welche eingebauten Zugfamilien bleiben. Änderungen gelten nach Neustart.",
   "gui.mtr_no_original_trains.tab_addon": "Addon-Züge",
   "gui.mtr_no_original_trains.tab_builtin": "Eingebaute Züge",
-  "gui.mtr_no_original_trains.title": "MTR-Züge behalten",
+  "gui.mtr_no_original_trains.title": "No Original Trains – Auswahl",
   "gui.mtr_no_original_trains.tooltip": "Wähle, welche eingebauten MTR-Züge bleiben",
   "gui.mtr_no_original_trains.vehicles": "%s Fahrzeuge"
 }

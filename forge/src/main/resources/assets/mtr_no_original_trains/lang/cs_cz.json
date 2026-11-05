@@ -35,7 +35,7 @@
   "gui.mtr_no_original_trains.subtitle": "Vyberte, které rodiny vestavěných vlaků zůstanou. Změny platí po restartu.",
   "gui.mtr_no_original_trains.tab_addon": "Vlaky z addonů",
   "gui.mtr_no_original_trains.tab_builtin": "Vestavěné vlaky",
-  "gui.mtr_no_original_trains.title": "Ponechat vlaky MTR",
+  "gui.mtr_no_original_trains.title": "No Original Trains – Výběr",
   "gui.mtr_no_original_trains.tooltip": "Vyberte, které vestavěné vlaky MTR ponechat",
   "gui.mtr_no_original_trains.vehicles": "%s vozidel"
 }

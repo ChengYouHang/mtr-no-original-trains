@@ -35,7 +35,7 @@
   "gui.mtr_no_original_trains.subtitle": "残す内蔵車両ファミリーを選択してください。変更は再起動後に反映されます。",
   "gui.mtr_no_original_trains.tab_addon": "追加パック列車",
   "gui.mtr_no_original_trains.tab_builtin": "内蔵列車",
-  "gui.mtr_no_original_trains.title": "MTR 車両を残す",
+  "gui.mtr_no_original_trains.title": "No Original Trains 選択パネル",
   "gui.mtr_no_original_trains.tooltip": "残す MTR 内蔵車両を選択します",
   "gui.mtr_no_original_trains.vehicles": "%s 両"
 }

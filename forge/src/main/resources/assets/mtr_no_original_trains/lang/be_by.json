@@ -35,7 +35,7 @@
   "gui.mtr_no_original_trains.subtitle": "Выберыце, якія сямействы ўбудаваных цягнікоў застануцца. Змены дзейнічаюць пасля перазапуску.",
   "gui.mtr_no_original_trains.tab_addon": "Addon Trains",
   "gui.mtr_no_original_trains.tab_builtin": "Built-in Trains",
-  "gui.mtr_no_original_trains.title": "Пакінуць цягнікі MTR",
+  "gui.mtr_no_original_trains.title": "No Original Trains – Выбар",
   "gui.mtr_no_original_trains.tooltip": "Выберыце, якія ўбудаваныя цягнікі MTR пакінуць",
   "gui.mtr_no_original_trains.vehicles": "%s адз."
 }

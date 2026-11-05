@@ -35,7 +35,7 @@
   "gui.mtr_no_original_trains.subtitle": "Dewis pa deuluoedd o drenau mewnol sy'n aros. Mae newidiadau'n gweithredu ar ôl ailgychwyn.",
   "gui.mtr_no_original_trains.tab_addon": "Addon Trains",
   "gui.mtr_no_original_trains.tab_builtin": "Built-in Trains",
-  "gui.mtr_no_original_trains.title": "Cadw trenau MTR",
+  "gui.mtr_no_original_trains.title": "No Original Trains – Dewis",
   "gui.mtr_no_original_trains.tooltip": "Dewis pa drenau MTR mewnol i'w cadw",
   "gui.mtr_no_original_trains.vehicles": "%s cerbyd"
 }

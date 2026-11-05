@@ -35,7 +35,7 @@
   "gui.mtr_no_original_trains.subtitle": "Изберете кои семейства вградени влакове остават. Промените се прилагат след рестарт.",
   "gui.mtr_no_original_trains.tab_addon": "Addon Trains",
   "gui.mtr_no_original_trains.tab_builtin": "Built-in Trains",
-  "gui.mtr_no_original_trains.title": "Запази влаковете MTR",
+  "gui.mtr_no_original_trains.title": "No Original Trains – Избор",
   "gui.mtr_no_original_trains.tooltip": "Изберете кои вградени влакове MTR да запазите",
   "gui.mtr_no_original_trains.vehicles": "%s превозни средства"
 }

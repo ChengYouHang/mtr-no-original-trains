@@ -35,7 +35,7 @@
   "gui.mtr_no_original_trains.subtitle": "Roghnaigh cé na teaghlaigh traenach ionsuite a fhanann. Bíonn na hathruithe i bhfeidhm tar éis atosú.",
   "gui.mtr_no_original_trains.tab_addon": "Addon Trains",
   "gui.mtr_no_original_trains.tab_builtin": "Built-in Trains",
-  "gui.mtr_no_original_trains.title": "Coinnigh traenacha MTR",
+  "gui.mtr_no_original_trains.title": "No Original Trains – Roghnú",
   "gui.mtr_no_original_trains.tooltip": "Roghnaigh cé na traenacha ionsuite MTR le coinneáil",
   "gui.mtr_no_original_trains.vehicles": "%s feithicil"
 }

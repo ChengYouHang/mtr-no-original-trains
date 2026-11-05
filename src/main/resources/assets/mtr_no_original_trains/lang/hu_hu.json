@@ -35,7 +35,7 @@
   "gui.mtr_no_original_trains.subtitle": "Válaszd ki, mely beépített vonatcsaládok maradjanak. A változások újraindítás után lépnek életbe.",
   "gui.mtr_no_original_trains.tab_addon": "Addon vonatok",
   "gui.mtr_no_original_trains.tab_builtin": "Beépített vonatok",
-  "gui.mtr_no_original_trains.title": "MTR vonatok megtartása",
+  "gui.mtr_no_original_trains.title": "No Original Trains – Kiválasztás",
   "gui.mtr_no_original_trains.tooltip": "Válaszd ki, mely beépített MTR vonatokat tartod meg",
   "gui.mtr_no_original_trains.vehicles": "%s jármű"
 }

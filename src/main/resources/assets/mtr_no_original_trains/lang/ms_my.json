@@ -35,7 +35,7 @@
   "gui.mtr_no_original_trains.subtitle": "Pilih keluarga kereta terbina dalam yang dikekalkan. Perubahan berkuat kuasa selepas mula semula.",
   "gui.mtr_no_original_trains.tab_addon": "Kereta addon",
   "gui.mtr_no_original_trains.tab_builtin": "Kereta terbina dalam",
-  "gui.mtr_no_original_trains.title": "Kekalkan kereta MTR",
+  "gui.mtr_no_original_trains.title": "No Original Trains – Pilih",
   "gui.mtr_no_original_trains.tooltip": "Pilih kereta terbina dalam MTR yang ingin dikekalkan",
   "gui.mtr_no_original_trains.vehicles": "%s kenderaan"
 }

@@ -35,7 +35,7 @@
   "gui.mtr_no_original_trains.subtitle": "Pick which built-in train families stay. Changes apply after restart.",
   "gui.mtr_no_original_trains.tab_addon": "Addon Trains",
   "gui.mtr_no_original_trains.tab_builtin": "Built-in Trains",
-  "gui.mtr_no_original_trains.title": "Keep MTR Trains",
+  "gui.mtr_no_original_trains.title": "No Original Trains Panel",
   "gui.mtr_no_original_trains.tooltip": "Choose which of MTR's built-in trains to keep",
   "gui.mtr_no_original_trains.vehicles": "%s vehicles"
 }

@@ -35,7 +35,7 @@
   "gui.mtr_no_original_trains.subtitle": "Tria quines famílies de trens integrats es queden. Els canvis s'apliquen en reiniciar.",
   "gui.mtr_no_original_trains.tab_addon": "Addon Trains",
   "gui.mtr_no_original_trains.tab_builtin": "Built-in Trains",
-  "gui.mtr_no_original_trains.title": "Conserva els trens MTR",
+  "gui.mtr_no_original_trains.title": "No Original Trains – Selecció",
   "gui.mtr_no_original_trains.tooltip": "Tria quins trens integrats de MTR conservar",
   "gui.mtr_no_original_trains.vehicles": "%s vehicles"
 }

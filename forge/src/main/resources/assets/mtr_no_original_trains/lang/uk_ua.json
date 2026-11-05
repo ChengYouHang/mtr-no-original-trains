@@ -35,7 +35,7 @@
   "gui.mtr_no_original_trains.subtitle": "Виберіть, які родини вбудованих поїздів залишити. Зміни застосуються після перезапуску.",
   "gui.mtr_no_original_trains.tab_addon": "Поїзди аддонів",
   "gui.mtr_no_original_trains.tab_builtin": "Вбудовані поїзди",
-  "gui.mtr_no_original_trains.title": "Залишити поїзди MTR",
+  "gui.mtr_no_original_trains.title": "No Original Trains – Вибір",
   "gui.mtr_no_original_trains.tooltip": "Виберіть, які вбудовані поїзди MTR залишити",
   "gui.mtr_no_original_trains.vehicles": "%s од."
 }

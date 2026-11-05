@@ -35,7 +35,7 @@
   "gui.mtr_no_original_trains.subtitle": "Wybierz, które rodziny wbudowanych pociągów zostawić. Zmiany działają po restarcie.",
   "gui.mtr_no_original_trains.tab_addon": "Pociągi addonów",
   "gui.mtr_no_original_trains.tab_builtin": "Wbudowane pociągi",
-  "gui.mtr_no_original_trains.title": "Zachowaj pociągi MTR",
+  "gui.mtr_no_original_trains.title": "No Original Trains – Wybór",
   "gui.mtr_no_original_trains.tooltip": "Wybierz, które wbudowane pociągi MTR zachować",
   "gui.mtr_no_original_trains.vehicles": "%s pojazdów"
 }

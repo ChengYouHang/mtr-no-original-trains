@@ -35,7 +35,7 @@
   "gui.mtr_no_original_trains.subtitle": "Valitse mitkä sisäänrakennetut junaryhmät jäävät. Muutokset tulevat voimaan uudelleenkäynnistyksen jälkeen.",
   "gui.mtr_no_original_trains.tab_addon": "Addon-junat",
   "gui.mtr_no_original_trains.tab_builtin": "Sisäänrakennetut junat",
-  "gui.mtr_no_original_trains.title": "Säilytä MTR-junat",
+  "gui.mtr_no_original_trains.title": "No Original Trains – Valinta",
   "gui.mtr_no_original_trains.tooltip": "Valitse mitkä sisäänrakennetut MTR-junat säilytetään",
   "gui.mtr_no_original_trains.vehicles": "%s ajoneuvoa"
 }

@@ -35,7 +35,7 @@
   "gui.mtr_no_original_trains.subtitle": "Kies watter ingeboude treinfamilies bly. Veranderinge geld ná herbegin.",
   "gui.mtr_no_original_trains.tab_addon": "Addon Trains",
   "gui.mtr_no_original_trains.tab_builtin": "Built-in Trains",
-  "gui.mtr_no_original_trains.title": "Hou MTR-treine",
+  "gui.mtr_no_original_trains.title": "No Original Trains – Kies",
   "gui.mtr_no_original_trains.tooltip": "Kies watter ingeboude MTR-treine jy hou",
   "gui.mtr_no_original_trains.vehicles": "%s voertuie"
 }

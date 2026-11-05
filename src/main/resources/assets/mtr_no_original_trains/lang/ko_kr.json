@@ -35,7 +35,7 @@
   "gui.mtr_no_original_trains.subtitle": "유지할 내장 열차 계열을 선택하세요. 변경 사항은 재시작 후 적용됩니다.",
   "gui.mtr_no_original_trains.tab_addon": "애드온 열차",
   "gui.mtr_no_original_trains.tab_builtin": "내장 열차",
-  "gui.mtr_no_original_trains.title": "MTR 열차 유지",
+  "gui.mtr_no_original_trains.title": "No Original Trains 선택 패널",
   "gui.mtr_no_original_trains.tooltip": "유지할 MTR 내장 열차를 선택합니다",
   "gui.mtr_no_original_trains.vehicles": "%s량"
 }

@@ -35,7 +35,7 @@
   "gui.mtr_no_original_trains.subtitle": "Piliin kung aling pamilya ng built-in na tren ang mananatili. Magkakabisa ang mga pagbabago pagkatapos mag-restart.",
   "gui.mtr_no_original_trains.tab_addon": "Addon Trains",
   "gui.mtr_no_original_trains.tab_builtin": "Built-in Trains",
-  "gui.mtr_no_original_trains.title": "Panatilihin ang MTR tren",
+  "gui.mtr_no_original_trains.title": "No Original Trains – Pili",
   "gui.mtr_no_original_trains.tooltip": "Piliin kung aling built-in na MTR tren ang pananatilihin",
   "gui.mtr_no_original_trains.vehicles": "%s sasakyan"
 }

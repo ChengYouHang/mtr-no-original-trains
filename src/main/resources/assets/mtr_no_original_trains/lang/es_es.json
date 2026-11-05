@@ -35,7 +35,7 @@
   "gui.mtr_no_original_trains.subtitle": "Elige qué familias de trenes integrados se quedan. Los cambios se aplican al reiniciar.",
   "gui.mtr_no_original_trains.tab_addon": "Trenes de addons",
   "gui.mtr_no_original_trains.tab_builtin": "Trenes integrados",
-  "gui.mtr_no_original_trains.title": "Conservar trenes MTR",
+  "gui.mtr_no_original_trains.title": "No Original Trains – Selección",
   "gui.mtr_no_original_trains.tooltip": "Elige qué trenes integrados de MTR conservar",
   "gui.mtr_no_original_trains.vehicles": "%s vehículos"
 }

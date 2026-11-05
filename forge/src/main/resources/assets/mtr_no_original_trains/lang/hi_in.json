@@ -35,7 +35,7 @@
   "gui.mtr_no_original_trains.subtitle": "चुनें कि कौन-से अंतर्निहित ट्रेन परिवार रहेंगे। बदलाव पुनः आरंभ के बाद लागू होंगे।",
   "gui.mtr_no_original_trains.tab_addon": "ऐड-ऑन ट्रेनें",
   "gui.mtr_no_original_trains.tab_builtin": "अंतर्निहित ट्रेनें",
-  "gui.mtr_no_original_trains.title": "MTR ट्रेनें रखें",
+  "gui.mtr_no_original_trains.title": "No Original Trains – चयन",
   "gui.mtr_no_original_trains.tooltip": "चुनें कि कौन-सी अंतर्निहित MTR ट्रेनें रखनी हैं",
   "gui.mtr_no_original_trains.vehicles": "%s वाहन"
 }

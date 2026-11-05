@@ -35,7 +35,7 @@
   "gui.mtr_no_original_trains.subtitle": "Alege ce familii de trenuri încorporate rămân. Modificările se aplică după repornire.",
   "gui.mtr_no_original_trains.tab_addon": "Trenuri din addonuri",
   "gui.mtr_no_original_trains.tab_builtin": "Trenuri integrate",
-  "gui.mtr_no_original_trains.title": "Păstrează trenurile MTR",
+  "gui.mtr_no_original_trains.title": "No Original Trains – Selectare",
   "gui.mtr_no_original_trains.tooltip": "Alege ce trenuri încorporate MTR păstrezi",
   "gui.mtr_no_original_trains.vehicles": "%s vehicule"
 }

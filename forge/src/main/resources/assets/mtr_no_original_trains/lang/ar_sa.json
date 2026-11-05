@@ -35,7 +35,7 @@
   "gui.mtr_no_original_trains.subtitle": "اختر عائلات القطارات المدمجة التي تريد الإبقاء عليها. تُطبَّق التغييرات بعد إعادة التشغيل.",
   "gui.mtr_no_original_trains.tab_addon": "قطارات الإضافات",
   "gui.mtr_no_original_trains.tab_builtin": "القطارات المدمجة",
-  "gui.mtr_no_original_trains.title": "الإبقاء على قطارات MTR",
+  "gui.mtr_no_original_trains.title": "No Original Trains – اختيار",
   "gui.mtr_no_original_trains.tooltip": "اختر قطارات MTR المدمجة التي تريد الإبقاء عليها",
   "gui.mtr_no_original_trains.vehicles": "%s مركبة"
 }

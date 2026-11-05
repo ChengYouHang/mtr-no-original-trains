@@ -35,7 +35,7 @@
   "gui.mtr_no_original_trains.subtitle": "Vælg hvilke indbyggede togfamilier der bliver. Ændringer gælder efter genstart.",
   "gui.mtr_no_original_trains.tab_addon": "Addon-tog",
   "gui.mtr_no_original_trains.tab_builtin": "Indbyggede tog",
-  "gui.mtr_no_original_trains.title": "Behold MTR-tog",
+  "gui.mtr_no_original_trains.title": "No Original Trains – Vælg",
   "gui.mtr_no_original_trains.tooltip": "Vælg hvilke indbyggede MTR-tog du beholder",
   "gui.mtr_no_original_trains.vehicles": "%s køretøjer"
 }

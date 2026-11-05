@@ -35,7 +35,7 @@
   "gui.mtr_no_original_trains.subtitle": "勾選要保留的內建車系，修改後重新啟動遊戲生效。",
   "gui.mtr_no_original_trains.tab_addon": "附加包列車",
   "gui.mtr_no_original_trains.tab_builtin": "內置列車",
-  "gui.mtr_no_original_trains.title": "MTR 列車保留選擇",
+  "gui.mtr_no_original_trains.title": "No Original Trains選擇面板",
   "gui.mtr_no_original_trains.tooltip": "選擇要保留的 MTR 內建列車",
   "gui.mtr_no_original_trains.vehicles": "%s 輛"
 }

@@ -35,7 +35,7 @@
   "gui.mtr_no_original_trains.subtitle": "Hangi yerleşik tren ailelerinin kalacağını seçin. Değişiklikler yeniden başlatmadan sonra geçerli olur.",
   "gui.mtr_no_original_trains.tab_addon": "Eklenti trenleri",
   "gui.mtr_no_original_trains.tab_builtin": "Yerleşik trenler",
-  "gui.mtr_no_original_trains.title": "MTR trenlerini koru",
+  "gui.mtr_no_original_trains.title": "No Original Trains – Seçim",
   "gui.mtr_no_original_trains.tooltip": "Hangi yerleşik MTR trenlerini koruyacağınızı seçin",
   "gui.mtr_no_original_trains.vehicles": "%s araç"
 }

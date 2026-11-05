@@ -35,7 +35,7 @@
   "gui.mtr_no_original_trains.subtitle": "เลือกตระกูลขบวนรถในเกมที่จะเก็บไว้ การเปลี่ยนแปลงมีผลหลังรีสตาร์ท",
   "gui.mtr_no_original_trains.tab_addon": "ขบวนรถจากแอดดอน",
   "gui.mtr_no_original_trains.tab_builtin": "ขบวนรถในเกม",
-  "gui.mtr_no_original_trains.title": "เก็บขบวนรถ MTR",
+  "gui.mtr_no_original_trains.title": "No Original Trains – เลือก",
   "gui.mtr_no_original_trains.tooltip": "เลือกขบวนรถในเกมของ MTR ที่ต้องการเก็บไว้",
   "gui.mtr_no_original_trains.vehicles": "%s คัน"
 }

@@ -35,7 +35,7 @@
   "gui.mtr_no_original_trains.subtitle": "Επιλέξτε ποιες ενσωματωμένες οικογένειες τρένων μένουν. Οι αλλαγές ισχύουν μετά την επανεκκίνηση.",
   "gui.mtr_no_original_trains.tab_addon": "Τρένα addon",
   "gui.mtr_no_original_trains.tab_builtin": "Ενσωματωμένα τρένα",
-  "gui.mtr_no_original_trains.title": "Διατήρηση τρένων MTR",
+  "gui.mtr_no_original_trains.title": "No Original Trains – Επιλογή",
   "gui.mtr_no_original_trains.tooltip": "Επιλέξτε ποια ενσωματωμένα τρένα MTR θα διατηρήσετε",
   "gui.mtr_no_original_trains.vehicles": "%s οχήματα"
 }

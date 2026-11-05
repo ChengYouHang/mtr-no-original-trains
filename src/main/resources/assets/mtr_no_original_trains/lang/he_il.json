@@ -35,7 +35,7 @@
   "gui.mtr_no_original_trains.subtitle": "בחר אילו משפחות רכבות מובנות יישארו. השינויים יחולו לאחר הפעלה מחדש.",
   "gui.mtr_no_original_trains.tab_addon": "רכבות תוספים",
   "gui.mtr_no_original_trains.tab_builtin": "רכבות מובנות",
-  "gui.mtr_no_original_trains.title": "שמור רכבות MTR",
+  "gui.mtr_no_original_trains.title": "No Original Trains – בחירה",
   "gui.mtr_no_original_trains.tooltip": "בחר אילו רכבות MTR מובנות לשמור",
   "gui.mtr_no_original_trains.vehicles": "%s כלי רכב"
 }
