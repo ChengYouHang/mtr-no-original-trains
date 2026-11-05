@@ -29,7 +29,7 @@ public class SearchProbe {
 
     // ================= 追加包页逻辑（切自 AddonSelectScreen） =================
     public static class AddonLogic {
-        String query = ""; int filterMode = 0; int mode = 1;
+        String query = ""; int mode = 1;
         String selectedRaw = "上海地铁追加包"; String selectedDisplay = "上海地铁追加包";
         Set<String> keptIds = new HashSet<>();
         Map<String, Integer> packCounts = new HashMap<>();
@@ -169,9 +169,6 @@ List<Row> buildRows() {
                         if (!matches(display) && !matches(e.getKey())) {
                             continue;
                         }
-                        if (!blockedFilterOk(new ArrayList<>(e.getValue()))) {
-                            continue;
-                        }
                         hits.add(e);
                     }
                     if (!query.isEmpty()) {
@@ -247,7 +244,7 @@ List<Row> buildRows() {
                         rows.add(Row.series(selectedRaw, selectedDisplay, seriesKey, seriesIds));
                         // 搜索或有筛选时强制展开，否则用户会看到「命中了但里面是空的」
                         if (expandedSeries.contains(selectedRaw + "|S|" + seriesKey)
-                                || !query.isEmpty() || filterMode != 0) {
+                                || !query.isEmpty()) {
                             for (String familyKey : visible) {
                                 addFamilyRows(rows, byFamily, names, familyKey, 1);
                             }
@@ -264,10 +261,7 @@ private boolean familyVisible(String familyKey, List<String> ids, Map<String, St
             if (ids == null || ids.isEmpty()) {
                 return false;
             }
-            if (!matches(familyKey) && matchingIds(ids, names).isEmpty()) {
-                return false;
-            }
-            return blockedFilterOk(ids);
+            return matches(familyKey) || !matchingIds(ids, names).isEmpty();
         }
 private int bestScore(List<String> families, Map<String, Integer> familyScore) {
             int best = 0;
@@ -287,21 +281,6 @@ private List<String> matchingIds(List<String> ids, Map<String, String> names) {
                 }
             }
             return out;
-        }
-private boolean blockedFilterOk(List<String> ids) {
-            if (filterMode == 0) {
-                return true;
-            }
-            boolean anyBlocked = false;
-            boolean allBlocked = true;
-            for (String id : ids) {
-                if (blockedAddons.contains(id)) {
-                    anyBlocked = true;
-                } else {
-                    allBlocked = false;
-                }
-            }
-            return filterMode == 1 ? anyBlocked : !allBlocked;
         }
 private void addFamilyRows(List<Row> rows, Map<String, List<String>> byFamily,
                                    Map<String, String> names, String familyKey, int indent) {
@@ -408,7 +387,7 @@ static final class Row {
 
     // ================= 内置页逻辑（切自 TrainSelectScreen） =================
     public static class BuiltinLogic {
-        String query = ""; int filterMode = 0;
+        String query = "";
         Set<String> expanded = new HashSet<>();
         Set<String> keptFamilies = new HashSet<>();
         Set<String> keptVehicleIds = new HashSet<>();
@@ -442,17 +421,6 @@ List<Row> buildRows() {
                     }
                 }
                 if (vehicleHits.isEmpty()) {
-                    continue;
-                }
-
-                // 状态筛选：部分勾选的车系在「只看已保留」和「只看未保留」下都保留，
-                // 因为它两边都有车，藏掉反而让人以为没这个车系。
-                final boolean fullyKept = isFamilyFullyKept(f);
-                final boolean partlyKept = isFamilyPartiallyKept(f);
-                if (filterMode == 1 && !fullyKept && !partlyKept) {
-                    continue;
-                }
-                if (filterMode == 2 && fullyKept) {
                     continue;
                 }
 
@@ -637,19 +605,6 @@ static final class Row {
             "A4 搜索无结果空状态", joinA(r4));
         a.q("");
 
-        // A5 筛选=只看已拦：只显示有被拦车辆的车型；系列层强制展开但车不展开(点+才看)
-        a.blockedAddons.add("mtr_custom_train_sh1_a_cab_1");
-        a.filterMode = 1;
-        List<AddonLogic.Row> r5 = a.buildRows();
-        check(r5.size() == 1 && ar(r5.get(0)).equals("FAM[0]:上海地铁1号线-01A02"),
-            "A5 筛选只看已拦", joinA(r5));
-
-        // A6 筛选=只看未拦：3 个车型都保留（1号线没全拦、另两台没拦）
-        a.filterMode = 2;
-        List<AddonLogic.Row> r6 = a.buildRows();
-        check(r6.size() == 3, "A6 筛选只看未拦", joinA(r6));
-        a.filterMode = 0; a.blockedAddons.clear();
-
         // A7 多车系归并 + 系列行出现：给 1 号线加第二个车型
         CAPTURED.put("mtr_custom_train_sh1_b_cab_1", "上海地铁1号线-01A03");
         pack1.add("mtr_custom_train_sh1_b_cab_1");
@@ -728,21 +683,6 @@ static final class Row {
         List<BuiltinLogic.Row> b5 = b.buildRows();
         check(b5.size() == 1 && b5.get(0).isMessage(), "B5 搜索无结果空状态", joinB(b5));
         b.q("");
-
-        b.keptFamilies.add("fa");
-        b.filterMode = 1;
-        List<BuiltinLogic.Row> b6 = b.buildRows();
-        check(b6.size() == 1 && br(b6.get(0)).equals("FAM:A线列车"), "B6 只看已保留", joinB(b6));
-
-        b.keptFamilies.clear();
-        b.keptVehicleIds.add("mtr:fc_1");
-        List<BuiltinLogic.Row> b6b = b.buildRows();
-        check(b6b.size() == 1 && br(b6b.get(0)).equals("FAM:C线列车"), "B6b 部分保留也算已保留侧", joinB(b6b));
-
-        b.filterMode = 2;
-        List<BuiltinLogic.Row> b7 = b.buildRows();
-        check(b7.size() == 3, "B7 只看未保留(部分保留两边都显)", joinB(b7));
-        b.keptVehicleIds.clear(); b.filterMode = 0;
 
         System.out.println("----");
         System.out.println("PASS " + pass + " / FAIL " + fail);

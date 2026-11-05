@@ -79,15 +79,6 @@ public class TrainSelectScreen extends Screen {
     private String query = "";
     /** 解析后的搜索词（分词、数字边界、ID 前缀剥离、命中打分）。 */
     private SearchQuery needle = SearchQuery.EMPTY;
-    /**
-     * 状态筛选：0 = 全部，1 = 只看已保留，2 = 只看未保留。
-     *
-     * <p>「已保留」指整个车系全选（含通过逐辆勾选达成的全选）；
-     * 部分勾选的车系在两种筛选下都会出现 —— 它既包含保留的车，也包含没保留的车。
-     */
-    private int filterMode = 0;
-    private Button filterButton;
-
     private TrainListWidget list;
 
     public TrainSelectScreen(Screen parent) {
@@ -97,15 +88,6 @@ public class TrainSelectScreen extends Screen {
 
     static Component tr(String key, Object... args) {
         return Component.translatable(LANG_PREFIX + key, args);
-    }
-
-    /** 筛选按钮上的文字，跟随当前筛选状态。 */
-    private Component filterLabel() {
-        return switch (this.filterMode) {
-            case 1 -> tr("filter_kept");
-            case 2 -> tr("filter_unkept");
-            default -> tr("filter_all");
-        };
     }
 
     /** 名称或 ID 是否命中当前搜索词（空搜索词一律命中）。 */
@@ -136,16 +118,14 @@ public class TrainSelectScreen extends Screen {
         this.list = new TrainListWidget(this.minecraft, this.width, this.height, top, bottom, 24);
         this.addRenderableWidget(this.list);
 
-        // 第 1 行（y=22）：搜索（收起时是按钮，展开时是输入框 + X）+ 状态筛选
-        // 布局始终按「搜索框展开」的宽度算，这样筛选按钮位置恒定，展开/收起时不会跳。
-        final int filterW = 92;
+        // 第 1 行（y=22）：搜索。收起时只有一个「搜索」按钮；点开后变成输入框 + X。
+        // 两种状态右对齐在同一条基线上，按钮不会因为展开/收起而横跳。
         final int closeW = 20;
         final int toggleW = 64;
-        final int searchW = Math.min(210, Math.max(120, this.width - filterW - closeW - 12 - 80));
-        final int searchRowW = searchW + 6 + closeW + 6 + filterW;
+        final int searchW = Math.min(210, Math.max(140, this.width - closeW - 12 - 120));
+        final int searchRowW = searchW + 6 + closeW;
         final int searchX = (this.width - searchRowW) / 2;
         final int closeX = searchX + searchW + 6;
-        final int filterX = closeX + closeW + 6;
 
         this.searchField = new EditBox(this.font, searchX, 22, searchW, 20, Component.literal(""));
         this.searchField.setMaxLength(64);
@@ -163,17 +143,10 @@ public class TrainSelectScreen extends Screen {
                 .bounds(closeX, 22, closeW, 20).build();
         this.addRenderableWidget(this.searchClose);
 
-        // 收起时：搜索按钮紧贴筛选按钮左侧，两个控件成一组靠右
+        // 收起时：按钮右边界与展开态的 X 右边界对齐，视觉上始终落在同一处
         this.searchToggle = Button.builder(tr("search"), b -> this.openSearch())
-                .bounds(filterX - 6 - toggleW, 22, toggleW, 20).build();
+                .bounds(closeX + closeW - toggleW, 22, toggleW, 20).build();
         this.addRenderableWidget(this.searchToggle);
-
-        this.filterButton = Button.builder(filterLabel(), b -> {
-            this.filterMode = (this.filterMode + 1) % 3;
-            b.setMessage(filterLabel());
-            this.list.refreshRows();
-        }).bounds(filterX, 22, filterW, 20).build();
-        this.addRenderableWidget(this.filterButton);
         this.applySearchLayout();
 
         // 第 2 行（y=48）：全选 / 全不选 / 恢复默认
@@ -503,17 +476,6 @@ public class TrainSelectScreen extends Screen {
                     continue;
                 }
 
-                // 状态筛选：部分勾选的车系在「只看已保留」和「只看未保留」下都保留，
-                // 因为它两边都有车，藏掉反而让人以为没这个车系。
-                final boolean fullyKept = isFamilyFullyKept(f);
-                final boolean partlyKept = isFamilyPartiallyKept(f);
-                if (filterMode == 1 && !fullyKept && !partlyKept) {
-                    continue;
-                }
-                if (filterMode == 2 && fullyKept) {
-                    continue;
-                }
-
                 rows.add(new Row(f, null, null));
                 // 搜索时自动展开命中的车，让用户直接看到命中在哪一辆；
                 // 没搜索时沿用用户自己的展开状态。
@@ -536,8 +498,8 @@ public class TrainSelectScreen extends Screen {
 
         /** 滚动到指定车系那一行（车系行之间每行占 itemHeight）。 */
         void scrollToFamily(String familyId) {
-            // 有搜索词或筛选时行数与车系顺序不对应，直接不滚（避免算错位置）
-            if (!query.isEmpty() || filterMode != 0) {
+            // 有搜索词时行数与车系顺序不对应，直接不滚（避免算错位置）
+            if (!query.isEmpty()) {
                 return;
             }
             int index = 0;

@@ -75,9 +75,6 @@ public class AddonSelectScreen extends Screen {
     private String query = "";
     /** 解析后的搜索词（分词、数字边界、ID 前缀剥离、命中打分）。 */
     private SearchQuery needle = SearchQuery.EMPTY;
-    /** 状态筛选：0 = 全部，1 = 只看已拦截，2 = 只看未拦截。 */
-    private int filterMode = 0;
-    private ButtonWidget filterButton;
 
     /**
      * 内置页里的保留清单（keepIds），只用于<b>冲突提示</b>：
@@ -271,16 +268,14 @@ public class AddonSelectScreen extends Screen {
         this.list = new AddonListWidget(this.client, this.width, this.height, top, bottom, 24);
         this.addDrawableChild(this.list);
 
-        // 第 1 行（y=22）：搜索（收起时是按钮，展开时是输入框 + X）+ 状态筛选
-        // 布局始终按「搜索框展开」的宽度算，这样筛选按钮位置恒定，展开/收起时不会跳。
-        final int filterW = 92;
+        // 第 1 行（y=22）：搜索。收起时只有一个「搜索」按钮；点开后变成输入框 + X。
+        // 两种状态右对齐在同一条基线上，按钮不会因为展开/收起而横跳。
         final int closeW = 20;
         final int toggleW = 64;
-        final int searchW = Math.min(210, Math.max(120, this.width - filterW - closeW - 12 - 80));
-        final int searchRowW = searchW + 6 + closeW + 6 + filterW;
+        final int searchW = Math.min(210, Math.max(140, this.width - closeW - 12 - 120));
+        final int searchRowW = searchW + 6 + closeW;
         final int searchX = (this.width - searchRowW) / 2;
         final int closeX = searchX + searchW + 6;
-        final int filterX = closeX + closeW + 6;
 
         this.searchField = new TextFieldWidget(this.textRenderer, searchX, 22, searchW, 20, tr("search_hint"));
         this.searchField.setMaxLength(64);
@@ -296,17 +291,10 @@ public class AddonSelectScreen extends Screen {
                 .dimensions(closeX, 22, closeW, 20).build();
         this.addDrawableChild(this.searchClose);
 
-        // 收起时：搜索按钮紧贴筛选按钮左侧，两个控件成一组靠右
+        // 收起时：按钮右边界与展开态的 X 右边界对齐，视觉上始终落在同一处
         this.searchToggle = ButtonWidget.builder(tr("search"), b -> this.openSearch())
-                .dimensions(filterX - 6 - toggleW, 22, toggleW, 20).build();
+                .dimensions(closeX + closeW - toggleW, 22, toggleW, 20).build();
         this.addDrawableChild(this.searchToggle);
-
-        this.filterButton = ButtonWidget.builder(filterLabel(), b -> {
-            this.filterMode = (this.filterMode + 1) % 3;
-            b.setMessage(filterLabel());
-            this.list.refreshRows();
-        }).dimensions(filterX, 22, filterW, 20).build();
-        this.addDrawableChild(this.filterButton);
         this.applySearchLayout();
 
         if (mode == 1) {
@@ -499,15 +487,6 @@ public class AddonSelectScreen extends Screen {
         return false;
     }
 
-    /** 筛选按钮上的文字，跟随当前筛选状态。 */
-    private Text filterLabel() {
-        return switch (this.filterMode) {
-            case 1 -> tr("filter_blocked");
-            case 2 -> tr("filter_unblocked");
-            default -> tr("filter_all");
-        };
-    }
-
     /** 名称或 ID 是否命中当前搜索词（空搜索词一律命中）。 */
     private boolean matches(String text) {
         return this.needle.matches(text);
@@ -643,9 +622,6 @@ public class AddonSelectScreen extends Screen {
                         if (!matches(display) && !matches(e.getKey())) {
                             continue;
                         }
-                        if (!blockedFilterOk(new ArrayList<>(e.getValue()))) {
-                            continue;
-                        }
                         hits.add(e);
                     }
                     if (!query.isEmpty()) {
@@ -721,7 +697,7 @@ public class AddonSelectScreen extends Screen {
                         rows.add(Row.series(selectedRaw, selectedDisplay, seriesKey, seriesIds));
                         // 搜索或有筛选时强制展开，否则用户会看到「命中了但里面是空的」
                         if (expandedSeries.contains(selectedRaw + "|S|" + seriesKey)
-                                || !query.isEmpty() || filterMode != 0) {
+                                || !query.isEmpty()) {
                             for (String familyKey : visible) {
                                 addFamilyRows(rows, byFamily, names, familyKey, 1);
                             }
@@ -738,15 +714,12 @@ public class AddonSelectScreen extends Screen {
             }
         }
 
-        /** 车型行是否可见：命中搜索词，且符合当前状态筛选。 */
+        /** 车型行是否可见：命中搜索词。 */
         private boolean familyVisible(String familyKey, List<String> ids, Map<String, String> names) {
             if (ids == null || ids.isEmpty()) {
                 return false;
             }
-            if (!matches(familyKey) && matchingIds(ids, names).isEmpty()) {
-                return false;
-            }
-            return blockedFilterOk(ids);
+            return matches(familyKey) || !matchingIds(ids, names).isEmpty();
         }
 
         /** 一个系列（线路）里所有车型的最高命中分，用于搜索结果排序。 */
@@ -770,23 +743,6 @@ public class AddonSelectScreen extends Screen {
                 }
             }
             return out;
-        }
-
-        /** 状态筛选：1 = 只看已拦（至少一辆被拦），2 = 只看未拦（存在没被拦的车）。 */
-        private boolean blockedFilterOk(List<String> ids) {
-            if (filterMode == 0) {
-                return true;
-            }
-            boolean anyBlocked = false;
-            boolean allBlocked = true;
-            for (String id : ids) {
-                if (blockedAddons.contains(id)) {
-                    anyBlocked = true;
-                } else {
-                    allBlocked = false;
-                }
-            }
-            return filterMode == 1 ? anyBlocked : !allBlocked;
         }
 
         /** 追加一个车型行（必要时连带它展开的单车行）。 */
