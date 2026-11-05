@@ -36,5 +36,6 @@
   "gui.mtr_no_original_trains.search_no_result": "没有匹配的列车",
   "gui.mtr_no_original_trains.conflict_keep_tip": "这辆车同时在内置保留清单里，保留优先，勾选拦截不会生效。",
   "gui.mtr_no_original_trains.conflict_multi_tip": "这辆车也被另一个追加包声明，拦截后两个包里的这辆车都会消失。",
-  "gui.mtr_no_original_trains.conflict_count": "%s 处冲突"
+  "gui.mtr_no_original_trains.conflict_count": "%s 处冲突",
+  "gui.mtr_no_original_trains.search": "搜索"
 }

@@ -36,5 +36,6 @@
   "gui.mtr_no_original_trains.search_no_result": "沒有符合的列車",
   "gui.mtr_no_original_trains.conflict_keep_tip": "這輛車同時在內置保留清單裡，保留優先，勾選攔截不會生效。",
   "gui.mtr_no_original_trains.conflict_multi_tip": "這輛車也被另一個附加包宣告，攔截後兩個包裡的這輛車都會消失。",
-  "gui.mtr_no_original_trains.conflict_count": "%s 處衝突"
+  "gui.mtr_no_original_trains.conflict_count": "%s 處衝突",
+  "gui.mtr_no_original_trains.search": "搜尋"
 }

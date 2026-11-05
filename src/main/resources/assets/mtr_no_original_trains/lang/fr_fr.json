@@ -36,5 +36,6 @@
   "gui.mtr_no_original_trains.search_no_result": "Aucun résultat",
   "gui.mtr_no_original_trains.conflict_keep_tip": "Ce train figure aussi dans la liste des trains conservés. La conservation l'emporte : le bloquer n'a aucun effet.",
   "gui.mtr_no_original_trains.conflict_multi_tip": "Un autre pack d'addon déclare ce même train. Le bloquer le retire des deux packs.",
-  "gui.mtr_no_original_trains.conflict_count": "%s conflits"
+  "gui.mtr_no_original_trains.conflict_count": "%s conflits",
+  "gui.mtr_no_original_trains.search": "Rechercher"
 }

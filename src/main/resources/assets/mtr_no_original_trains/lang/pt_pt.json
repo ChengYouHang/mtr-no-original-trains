@@ -36,5 +36,6 @@
   "gui.mtr_no_original_trains.search_no_result": "Sem resultados",
   "gui.mtr_no_original_trains.conflict_keep_tip": "Este comboio também está na lista de mantidos. Manter tem prioridade, bloquear não tem efeito.",
   "gui.mtr_no_original_trains.conflict_multi_tip": "Outro pacote de addon declara este mesmo comboio. Bloquear remove-o dos dois.",
-  "gui.mtr_no_original_trains.conflict_count": "%s conflitos"
+  "gui.mtr_no_original_trains.conflict_count": "%s conflitos",
+  "gui.mtr_no_original_trains.search": "Procurar"
 }

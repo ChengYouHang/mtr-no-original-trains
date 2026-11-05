@@ -36,5 +36,6 @@
   "gui.mtr_no_original_trains.search_no_result": "一致する列車がありません",
   "gui.mtr_no_original_trains.conflict_keep_tip": "この車両は内蔵の保持リストにも含まれています。保持が優先されるため、ブロックしても効果はありません。",
   "gui.mtr_no_original_trains.conflict_multi_tip": "同じ車両が別のアドオンパックにも含まれています。ブロックすると両方から消えます。",
-  "gui.mtr_no_original_trains.conflict_count": "競合 %s 件"
+  "gui.mtr_no_original_trains.conflict_count": "競合 %s 件",
+  "gui.mtr_no_original_trains.search": "検索"
 }

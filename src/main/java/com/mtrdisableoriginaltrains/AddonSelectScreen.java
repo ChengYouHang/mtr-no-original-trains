@@ -65,6 +65,12 @@ public class AddonSelectScreen extends Screen {
 
     /** 搜索框（包名 / 系列名 / 车型名 / 车辆名 / ID，1.3.0 新增）。 */
     private TextFieldWidget searchField;
+    /** 搜索框是否展开：默认收起，只留右侧一个「搜索」按钮，省地方。 */
+    private boolean searchOpen;
+    /** 收起状态下的「搜索」按钮。 */
+    private ButtonWidget searchToggle;
+    /** 展开状态下输入框右边的「X」收起按钮。 */
+    private ButtonWidget searchClose;
     /** 当前搜索词，小写、已 trim。 */
     private String query = "";
     /** 解析后的搜索词（分词、数字边界、ID 前缀剥离、命中打分）。 */
@@ -265,10 +271,17 @@ public class AddonSelectScreen extends Screen {
         this.list = new AddonListWidget(this.client, this.width, this.height, top, bottom, 24);
         this.addDrawableChild(this.list);
 
-        // 第 1 行（y=22）：搜索框 + 状态筛选（两个页面共用）
+        // 第 1 行（y=22）：搜索（收起时是按钮，展开时是输入框 + X）+ 状态筛选
+        // 布局始终按「搜索框展开」的宽度算，这样筛选按钮位置恒定，展开/收起时不会跳。
         final int filterW = 92;
-        final int searchW = Math.min(210, Math.max(120, this.width - filterW - 80));
-        final int searchX = (this.width - (searchW + 6 + filterW)) / 2;
+        final int closeW = 20;
+        final int toggleW = 56;
+        final int searchW = Math.min(210, Math.max(120, this.width - filterW - closeW - 12 - 80));
+        final int searchRowW = searchW + 6 + closeW + 6 + filterW;
+        final int searchX = (this.width - searchRowW) / 2;
+        final int closeX = searchX + searchW + 6;
+        final int filterX = closeX + closeW + 6;
+
         this.searchField = new TextFieldWidget(this.textRenderer, searchX, 22, searchW, 20, tr("search_hint"));
         this.searchField.setMaxLength(64);
         this.searchField.setText(this.query);
@@ -278,12 +291,23 @@ public class AddonSelectScreen extends Screen {
             this.list.refreshRows();
         });
         this.addDrawableChild(this.searchField);
+
+        this.searchClose = ButtonWidget.builder(Text.literal("X"), b -> this.closeSearch())
+                .dimensions(closeX, 22, closeW, 20).build();
+        this.addDrawableChild(this.searchClose);
+
+        // 收起时：搜索按钮紧贴筛选按钮左侧，两个控件成一组靠右
+        this.searchToggle = ButtonWidget.builder(tr("search"), b -> this.openSearch())
+                .dimensions(filterX - 6 - toggleW, 22, toggleW, 20).build();
+        this.addDrawableChild(this.searchToggle);
+
         this.filterButton = ButtonWidget.builder(filterLabel(), b -> {
             this.filterMode = (this.filterMode + 1) % 3;
             b.setMessage(filterLabel());
             this.list.refreshRows();
-        }).dimensions(searchX + searchW + 6, 22, filterW, 20).build();
+        }).dimensions(filterX, 22, filterW, 20).build();
         this.addDrawableChild(this.filterButton);
+        this.applySearchLayout();
 
         if (mode == 1) {
             // 明细页：顶部 全选 / 全不选（只作用于当前包）
@@ -317,6 +341,47 @@ public class AddonSelectScreen extends Screen {
                 .dimensions(this.width / 2 + 4, this.height - 40, 150, 20).build());
 
         this.list.refreshRows();
+    }
+
+    /** 展开搜索框并聚焦，光标直接可以打字。 */
+    private void openSearch() {
+        this.searchOpen = true;
+        this.applySearchLayout();
+        if (this.searchField != null) {
+            this.searchField.setFocused(true);
+            this.setFocused(this.searchField);
+        }
+    }
+
+    /** 收起搜索框，同时清空搜索词（收起却仍在过滤会让用户以为列表丢了东西）。 */
+    private void closeSearch() {
+        this.searchOpen = false;
+        if (this.searchField != null) {
+            this.searchField.setFocused(false);
+            this.searchField.setText("");
+        }
+        this.query = "";
+        this.needle = SearchQuery.EMPTY;
+        this.applySearchLayout();
+        if (this.list != null) {
+            this.list.refreshRows();
+        }
+    }
+
+    /** 按 searchOpen 切换「按钮」和「输入框 + X」两组控件的可见性。 */
+    private void applySearchLayout() {
+        if (this.searchField != null) {
+            this.searchField.setVisible(this.searchOpen);
+            if (!this.searchOpen) {
+                this.searchField.setFocused(false);
+            }
+        }
+        if (this.searchClose != null) {
+            this.searchClose.visible = this.searchOpen;
+        }
+        if (this.searchToggle != null) {
+            this.searchToggle.visible = !this.searchOpen;
+        }
     }
 
     private void onBack() {
@@ -378,16 +443,10 @@ public class AddonSelectScreen extends Screen {
 
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-        // GLFW_KEY_ESCAPE == 256：搜索框有内容时先清空搜索，再按一次才返回上一页
+        // GLFW_KEY_ESCAPE == 256：搜索框展开时先收起（清空搜索），再按一次才返回上一页
         if (keyCode == 256) {
-            if (!this.query.isEmpty() || (this.searchField != null && this.searchField.isFocused())) {
-                if (this.searchField != null) {
-                    this.searchField.setText("");
-                    this.searchField.setFocused(false);
-                }
-                this.query = "";
-                this.needle = SearchQuery.EMPTY;
-                this.list.refreshRows();
+            if (this.searchOpen) {
+                this.closeSearch();
                 return true;
             }
             this.onBack();

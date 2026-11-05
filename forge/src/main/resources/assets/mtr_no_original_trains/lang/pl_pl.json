@@ -36,5 +36,6 @@
   "gui.mtr_no_original_trains.search_no_result": "Brak wyników",
   "gui.mtr_no_original_trains.conflict_keep_tip": "Ten pociąg jest też na liście zachowanych. Zachowanie ma priorytet, blokowanie nic nie da.",
   "gui.mtr_no_original_trains.conflict_multi_tip": "Inny pakiet dodatku deklaruje ten sam pociąg. Zablokowanie usunie go z obu.",
-  "gui.mtr_no_original_trains.conflict_count": "Konflikty: %s"
+  "gui.mtr_no_original_trains.conflict_count": "Konflikty: %s",
+  "gui.mtr_no_original_trains.search": "Szukaj"
 }

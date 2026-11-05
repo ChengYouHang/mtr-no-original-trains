@@ -36,5 +36,6 @@
   "gui.mtr_no_original_trains.search_no_result": "Nothing matches your search",
   "gui.mtr_no_original_trains.conflict_keep_tip": "This car is also on the built-in keep list. Keeping wins, so blocking it has no effect.",
   "gui.mtr_no_original_trains.conflict_multi_tip": "Another addon pack declares this same car. Blocking it removes the car from both packs.",
-  "gui.mtr_no_original_trains.conflict_count": "%s conflicts"
+  "gui.mtr_no_original_trains.conflict_count": "%s conflicts",
+  "gui.mtr_no_original_trains.search": "Maghanap"
 }

@@ -36,5 +36,6 @@
   "gui.mtr_no_original_trains.search_no_result": "Ничего не найдено",
   "gui.mtr_no_original_trains.conflict_keep_tip": "Этот поезд также в списке сохранённых. Сохранение важнее — блокировка не подействует.",
   "gui.mtr_no_original_trains.conflict_multi_tip": "Этот же поезд объявлен в другом аддон-паке. Блокировка уберёт его из обоих.",
-  "gui.mtr_no_original_trains.conflict_count": "Конфликтов: %s"
+  "gui.mtr_no_original_trains.conflict_count": "Конфликтов: %s",
+  "gui.mtr_no_original_trains.search": "Поиск"
 }

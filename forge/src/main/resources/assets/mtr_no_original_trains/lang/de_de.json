@@ -36,5 +36,6 @@
   "gui.mtr_no_original_trains.search_no_result": "Keine Treffer",
   "gui.mtr_no_original_trains.conflict_keep_tip": "Dieser Zug steht auch auf der Behalten-Liste. Behalten hat Vorrang, Blockieren bringt nichts.",
   "gui.mtr_no_original_trains.conflict_multi_tip": "Ein anderes Addon-Paket enthält denselben Zug. Blockieren entfernt ihn aus beiden.",
-  "gui.mtr_no_original_trains.conflict_count": "%s Konflikte"
+  "gui.mtr_no_original_trains.conflict_count": "%s Konflikte",
+  "gui.mtr_no_original_trains.search": "Suchen"
 }

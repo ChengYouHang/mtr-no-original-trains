@@ -63,8 +63,16 @@ public class AddonSelectScreen extends Screen {
 
     /** 搜索框（包名 / 系列名 / 车型名 / 车辆名 / ID，1.3.0 新增）。 */
     private EditBox searchField;
+    /** 搜索框是否展开：默认收起，只留右侧一个「搜索」按钮，省地方。 */
+    private boolean searchOpen;
+    /** 收起状态下的「搜索」按钮。 */
+    private Button searchToggle;
+    /** 展开状态下输入框右边的「X」收起按钮。 */
+    private Button searchClose;
     /** 当前搜索词，小写、已 trim。 */
     private String query = "";
+    /** 解析后的搜索词（分词、数字边界、ID 前缀剥离、命中打分）。 */
+    private SearchQuery needle = SearchQuery.EMPTY;
     /** 状态筛选：0 = 全部，1 = 只看已拦截，2 = 只看未拦截。 */
     private int filterMode = 0;
     private Button filterButton;
@@ -262,26 +270,45 @@ public class AddonSelectScreen extends Screen {
         this.list = new AddonListWidget(this.minecraft, this.width, this.height, top, bottom, 24);
         this.addRenderableWidget(this.list);
 
-        // 第 1 行（y=22）：搜索框 + 状态筛选（两个页面共用）
+        // 第 1 行（y=22）：搜索（收起时是按钮，展开时是输入框 + X）+ 状态筛选
+        // 布局始终按「搜索框展开」的宽度算，这样筛选按钮位置恒定，展开/收起时不会跳。
         final int filterW = 92;
-        final int searchW = Math.min(210, Math.max(120, this.width - filterW - 80));
-        final int searchX = (this.width - (searchW + 6 + filterW)) / 2;
+        final int closeW = 20;
+        final int toggleW = 56;
+        final int searchW = Math.min(210, Math.max(120, this.width - filterW - closeW - 12 - 80));
+        final int searchRowW = searchW + 6 + closeW + 6 + filterW;
+        final int searchX = (this.width - searchRowW) / 2;
+        final int closeX = searchX + searchW + 6;
+        final int filterX = closeX + closeW + 6;
+
         this.searchField = new EditBox(this.font, searchX, 22, searchW, 20, Component.literal(""));
         this.searchField.setMaxLength(64);
         this.searchField.setSuggestion(tr("search_hint").getString());
         this.searchField.setValue(this.query);
         this.searchField.setResponder(text -> {
             this.query = text == null ? "" : text.trim().toLowerCase(Locale.ROOT);
+            this.needle = new SearchQuery(this.query);
             this.searchField.setSuggestion(this.query.isEmpty() ? tr("search_hint").getString() : "");
             this.list.refreshRows();
         });
         this.addRenderableWidget(this.searchField);
+
+        this.searchClose = Button.builder(Component.literal("X"), b -> this.closeSearch())
+                .bounds(closeX, 22, closeW, 20).build();
+        this.addRenderableWidget(this.searchClose);
+
+        // 收起时：搜索按钮紧贴筛选按钮左侧，两个控件成一组靠右
+        this.searchToggle = Button.builder(tr("search"), b -> this.openSearch())
+                .bounds(filterX - 6 - toggleW, 22, toggleW, 20).build();
+        this.addRenderableWidget(this.searchToggle);
+
         this.filterButton = Button.builder(filterLabel(), b -> {
             this.filterMode = (this.filterMode + 1) % 3;
             b.setMessage(filterLabel());
             this.list.refreshRows();
-        }).bounds(searchX + searchW + 6, 22, filterW, 20).build();
+        }).bounds(filterX, 22, filterW, 20).build();
         this.addRenderableWidget(this.filterButton);
+        this.applySearchLayout();
 
         if (mode == 1) {
             // 明细页：顶部 全选 / 全不选（只作用于当前包）
@@ -315,6 +342,48 @@ public class AddonSelectScreen extends Screen {
                 .bounds(this.width / 2 + 4, this.height - 40, 150, 20).build());
 
         this.list.refreshRows();
+    }
+
+    /** 展开搜索框并聚焦，光标直接可以打字。 */
+    private void openSearch() {
+        this.searchOpen = true;
+        this.applySearchLayout();
+        if (this.searchField != null) {
+            this.searchField.setFocused(true);
+            this.setFocused(this.searchField);
+        }
+    }
+
+    /** 收起搜索框，同时清空搜索词（收起却仍在过滤会让用户以为列表丢了东西）。 */
+    private void closeSearch() {
+        this.searchOpen = false;
+        if (this.searchField != null) {
+            this.searchField.setFocused(false);
+            this.searchField.setValue("");
+            this.searchField.setSuggestion(tr("search_hint").getString());
+        }
+        this.query = "";
+        this.needle = SearchQuery.EMPTY;
+        this.applySearchLayout();
+        if (this.list != null) {
+            this.list.refreshRows();
+        }
+    }
+
+    /** 按 searchOpen 切换「按钮」和「输入框 + X」两组控件的可见性。 */
+    private void applySearchLayout() {
+        if (this.searchField != null) {
+            this.searchField.setVisible(this.searchOpen);
+            if (!this.searchOpen) {
+                this.searchField.setFocused(false);
+            }
+        }
+        if (this.searchClose != null) {
+            this.searchClose.visible = this.searchOpen;
+        }
+        if (this.searchToggle != null) {
+            this.searchToggle.visible = !this.searchOpen;
+        }
     }
 
     private void onBack() {
@@ -376,16 +445,10 @@ public class AddonSelectScreen extends Screen {
 
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-        // GLFW_KEY_ESCAPE == 256：搜索框有内容时先清空搜索，再按一次才返回上一页
+        // GLFW_KEY_ESCAPE == 256：搜索框展开时先收起（清空搜索），再按一次才返回上一页
         if (keyCode == 256) {
-            if (!this.query.isEmpty() || (this.searchField != null && this.searchField.isFocused())) {
-                if (this.searchField != null) {
-                    this.searchField.setValue("");
-                    this.searchField.setSuggestion(tr("search_hint").getString());
-                    this.searchField.setFocused(false);
-                }
-                this.query = "";
-                this.list.refreshRows();
+            if (this.searchOpen) {
+                this.closeSearch();
                 return true;
             }
             this.onBack();
@@ -448,11 +511,9 @@ public class AddonSelectScreen extends Screen {
     }
 
     /** 名称或 ID 是否命中当前搜索词（空搜索词一律命中）。 */
+    /** 名称或 ID 是否命中当前搜索词（空搜索词一律命中）。 */
     private boolean matches(String text) {
-        if (this.query.isEmpty()) {
-            return true;
-        }
-        return text != null && text.toLowerCase(Locale.ROOT).contains(this.query);
+        return this.needle.matches(text);
     }
 
     /**
@@ -579,7 +640,8 @@ public class AddonSelectScreen extends Screen {
                 if (packs.isEmpty()) {
                     rows.add(Row.empty());
                 } else {
-                    boolean any = false;
+                    // 搜索时按命中质量排序：包名整体命中排在只命中一部分的前面
+                    final List<Map.Entry<String, Set<String>>> hits = new ArrayList<>();
                     for (var e : packs.entrySet()) {
                         final String display = AddonPackScanner.displayPackName(e.getKey());
                         if (!matches(display) && !matches(e.getKey())) {
@@ -588,10 +650,17 @@ public class AddonSelectScreen extends Screen {
                         if (!blockedFilterOk(new ArrayList<>(e.getValue()))) {
                             continue;
                         }
-                        rows.add(Row.pack(e.getKey(), display));
-                        any = true;
+                        hits.add(e);
                     }
-                    if (!any) {
+                    if (!query.isEmpty()) {
+                        hits.sort((x, y) -> Integer.compare(
+                                needle.score(AddonPackScanner.displayPackName(y.getKey()), y.getKey()),
+                                needle.score(AddonPackScanner.displayPackName(x.getKey()), x.getKey())));
+                    }
+                    for (var e : hits) {
+                        rows.add(Row.pack(e.getKey(), AddonPackScanner.displayPackName(e.getKey())));
+                    }
+                    if (hits.isEmpty()) {
                         rows.add(Row.message(tr("search_no_result").getString()));
                     }
                 }
@@ -610,7 +679,28 @@ public class AddonSelectScreen extends Screen {
                         seriesToFamilies.computeIfAbsent(seriesKeyOf(familyKey), k -> new ArrayList<>())
                                 .add(familyKey);
                     }
-                    for (var se : seriesToFamilies.entrySet()) {
+                    // 搜索时给每个车型打命中分：车型名本身命中，或族里有车命中，取较高者
+                    final Map<String, Integer> familyScore = new HashMap<>();
+                    for (var fe : byFamily.entrySet()) {
+                        int s = needle.score(fe.getKey(), null);
+                        for (String id : fe.getValue()) {
+                            s = Math.max(s, needle.score(labelOf(id, names), id));
+                        }
+                        familyScore.put(fe.getKey(), s);
+                    }
+                    final List<Map.Entry<String, List<String>>> seriesOrder =
+                            new ArrayList<>(seriesToFamilies.entrySet());
+                    if (!query.isEmpty()) {
+                        // 系列内：命中程度高的车型排前面（同分保持原声明顺序）
+                        for (var so : seriesOrder) {
+                            so.getValue().sort((x, y) -> Integer.compare(
+                                    familyScore.getOrDefault(y, 0), familyScore.getOrDefault(x, 0)));
+                        }
+                        // 系列之间：整条线的最好命中分高的排前面
+                        seriesOrder.sort((x, y) -> Integer.compare(
+                                bestScore(y.getValue(), familyScore), bestScore(x.getValue(), familyScore)));
+                    }
+                    for (var se : seriesOrder) {
                         final String seriesKey = se.getKey();
                         final List<String> families = se.getValue();
                         // 搜索/筛选后仍然可见的车型
@@ -652,6 +742,15 @@ public class AddonSelectScreen extends Screen {
             }
         }
 
+        /** 一个系列（线路）里所有车型的最高命中分，用于搜索结果排序。 */
+        private int bestScore(List<String> families, Map<String, Integer> familyScore) {
+            int best = 0;
+            for (String f : families) {
+                best = Math.max(best, familyScore.getOrDefault(f, 0));
+            }
+            return best;
+        }
+
         /** 车型行是否可见：命中搜索词，且符合当前状态筛选。 */
         private boolean familyVisible(String familyKey, List<String> ids, Map<String, String> names) {
             if (ids == null || ids.isEmpty()) {
@@ -670,7 +769,7 @@ public class AddonSelectScreen extends Screen {
             }
             final List<String> out = new ArrayList<>();
             for (String id : ids) {
-                if (matches(id) || matches(labelOf(id, names))) {
+                if (needle.score(labelOf(id, names), id) > 0) {
                     out.add(id);
                 }
             }
@@ -708,7 +807,9 @@ public class AddonSelectScreen extends Screen {
             if (query.isEmpty() && !expandedFamilies.contains(selectedRaw + "|F|" + familyKey)) {
                 return;
             }
-            final List<String> shown = matchingIds(familyIds, names);
+            // 搜到的是「这个车型」本身 → 整族展开；只是族里某几辆车命中 → 只展开命中的
+            final List<String> shown = (!query.isEmpty() && needle.hitsName(familyKey))
+                    ? familyIds : matchingIds(familyIds, names);
             if (shown.isEmpty()) {
                 return;
             }
