@@ -44,3 +44,5 @@ _tools/*/out/
 _tools/searchtest/*.txt
 _tools/searchtest/SearchProbe.java
 _tools/searchtest/SearchQuery.java
+_tools/searchtest/accuracy-report.md
+_tools/searchtest/dbg.txt

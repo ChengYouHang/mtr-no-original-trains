@@ -12,7 +12,8 @@ import java.util.Locale;
  *   <li><b>空格分词</b>：{@code 上海 16} 表示同时命中「上海」和「16」，而不是找这七个字连在一起；</li>
  *   <li><b>数字边界</b>：关键词以数字开头时，命中位置前面不能还是数字 ——
  *       搜「2号线」不会再带出「12号线」，搜「1号线」不会再带出「11号线」。
- *       纯数字词还要求后面也不能紧跟数字，所以搜「1」不会命中「16A01」；</li>
+ *       纯数字词还要求后面不能紧跟数字、左侧不能紧贴英文字母，
+ *       所以搜「1」不会命中「16A01」，搜「16」也不会命中型号「AC16」；</li>
  *   <li><b>忽略 ID 固定前缀</b>：{@code mtr_custom_train_} / {@code mtr:} 先剥掉再比，
  *       搜「train」「mtr」不会再命中全部列车；</li>
  *   <li><b>命中质量分</b>：名称全等 &gt; 名称前缀 &gt; 名称包含 &gt; 仅 ID 命中，
@@ -125,6 +126,10 @@ public final class SearchQuery {
             if (digitStart && i > 0 && isDigit(text.charAt(i - 1))) {
                 ok = false;
             }
+            // 纯数字词不认「嵌在英文型号里」的写法：搜 16 不该命中 AC16 / CRH6 这类代号
+            if (ok && allDigits && i > 0 && isAsciiLetter(text.charAt(i - 1))) {
+                ok = false;
+            }
             final int end = i + token.length();
             if (ok && allDigits && end < text.length() && isDigit(text.charAt(end))) {
                 ok = false;
@@ -148,5 +153,9 @@ public final class SearchQuery {
 
     private static boolean isDigit(char c) {
         return c >= '0' && c <= '9';
+    }
+
+    private static boolean isAsciiLetter(char c) {
+        return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z');
     }
 }

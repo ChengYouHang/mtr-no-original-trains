@@ -570,6 +570,10 @@ static final class Row {
             "Q6 纯数字16命中16A01", "");
         check(new SearchQuery("1").score("上海地铁16号线", null) == 0,
             "Q7 单字1不命中16号线", "");
+        check(new SearchQuery("16").score("上海地铁11号线-11A01(AC16)奶咖", null) == 0,
+            "Q7b 纯数字16不命中英文型号AC16", "");
+        check(new SearchQuery("16").score("上海地铁16号线-16A01(AC19)抹茶-大站车", null) > 0,
+            "Q7c 纯数字16仍命中16号线", "");
         check(new SearchQuery("上海 16").score("上海地铁16号线-16A01(AC19)抹茶-大站车", null) > 0,
             "Q8 空格分词AND命中", "");
         check(new SearchQuery("上海 2").score("合肥轨道交通2号线1期(Forwards)", null) == 0,
