@@ -113,7 +113,7 @@ public class TrainSelectScreen extends Screen {
         }
 
         final int top = 84;
-        final int bottom = this.height - 52;
+        final int bottom = this.height - 64;
         this.list = new TrainListWidget(this.client, this.width, this.height, top, bottom, 24);
         this.addDrawableChild(this.list);
 
@@ -310,7 +310,7 @@ public class TrainSelectScreen extends Screen {
 
         super.render(ctx, mouseX, mouseY, delta);
 
-        ctx.drawCenteredTextWithShadow(font, tr("restart_hint"), this.width / 2, this.height - 54, 0xE8C060);
+        ctx.drawCenteredTextWithShadow(font, tr("restart_hint"), this.width / 2, this.height - 58, 0xE8C060);
     }
 
     @Override

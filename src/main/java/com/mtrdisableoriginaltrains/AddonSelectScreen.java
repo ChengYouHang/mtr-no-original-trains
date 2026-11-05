@@ -260,7 +260,7 @@ public class AddonSelectScreen extends Screen {
         }
 
         final int top = mode == 1 ? 82 : 60;
-        final int bottom = this.height - 52;
+        final int bottom = this.height - 64;
         this.list = new AddonListWidget(this.client, this.width, this.height, top, bottom, 24);
         this.addDrawableChild(this.list);
 
@@ -465,7 +465,7 @@ public class AddonSelectScreen extends Screen {
 
         super.render(ctx, mouseX, mouseY, delta);
 
-        ctx.drawCenteredTextWithShadow(font, tr("restart_hint"), this.width / 2, this.height - 54, 0xE8C060);
+        ctx.drawCenteredTextWithShadow(font, tr("restart_hint"), this.width / 2, this.height - 58, 0xE8C060);
     }
 
     @Override
@@ -589,34 +589,86 @@ public class AddonSelectScreen extends Screen {
 
     private final class AddonListWidget extends ElementListWidget<AddonEntry> {
 
+        /** 搜索时每个包命中的车辆数：包行右侧显示「命中 N 辆」而不是全包总数。 */
+        final Map<String, Integer> searchHitCounts = new HashMap<>();
+
         AddonListWidget(MinecraftClient client, int width, int height, int top, int bottom, int itemHeight) {
             super(client, width, height, top, bottom, itemHeight);
+        }
+
+        /** 一个包里全部车辆按车型（familyKeyOf）分组，保持声明顺序。 */
+        private LinkedHashMap<String, List<String>> familiesOf(Set<String> ids, Map<String, String> names) {
+            final LinkedHashMap<String, List<String>> byFamily = new LinkedHashMap<>();
+            for (String id : ids) {
+                byFamily.computeIfAbsent(familyKeyOf(id, labelOf(id, names)),
+                        k -> new ArrayList<>()).add(id);
+            }
+            return byFamily;
+        }
+
+        /** 一个车型对当前搜索词的命中分：车型名本身命中，或族里有车命中，取较高者。 */
+        private int familyHitScore(String familyKey, List<String> ids, Map<String, String> names) {
+            int s = needle.score(familyKey, null);
+            for (String id : ids) {
+                s = Math.max(s, needle.score(labelOf(id, names), id));
+            }
+            return s;
         }
 
         void refreshRows() {
             final List<Row> rows = new ArrayList<>();
             final Map<String, Set<String>> packs = AddonPackScanner.addonPacks();
             final Map<String, String> names = BuiltinTrainFilter.capturedAddonNames();
+            this.searchHitCounts.clear();
             if (mode == 0) {
                 if (packs.isEmpty()) {
                     rows.add(Row.empty());
-                } else {
-                    // 搜索时按命中质量排序：包名整体命中排在只命中一部分的前面
-                    final List<Map.Entry<String, Set<String>>> hits = new ArrayList<>();
+                } else if (query.isEmpty()) {
+                    // 没搜索：只列包（点包进明细）
                     for (var e : packs.entrySet()) {
-                        final String display = AddonPackScanner.displayPackName(e.getKey());
-                        if (!matches(display) && !matches(e.getKey())) {
+                        rows.add(Row.pack(e.getKey(), AddonPackScanner.displayPackName(e.getKey())));
+                    }
+                } else {
+                    // 有搜索词：搜的是<b>所有包里所有列车</b>，按包分组列出命中的车型
+                    final List<Map.Entry<String, Set<String>>> hits = new ArrayList<>();
+                    final Map<String, Integer> packScore = new HashMap<>();
+                    final Map<String, LinkedHashMap<String, List<String>>> packFamilies = new HashMap<>();
+                    for (var e : packs.entrySet()) {
+                        final String raw = e.getKey();
+                        final String display = AddonPackScanner.displayPackName(raw);
+                        // 包名自身命中 → 这个包的车全算命中
+                        final boolean packHit = matches(display) || matches(raw);
+                        final LinkedHashMap<String, List<String>> kept = new LinkedHashMap<>();
+                        int best = packHit ? Math.max(1, needle.score(display, raw)) : 0;
+                        for (var fe : familiesOf(e.getValue(), names).entrySet()) {
+                            final int s = familyHitScore(fe.getKey(), fe.getValue(), names);
+                            if (packHit || s > 0) {
+                                kept.put(fe.getKey(), fe.getValue());
+                                best = Math.max(best, s);
+                            }
+                        }
+                        if (kept.isEmpty()) {
                             continue;
                         }
+                        int cars = 0;
+                        for (List<String> ids : kept.values()) {
+                            cars += ids.size();
+                        }
+                        this.searchHitCounts.put(raw, cars);
+                        packScore.put(raw, best);
+                        packFamilies.put(raw, kept);
                         hits.add(e);
                     }
-                    if (!query.isEmpty()) {
-                        hits.sort((x, y) -> Integer.compare(
-                                needle.score(AddonPackScanner.displayPackName(y.getKey()), y.getKey()),
-                                needle.score(AddonPackScanner.displayPackName(x.getKey()), x.getKey())));
-                    }
+                    hits.sort((x, y) -> Integer.compare(
+                            packScore.getOrDefault(y.getKey(), 0), packScore.getOrDefault(x.getKey(), 0)));
                     for (var e : hits) {
-                        rows.add(Row.pack(e.getKey(), AddonPackScanner.displayPackName(e.getKey())));
+                        final String raw = e.getKey();
+                        final String display = AddonPackScanner.displayPackName(raw);
+                        rows.add(Row.pack(raw, display));
+                        // 命中的车型（缩进一层）：整行勾选 = 拦掉这个车型的所有车
+                        for (var fe : packFamilies.get(raw).entrySet()) {
+                            rows.add(Row.family(raw, display, fe.getKey(), fe.getKey(), fe.getValue(), 1));
+                        }
                     }
                     if (hits.isEmpty()) {
                         rows.add(Row.message(tr("search_no_result").getString()));
@@ -785,7 +837,8 @@ public class AddonSelectScreen extends Screen {
 
         AddonEntry(Row row) {
             this.row = row;
-            if (row.kind == Row.KIND_FAMILY) {
+            // 包列表页搜索结果里的车型行没有展开这回事（点包进明细），不挂 +/− 按钮
+            if (row.kind == Row.KIND_FAMILY && mode == 1) {
                 final String key = row.rawPack + "|F|" + row.familyKey;
                 this.foldButton = ButtonWidget.builder(
                         Text.literal(expandedFamilies.contains(key) ? "−" : "+"),
@@ -919,7 +972,10 @@ public class AddonSelectScreen extends Screen {
 
             if (packRow) {
                 final Set<String> ids = AddonPackScanner.addonPacks().get(row.rawPack);
-                final Text right = tr("vehicles", ids == null ? 0 : ids.size());
+                // 搜索时右侧显示「命中 N 辆」；没搜索时显示全包总数
+                final Integer hit = AddonSelectScreen.this.list == null ? null
+                        : AddonSelectScreen.this.list.searchHitCounts.get(row.rawPack);
+                final Text right = tr("vehicles", hit != null ? hit : (ids == null ? 0 : ids.size()));
                 final int rw = font.getWidth(right);
                 ctx.drawTextWithShadow(font, right, x + entryWidth - rw - 6, y + 7, 0x808080);
             } else if (row.kind == Row.KIND_FAMILY || row.kind == Row.KIND_SERIES) {
