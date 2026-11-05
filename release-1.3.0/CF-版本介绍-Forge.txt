@@ -1,0 +1,41 @@
+No Original Trains 1.3.0 — Forge
+File: mtr_no_original_trains-forge-1.3.0.jar
+Minecraft 1.20.1 · Forge 47.x
+
+
+ABOUT THIS VERSION
+
+1.3.0 is a quality-of-life release for the in-game picker. The selection screens did their job but were getting hard to live in: the Shanghai pack alone is 248 cars across 18 lines, and scrolling that by eye was the only way to find anything. This version adds search to every picker screen, warns you when a tick will not do what it looks like it will do, and redraws the checkboxes the way vanilla does.
+
+Nothing about the saving rules changed. Everything you configured in 1.2.1 behaves exactly the same after updating.
+
+This is the Forge build. It has the same features as the Fabric build apart from loader code.
+
+
+WHAT'S NEW
+
+- SEARCH, ON EVERY SCREEN. The Built-in Trains picker, the Addon Trains pack list and each pack's detail page all get a search box with a Search button on its right. Type, press Search (or Enter), and the list narrows. Typing alone does not re-filter the list, so nothing jumps around while you type; Escape clears the search first and leaves the screen on the second press.
+- PACK-LIST SEARCH COVERS EVERY TRAIN. Searching from the Addon Trains pack list does not just match pack names — it searches all trains of all packs at once and lists the matching models grouped under each pack header, with the hit count on the pack row. Click a pack to fine-tune inside it, with the search carried over.
+- SPACE MEANS AND. `上海 16` matches trains whose name or ID contains both terms. Every term must hit somewhere.
+- NUMBERS STAY WHOLE. Searching `2` does not match `12号线`; searching `16` does not match the digits inside `AC16`. Number-boundary rules keep line numbers from bleeding into model numbers — this took the matcher from 90.9% precision to 100% on a 357-car benchmark of two real metro packs, with recall also at 100%.
+- PREFIXES IGNORED. `mtr_custom_train_` and `mtr:` are stripped before matching, so pasting a raw ID from the log still finds the train.
+- BEST MATCHES FIRST. Results are ranked by relevance: exact name, then starts-with, then contains, then ID-only. Inside a pack, matched models sort to the top of their line and the strongest lines sort to the top of the page.
+- CONFLICT WARNINGS. A "!" mark appears on any car that is also on your built-in keep list — keeping wins there, so blocking it has no effect, and the tooltip explains that. A pack or model that shares cars with another addon pack shows a conflict count, because blocking a shared car removes it from both packs.
+- VANILLA-STYLE CHECKBOXES. Checkboxes now draw the same diagonal check as vanilla Minecraft: solid when everything under the row is selected, translucent when only part of it is.
+- RENAMED, AND FULLY LOCALIZED. The main menu button and the panel title now read "No Original Trains Panel", and every string in all four picker screens is translated in 42 languages — the picker follows whatever language your game runs in.
+- LAYOUT FIX. The "Restart the game to apply." hint no longer overlaps the bottom edge of the list on short screens.
+
+
+BEHAVIOUR
+
+- No config migration, no changed defaults. `keepIds`, `extraRemoveIds` and `blockedAddonIds` all keep working exactly as before, from the picker or from the config file.
+- Addon trains are still never touched unless you tick them. Built-in keep rules still win over addon blocking.
+- Saving still goes through the same restart dialog: restart now, restart later, or don't ask again. Nothing takes effect until the game restarts.
+
+
+INSTALL
+
+- Delete the 1.2.1 jar first — both builds share the same mod ID and will conflict if you keep two.
+- Drop mtr_no_original_trains-forge-1.3.0.jar into mods/.
+- Requires Minecraft Transit Railway 4.0.0 or newer, plus FerriteCore (Forge) and ModernFix (Forge). All three are hard requirements.
+- Client-side only. Servers do not need it. Do not install this jar on Fabric — use the Fabric build.
