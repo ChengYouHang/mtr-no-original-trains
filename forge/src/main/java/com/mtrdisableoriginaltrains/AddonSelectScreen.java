@@ -274,7 +274,7 @@ public class AddonSelectScreen extends Screen {
         // 布局始终按「搜索框展开」的宽度算，这样筛选按钮位置恒定，展开/收起时不会跳。
         final int filterW = 92;
         final int closeW = 20;
-        final int toggleW = 56;
+        final int toggleW = 64;
         final int searchW = Math.min(210, Math.max(120, this.width - filterW - closeW - 12 - 80));
         final int searchRowW = searchW + 6 + closeW + 6 + filterW;
         final int searchX = (this.width - searchRowW) / 2;
