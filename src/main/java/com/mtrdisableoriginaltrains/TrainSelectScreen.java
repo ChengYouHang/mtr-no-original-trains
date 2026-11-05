@@ -58,6 +58,8 @@ public class TrainSelectScreen extends Screen {
     private TextFieldWidget searchField;
     /** 当前搜索词，小写、已 trim。 */
     private String query = "";
+    /** 解析后的搜索词（分词、数字边界、ID 前缀剥离、命中打分）。 */
+    private SearchQuery needle = SearchQuery.EMPTY;
     /**
      * 状态筛选：0 = 全部，1 = 只看已保留，2 = 只看未保留。
      *
@@ -104,10 +106,7 @@ public class TrainSelectScreen extends Screen {
 
     /** 名称或 ID 是否命中当前搜索词（空搜索词一律命中）。 */
     private boolean matches(String text) {
-        if (this.query.isEmpty()) {
-            return true;
-        }
-        return text != null && text.toLowerCase(Locale.ROOT).contains(this.query);
+        return this.needle.matches(text);
     }
 
     @Override
@@ -142,6 +141,7 @@ public class TrainSelectScreen extends Screen {
         this.searchField.setText(this.query);
         this.searchField.setChangedListener(text -> {
             this.query = text == null ? "" : text.trim().toLowerCase(Locale.ROOT);
+            this.needle = new SearchQuery(this.query);
             this.list.refreshRows();
         });
         this.addDrawableChild(this.searchField);
@@ -212,6 +212,7 @@ public class TrainSelectScreen extends Screen {
                     this.searchField.setFocused(false);
                 }
                 this.query = "";
+                this.needle = SearchQuery.EMPTY;
                 this.list.refreshRows();
                 return true;
             }
@@ -413,14 +414,28 @@ public class TrainSelectScreen extends Screen {
             refreshRows();
         }
 
+        /** 车系的最高命中分（车系名本身，或族里任一车辆），用于搜索结果排序。 */
+        private int familyScore(TrainFamilyCatalog.Family f) {
+            int best = needle.score(f.displayName, f.id);
+            for (var e : f.vehicles.entrySet()) {
+                best = Math.max(best, needle.score(e.getValue(), e.getKey()));
+            }
+            return best;
+        }
+
         void refreshRows() {
             final List<Row> rows = new ArrayList<>();
-            for (TrainFamilyCatalog.Family f : TrainFamilyCatalog.families()) {
+            final List<TrainFamilyCatalog.Family> families = new ArrayList<>(TrainFamilyCatalog.families());
+            if (!query.isEmpty()) {
+                // 搜索时按命中质量排序：车系名整体命中的排在「只有族里某辆车命中」的前面
+                families.sort((x, y) -> Integer.compare(familyScore(y), familyScore(x)));
+            }
+            for (TrainFamilyCatalog.Family f : families) {
                 final boolean familyHit = matches(f.displayName) || matches(f.id);
                 // 命中的车辆：搜索词为空时全部命中；否则只要车系名/ID 已命中，整族都算命中
                 final List<String> vehicleHits = new ArrayList<>();
                 for (var e : f.vehicles.entrySet()) {
-                    if (familyHit || matches(e.getKey()) || matches(e.getValue())) {
+                    if (familyHit || needle.score(e.getValue(), e.getKey()) > 0) {
                         vehicleHits.add(e.getKey());
                     }
                 }

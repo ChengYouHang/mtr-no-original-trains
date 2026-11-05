@@ -67,6 +67,8 @@ public class AddonSelectScreen extends Screen {
     private TextFieldWidget searchField;
     /** 当前搜索词，小写、已 trim。 */
     private String query = "";
+    /** 解析后的搜索词（分词、数字边界、ID 前缀剥离、命中打分）。 */
+    private SearchQuery needle = SearchQuery.EMPTY;
     /** 状态筛选：0 = 全部，1 = 只看已拦截，2 = 只看未拦截。 */
     private int filterMode = 0;
     private ButtonWidget filterButton;
@@ -272,6 +274,7 @@ public class AddonSelectScreen extends Screen {
         this.searchField.setText(this.query);
         this.searchField.setChangedListener(text -> {
             this.query = text == null ? "" : text.trim().toLowerCase(Locale.ROOT);
+            this.needle = new SearchQuery(this.query);
             this.list.refreshRows();
         });
         this.addDrawableChild(this.searchField);
@@ -383,6 +386,7 @@ public class AddonSelectScreen extends Screen {
                     this.searchField.setFocused(false);
                 }
                 this.query = "";
+                this.needle = SearchQuery.EMPTY;
                 this.list.refreshRows();
                 return true;
             }
@@ -447,10 +451,7 @@ public class AddonSelectScreen extends Screen {
 
     /** 名称或 ID 是否命中当前搜索词（空搜索词一律命中）。 */
     private boolean matches(String text) {
-        if (this.query.isEmpty()) {
-            return true;
-        }
-        return text != null && text.toLowerCase(Locale.ROOT).contains(this.query);
+        return this.needle.matches(text);
     }
 
     /**
@@ -576,7 +577,8 @@ public class AddonSelectScreen extends Screen {
                 if (packs.isEmpty()) {
                     rows.add(Row.empty());
                 } else {
-                    boolean any = false;
+                    // 搜索时按命中质量排序：包名整体命中排在只命中一部分的前面
+                    final List<Map.Entry<String, Set<String>>> hits = new ArrayList<>();
                     for (var e : packs.entrySet()) {
                         final String display = AddonPackScanner.displayPackName(e.getKey());
                         if (!matches(display) && !matches(e.getKey())) {
@@ -585,10 +587,17 @@ public class AddonSelectScreen extends Screen {
                         if (!blockedFilterOk(new ArrayList<>(e.getValue()))) {
                             continue;
                         }
-                        rows.add(Row.pack(e.getKey(), display));
-                        any = true;
+                        hits.add(e);
                     }
-                    if (!any) {
+                    if (!query.isEmpty()) {
+                        hits.sort((x, y) -> Integer.compare(
+                                needle.score(AddonPackScanner.displayPackName(y.getKey()), y.getKey()),
+                                needle.score(AddonPackScanner.displayPackName(x.getKey()), x.getKey())));
+                    }
+                    for (var e : hits) {
+                        rows.add(Row.pack(e.getKey(), AddonPackScanner.displayPackName(e.getKey())));
+                    }
+                    if (hits.isEmpty()) {
                         rows.add(Row.message(tr("search_no_result").getString()));
                     }
                 }
@@ -607,7 +616,28 @@ public class AddonSelectScreen extends Screen {
                         seriesToFamilies.computeIfAbsent(seriesKeyOf(familyKey), k -> new ArrayList<>())
                                 .add(familyKey);
                     }
-                    for (var se : seriesToFamilies.entrySet()) {
+                    // 搜索时给每个车型打命中分：车型名本身命中，或族里有车命中，取较高者
+                    final Map<String, Integer> familyScore = new HashMap<>();
+                    for (var fe : byFamily.entrySet()) {
+                        int s = needle.score(fe.getKey(), null);
+                        for (String id : fe.getValue()) {
+                            s = Math.max(s, needle.score(labelOf(id, names), id));
+                        }
+                        familyScore.put(fe.getKey(), s);
+                    }
+                    final List<Map.Entry<String, List<String>>> seriesOrder =
+                            new ArrayList<>(seriesToFamilies.entrySet());
+                    if (!query.isEmpty()) {
+                        // 系列内：命中程度高的车型排前面（同分保持原声明顺序）
+                        for (var so : seriesOrder) {
+                            so.getValue().sort((x, y) -> Integer.compare(
+                                    familyScore.getOrDefault(y, 0), familyScore.getOrDefault(x, 0)));
+                        }
+                        // 系列之间：整条线的最好命中分高的排前面
+                        seriesOrder.sort((x, y) -> Integer.compare(
+                                bestScore(y.getValue(), familyScore), bestScore(x.getValue(), familyScore)));
+                    }
+                    for (var se : seriesOrder) {
                         final String seriesKey = se.getKey();
                         final List<String> families = se.getValue();
                         // 搜索/筛选后仍然可见的车型
@@ -660,6 +690,15 @@ public class AddonSelectScreen extends Screen {
             return blockedFilterOk(ids);
         }
 
+        /** 一个系列（线路）里所有车型的最高命中分，用于搜索结果排序。 */
+        private int bestScore(List<String> families, Map<String, Integer> familyScore) {
+            int best = 0;
+            for (String f : families) {
+                best = Math.max(best, familyScore.getOrDefault(f, 0));
+            }
+            return best;
+        }
+
         /** 命中当前搜索词的车辆 ID（搜索词为空时原样返回）。 */
         private List<String> matchingIds(List<String> ids, Map<String, String> names) {
             if (query.isEmpty()) {
@@ -667,7 +706,7 @@ public class AddonSelectScreen extends Screen {
             }
             final List<String> out = new ArrayList<>();
             for (String id : ids) {
-                if (matches(id) || matches(labelOf(id, names))) {
+                if (needle.score(labelOf(id, names), id) > 0) {
                     out.add(id);
                 }
             }
@@ -705,7 +744,9 @@ public class AddonSelectScreen extends Screen {
             if (query.isEmpty() && !expandedFamilies.contains(selectedRaw + "|F|" + familyKey)) {
                 return;
             }
-            final List<String> shown = matchingIds(familyIds, names);
+            // 搜到的是「这个车型」本身 → 整族展开；只是族里某几辆车命中 → 只展开命中的
+            final List<String> shown = (!query.isEmpty() && needle.hitsName(familyKey))
+                    ? familyIds : matchingIds(familyIds, names);
             if (shown.isEmpty()) {
                 return;
             }
