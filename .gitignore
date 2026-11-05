@@ -38,3 +38,9 @@ _tools/launch_detached.py
 # libs 子目录的依赖 jar 一并排除
 libs/**/*.jar
 release-1.2.1/*-预览.html
+
+# 测试探针产物
+_tools/*/out/
+_tools/searchtest/*.txt
+_tools/searchtest/SearchProbe.java
+_tools/searchtest/SearchQuery.java
